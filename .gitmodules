@@ -1,0 +1,6 @@
+[submodule "colour_visuals/resources/colour-visuals-tests-datasets"]
+	path = colour_visuals/resources/colour-visuals-tests-datasets
+	url = https://github.com/colour-science/colour-visuals-tests-datasets.git
+[submodule "colour_visuals/resources/colour-visuals-examples-datasets"]
+	path = colour_visuals/resources/colour-visuals-examples-datasets
+	url = https://github.com/colour-science/colour-visuals-examples-datasets.git
