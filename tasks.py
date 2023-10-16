@@ -128,6 +128,7 @@ def formatting(
         with ctx.cd("utilities"):
             ctx.run("./unicode_to_ascii.py")
 
+
 @task
 def quality(
     ctx: Context,

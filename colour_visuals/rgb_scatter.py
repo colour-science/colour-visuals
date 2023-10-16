@@ -79,7 +79,7 @@ class VisualRGBScatter3D(gfx.Points):
                     append_alpha_channel(colors, opacity)
                 ),
             ),
-            gfx.PointsMaterial(color_mode="vertex", vertex_sizes=True)
+            gfx.PointsMaterial(color_mode="vertex", vertex_sizes=True),
         )
 
 

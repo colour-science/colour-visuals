@@ -207,7 +207,9 @@ if __name__ == "__main__":
 
     scene = Scene()
 
-    scene.add(Background(None, BackgroundMaterial(np.array([0.18, 0.18, 0.18]))))
+    scene.add(
+        Background(None, BackgroundMaterial(np.array([0.18, 0.18, 0.18])))
+    )
 
     visual_1 = VisualGrid()
     scene.add(visual_1)
