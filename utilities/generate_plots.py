@@ -71,6 +71,8 @@ def generate_documentation_plots(output_directory: str):
         )
     )
 
+    canvas.request_draw(lambda: renderer.render(scene, camera))
+
     for visual_class, arguments in [
         (VisualSpectralLocus2D, {}),
         (VisualSpectralLocus3D, {}),
@@ -110,8 +112,6 @@ def generate_documentation_plots(output_directory: str):
             visual, up=np.array([0, 0, 1]), scale=1.25  # pyright: ignore
         )
 
-        canvas.request_draw(lambda: renderer.render(scene, camera))
-
         write_image(
             np.array(renderer.target.draw()),
             os.path.join(
@@ -145,8 +145,6 @@ def generate_documentation_plots(output_directory: str):
     camera.local.position = np.array([-0.25, -0.5, 2])
     camera.show_pos(np.array([1 / 3, 1 / 3, 0.4]))
 
-    canvas.request_draw(lambda: renderer.render(scene, camera))
-
     write_image(
         np.array(renderer.target.draw()),
         os.path.join(output_directory, "Visuals_001.png"),
@@ -173,8 +171,6 @@ def generate_documentation_plots(output_directory: str):
 
     camera.local.position = np.array([0.25, -0.5, 2.25])
     camera.show_pos(np.array([1 / 3, 1 / 3, 0.6]))
-
-    canvas.request_draw(lambda: renderer.render(scene, camera))
 
     write_image(
         np.array(renderer.target.draw()),
@@ -206,8 +202,6 @@ def generate_documentation_plots(output_directory: str):
 
     camera.local.position = np.array([1.5, -1.5, 5])
     camera.show_pos(np.array([0, 0, 0.5]))
-
-    canvas.request_draw(lambda: renderer.render(scene, camera))
 
     write_image(
         np.array(renderer.target.draw()),
