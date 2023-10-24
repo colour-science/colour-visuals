@@ -14,6 +14,9 @@ import subprocess
 import colour
 import numpy as np
 
+from .axes import (
+    VisualAxes,
+)
 from .diagrams import (
     VisualChromaticityDiagram,
     VisualChromaticityDiagramCIE1931,
@@ -48,6 +51,9 @@ __email__ = "colour-developers@colour-science.org"
 __status__ = "Production"
 
 __all__ = [
+    "VisualAxes",
+]
+__all__ += [
     "VisualSpectralLocus2D",
     "VisualSpectralLocus3D",
     "VisualChromaticityDiagram",

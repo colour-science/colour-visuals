@@ -19,19 +19,6 @@ Chromaticity Diagram Visuals
     VisualChromaticityDiagramCIE1960UCS
     VisualChromaticityDiagramCIE1976UCS
 
-Grid Visuals
-------------
-
-``colour_visuals``
-
-.. currentmodule:: colour_visuals
-
-.. autosummary::
-    :toctree: generated/
-    :template: class.rst
-
-    VisualGrid
-
 Pointer's Gamut Visuals
 -----------------------
 
@@ -85,6 +72,20 @@ Rösch-MacAdam Visuals
     :template: class.rst
 
     VisualRoschMacAdam
+
+Helper Visuals
+--------------
+
+``colour_visuals``
+
+.. currentmodule:: colour_visuals
+
+.. autosummary::
+    :toctree: generated/
+    :template: class.rst
+
+    VisualAxes
+    VisualGrid
 
 Common Utilities
 ----------------

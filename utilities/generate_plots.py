@@ -14,6 +14,7 @@ import pylinalg as la
 from colour.io import write_image
 from wgpu.gui.offscreen import WgpuCanvas
 
+from colour_visuals.axes import VisualAxes
 from colour_visuals.diagrams import (
     VisualChromaticityDiagram,
     VisualChromaticityDiagramCIE1931,
@@ -74,6 +75,7 @@ def generate_documentation_plots(output_directory: str):
     canvas.request_draw(lambda: renderer.render(scene, camera))
 
     for visual_class, arguments in [
+        (VisualAxes, {"model": "CIE Lab"}),
         (VisualSpectralLocus2D, {}),
         (VisualSpectralLocus3D, {}),
         (VisualChromaticityDiagram, {}),
