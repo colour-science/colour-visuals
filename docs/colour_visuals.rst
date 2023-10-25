@@ -104,3 +104,4 @@ Common Utilities
     as_contiguous_array
     conform_primitive_dtype
     append_channel
+    unlatexify

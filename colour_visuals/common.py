@@ -8,6 +8,7 @@ Defines the common utilities objects that don't fall in any specific category.
 from __future__ import annotations
 
 import numpy as np
+import re
 from colour.graph import convert
 from colour.hints import (
     ArrayLike,
@@ -38,6 +39,7 @@ __all__ = [
     "as_contiguous_array",
     "conform_primitive_dtype",
     "append_channel",
+    "unlatexify",
 ]
 
 DEFAULT_FLOAT_DTYPE_WGPU = np.float32
@@ -174,3 +176,22 @@ def append_channel(a: ArrayLike, value: float = 1) -> NDArray:
             ),
         ]
     )
+
+
+def unlatexify(text: str) -> str:
+    """
+    Unlatexify given string.
+
+
+    Parameters
+    ----------
+    text
+        String to remove the *LaTeX* character markup from.
+
+    Returns
+    -------
+    :class:`str`
+        Unlatexified  string.
+    """
+
+    return re.sub(r"[$^_{}]", "", text)

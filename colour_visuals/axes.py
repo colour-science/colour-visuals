@@ -22,6 +22,7 @@ from colour.utilities import as_int_array, validate_method
 
 from colour_visuals.common import (
     DEFAULT_FLOAT_DTYPE_WGPU,
+    unlatexify,
 )
 
 __author__ = "Colour Developers"
@@ -117,19 +118,9 @@ class VisualAxes(gfx.Group):
             as_int_array(colourspace_model_axis_reorder([0, 1, 2], model))
         ]
 
-        def latex_to_text(text):
-            return (
-                text.replace("prime", "'")
-                .replace("^", "")
-                .replace("_", "")
-                .replace("{", "")
-                .replace("}", "")
-                .replace("$", "")
-            )
-
         self._x_text = gfx.Text(
             gfx.TextGeometry(
-                latex_to_text(labels[0]),
+                unlatexify(labels[0]),
                 font_size=CONSTANTS_COLOUR_STYLE.font_size.medium * 2,
                 screen_space=True,
                 anchor="Middle-Center",
@@ -141,7 +132,7 @@ class VisualAxes(gfx.Group):
 
         self._y_text = gfx.Text(
             gfx.TextGeometry(
-                latex_to_text(labels[1]),
+                unlatexify(labels[1]),
                 font_size=CONSTANTS_COLOUR_STYLE.font_size.medium * 2,
                 screen_space=True,
                 anchor="Middle-Center",
@@ -153,7 +144,7 @@ class VisualAxes(gfx.Group):
 
         self._z_text = gfx.Text(
             gfx.TextGeometry(
-                latex_to_text(labels[2]),
+                unlatexify(labels[2]),
                 font_size=CONSTANTS_COLOUR_STYLE.font_size.medium * 2,
                 screen_space=True,
                 anchor="Middle-Center",
