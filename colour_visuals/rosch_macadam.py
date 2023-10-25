@@ -75,6 +75,11 @@ class VisualRoschMacAdam(gfx.Line):
     thickness
         Thickness of the visual lines.
 
+    Other Parameters
+    ----------------
+    kwargs
+        See the documentation of the supported conversion definitions.
+
     Examples
     --------
     >>> import os
@@ -119,6 +124,7 @@ class VisualRoschMacAdam(gfx.Line):
         colours: ArrayLike | None = None,
         opacity: float = 1,
         thickness: float = 1,
+        **kwargs,
     ):
         super().__init__()
 
@@ -142,7 +148,12 @@ class VisualRoschMacAdam(gfx.Line):
         XYZ[XYZ == 0] = EPSILON
 
         positions = colourspace_model_axis_reorder(
-            XYZ_to_colourspace_model(XYZ, colourspace.whitepoint, model),
+            XYZ_to_colourspace_model(
+                XYZ,
+                colourspace.whitepoint,
+                model,
+                **kwargs,
+            ),
             model,
         )
         positions = np.concatenate(

@@ -67,6 +67,11 @@ class VisualRGBScatter3D(gfx.Points):
     size
         Size of the visual points
 
+    Other Parameters
+    ----------------
+    kwargs
+        See the documentation of the supported conversion definitions.
+
     Examples
     --------
     >>> import os
@@ -107,6 +112,7 @@ class VisualRGBScatter3D(gfx.Points):
         colours: ArrayLike | None = None,
         opacity: float = 1,
         size: float = 2,
+        **kwargs,
     ):
         colourspace = cast(
             RGB_Colourspace,
@@ -120,7 +126,12 @@ class VisualRGBScatter3D(gfx.Points):
         XYZ = RGB_to_XYZ(RGB, colourspace)
 
         positions = colourspace_model_axis_reorder(
-            XYZ_to_colourspace_model(XYZ, colourspace.whitepoint, model),
+            XYZ_to_colourspace_model(
+                XYZ,
+                colourspace.whitepoint,
+                model,
+                **kwargs,
+            ),
             model,
         )
 

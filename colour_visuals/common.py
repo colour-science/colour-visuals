@@ -7,8 +7,9 @@ Defines the common utilities objects that don't fall in any specific category.
 
 from __future__ import annotations
 
-import numpy as np
 import re
+
+import numpy as np
 from colour.graph import convert
 from colour.hints import (
     ArrayLike,
@@ -21,7 +22,6 @@ from colour.hints import (
 from colour.models import (
     XYZ_to_ICtCp,
     XYZ_to_Jzazbz,
-    XYZ_to_OSA_UCS,
 )
 from colour.utilities import full
 
@@ -53,6 +53,7 @@ def XYZ_to_colourspace_model(
     XYZ: ArrayLike,
     illuminant: ArrayLike,
     model: LiteralColourspaceModel | str = "CIE xyY",
+    normalise_model: bool = True,
     **kwargs,
 ) -> NDArray:
     """
@@ -69,6 +70,19 @@ def XYZ_to_colourspace_model(
     model
         Colourspace model, see :attr:`colour.COLOURSPACE_MODELS` attribute for
         the list of supported colourspace models.
+    normalise_model
+        Whether to normalise colourspace models such as :math:`IC_TC_P` and
+        :math:`J_za_zb_z`.
+
+    Other Parameters
+    ----------------
+    kwargs
+        See the documentation of the supported conversion definitions.
+
+    Returns
+    -------
+    Any
+        Converted *CIE XYZ* tristimulus values.
     """
 
     ijk = convert(
@@ -80,12 +94,11 @@ def XYZ_to_colourspace_model(
         **kwargs,
     )
 
-    if model == "ICtCp":
-        ijk /= XYZ_to_ICtCp([1, 1, 1])[0]
-    elif model == "JzAzBz":
-        ijk /= XYZ_to_Jzazbz([1, 1, 1])[0]
-    elif model == "OSA UCS":
-        ijk /= XYZ_to_OSA_UCS([1, 1, 1])[0]
+    if normalise_model:
+        if model == "ICtCp":
+            ijk /= XYZ_to_ICtCp([1, 1, 1])[0]
+        elif model == "JzAzBz":
+            ijk /= XYZ_to_Jzazbz([1, 1, 1])[0]
 
     return ijk
 

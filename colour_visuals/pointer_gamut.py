@@ -171,6 +171,11 @@ class VisualPointerGamut3D(gfx.Line):
     thickness
         Thickness of the visual lines.
 
+    Other Parameters
+    ----------------
+    kwargs
+        See the documentation of the supported conversion definitions.
+
     Examples
     --------
     >>> import os
@@ -203,6 +208,7 @@ class VisualPointerGamut3D(gfx.Line):
         colours: ArrayLike | None = None,
         opacity: float = 0.5,
         thickness: float = 1,
+        **kwargs,
     ):
         super().__init__()
 
@@ -232,6 +238,7 @@ class VisualPointerGamut3D(gfx.Line):
                 sections,
                 CCS_ILLUMINANT_POINTER_GAMUT,
                 model,
+                **kwargs,
             ),
             model,
         ).reshape([-1, 3])

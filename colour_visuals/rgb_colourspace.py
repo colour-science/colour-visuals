@@ -202,6 +202,11 @@ class VisualRGBColourspace3D(gfx.Mesh):
     segments
         Edge segments count for the *RGB* colourspace cube.
 
+    Other Parameters
+    ----------------
+    kwargs
+        See the documentation of the supported conversion definitions.
+
     Examples
     --------
     >>> import os
@@ -243,6 +248,7 @@ class VisualRGBColourspace3D(gfx.Mesh):
         material: Type[gfx.MeshAbstractMaterial] = gfx.MeshBasicMaterial,
         wireframe: bool = False,
         segments: int = 16,
+        **kwargs,
     ):
         colourspace = cast(
             RGB_Colourspace,
@@ -271,6 +277,7 @@ class VisualRGBColourspace3D(gfx.Mesh):
                 RGB_to_XYZ(positions, colourspace),
                 colourspace.whitepoint,
                 model,
+                **kwargs,
             ),
             model,
         )
@@ -335,5 +342,9 @@ if __name__ == "__main__":
     )
     visual_6.local.position = np.array([4.5, 0, 0])
     scene.add(visual_6)
+
+    visual_7 = VisualRGBColourspace3D(model="RGB")
+    visual_7.local.position = np.array([5.5, 0, 0])
+    scene.add(visual_7)
 
     gfx.show(scene, up=np.array([0, 0, 1]))
