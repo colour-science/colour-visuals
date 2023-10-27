@@ -6,16 +6,23 @@ Generate Plots
 
 from __future__ import annotations
 
-import os
+import matplotlib as mpl
 
-import numpy as np
-import pygfx as gfx
-import pylinalg as la
-from colour.io import write_image
-from wgpu.gui.offscreen import WgpuCanvas
+mpl.use("AGG")
 
-from colour_visuals.axes import VisualAxes
-from colour_visuals.diagrams import (
+import os  # noqa: E402
+
+import matplotlib.pyplot as plt  # noqa: E402
+import numpy as np  # noqa: E402
+import pygfx as gfx  # noqa: E402
+import pylinalg as la  # noqa: E402
+from colour.io import write_image  # noqa: E402
+from colour.plotting import colour_style, plot_image  # noqa: E402
+from colour.utilities import filter_warnings  # noqa: E402
+from wgpu.gui.offscreen import WgpuCanvas  # noqa: E402
+
+from colour_visuals.axes import VisualAxes  # noqa: E402
+from colour_visuals.diagrams import (  # noqa: E402
     VisualChromaticityDiagram,
     VisualChromaticityDiagramCIE1931,
     VisualChromaticityDiagramCIE1960UCS,
@@ -23,17 +30,22 @@ from colour_visuals.diagrams import (
     VisualSpectralLocus2D,
     VisualSpectralLocus3D,
 )
-from colour_visuals.grid import VisualGrid
-from colour_visuals.pointer_gamut import (
+from colour_visuals.grid import VisualGrid  # noqa: E402
+from colour_visuals.patterns import (  # noqa: E402
+    pattern_colour_wheel,
+    pattern_hue_stripes,
+    pattern_hue_swatches,
+)
+from colour_visuals.pointer_gamut import (  # noqa: E402
     VisualPointerGamut2D,
     VisualPointerGamut3D,
 )
-from colour_visuals.rgb_colourspace import (
+from colour_visuals.rgb_colourspace import (  # noqa: E402
     VisualRGBColourspace2D,
     VisualRGBColourspace3D,
 )
-from colour_visuals.rgb_scatter import VisualRGBScatter3D
-from colour_visuals.rosch_macadam import VisualRoschMacAdam
+from colour_visuals.rgb_scatter import VisualRGBScatter3D  # noqa: E402
+from colour_visuals.rosch_macadam import VisualRoschMacAdam  # noqa: E402
 
 __copyright__ = "Copyright 2023 Colour Developers"
 __license__ = "BSD-3-Clause - https://opensource.org/licenses/BSD-3-Clause"
@@ -56,6 +68,10 @@ def generate_documentation_plots(output_directory: str):
         Output directory.
     """
 
+    filter_warnings()
+
+    colour_style()
+
     np.random.seed(16)
 
     # *************************************************************************
@@ -74,30 +90,48 @@ def generate_documentation_plots(output_directory: str):
 
     canvas.request_draw(lambda: renderer.render(scene, camera))
 
-    for visual_class, arguments in [
-        (VisualAxes, {"model": "CIE Lab"}),
-        (VisualSpectralLocus2D, {}),
-        (VisualSpectralLocus3D, {}),
-        (VisualChromaticityDiagram, {}),
+    for visual_class, arguments, affix in [
+        (VisualAxes, {"model": "CIE Lab"}, None),
+        (VisualSpectralLocus2D, {}, None),
+        (VisualSpectralLocus3D, {}, None),
+        (VisualChromaticityDiagram, {}, None),
         (
             VisualChromaticityDiagramCIE1931,
             {"kwargs_visual_chromaticity_diagram": {"opacity": 0.25}},
+            None,
         ),
         (
             VisualChromaticityDiagramCIE1960UCS,
             {"kwargs_visual_chromaticity_diagram": {"opacity": 0.25}},
+            None,
         ),
         (
             VisualChromaticityDiagramCIE1976UCS,
             {"kwargs_visual_chromaticity_diagram": {"opacity": 0.25}},
+            None,
         ),
-        (VisualGrid, {}),
-        (VisualPointerGamut2D, {}),
-        (VisualPointerGamut3D, {}),
-        (VisualRGBColourspace2D, {}),
-        (VisualRGBColourspace3D, {"wireframe": True}),
-        (VisualRGBScatter3D, {"RGB": np.random.random([24, 32, 3])}),
-        (VisualRoschMacAdam, {}),
+        (VisualGrid, {}, None),
+        (VisualPointerGamut2D, {}, None),
+        (VisualPointerGamut3D, {}, None),
+        (VisualRGBColourspace2D, {}, None),
+        (VisualRGBColourspace3D, {"wireframe": True}, None),
+        (VisualRGBScatter3D, {"RGB": np.random.random([24, 32, 3])}, None),
+        (VisualRoschMacAdam, {}, None),
+        (
+            VisualRGBScatter3D,
+            {"RGB": pattern_hue_swatches(), "model": "RGB"},
+            "HueSwatches",
+        ),
+        (
+            VisualRGBScatter3D,
+            {"RGB": pattern_hue_stripes(), "model": "RGB"},
+            "HueStripes",
+        ),
+        (
+            VisualRGBScatter3D,
+            {"RGB": pattern_colour_wheel(), "model": "RGB"},
+            "ColourWheel",
+        ),
     ]:
         visual = visual_class(**arguments)
 
@@ -114,11 +148,13 @@ def generate_documentation_plots(output_directory: str):
             visual, up=np.array([0, 0, 1]), scale=1.25  # pyright: ignore
         )
 
+        affix = (  # noqa: PLW2901
+            visual.__class__.__name__ if affix is None else affix
+        )
+
         write_image(
             np.array(renderer.target.draw()),
-            os.path.join(
-                output_directory, f"Plotting_{visual.__class__.__name__}.png"
-            ),
+            os.path.join(output_directory, f"Plotting_{affix}.png"),
             bit_depth="uint8",
         )
         scene.remove(visual)
@@ -211,6 +247,28 @@ def generate_documentation_plots(output_directory: str):
         bit_depth="uint8",
     )
     scene.remove(group)
+
+    # *************************************************************************
+    # Patterns
+    # *************************************************************************
+    arguments = {
+        "tight_layout": True,
+        "transparent_background": True,
+        "filename": os.path.join(
+            output_directory, "Plotting_PatternHueSwatches.png"
+        ),
+    }
+    plt.close(plot_image(pattern_hue_swatches(), **arguments)[0])
+
+    arguments["filename"] = os.path.join(
+        output_directory, "Plotting_PatternHueStripes.png"
+    )
+    plt.close(plot_image(pattern_hue_stripes(), **arguments)[0])
+
+    arguments["filename"] = os.path.join(
+        output_directory, "Plotting_PatternColourWheel.png"
+    )
+    plt.close(plot_image(pattern_colour_wheel(), **arguments)[0])
 
 
 if __name__ == "__main__":

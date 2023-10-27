@@ -28,6 +28,11 @@ from .diagrams import (
 from .grid import (
     VisualGrid,
 )
+from .patterns import (
+    pattern_colour_wheel,
+    pattern_hue_stripes,
+    pattern_hue_swatches,
+)
 from .pointer_gamut import (
     VisualPointerGamut2D,
     VisualPointerGamut3D,
@@ -77,6 +82,11 @@ __all__ += [
 ]
 __all__ += [
     "VisualRoschMacAdam",
+]
+__all__ += [
+    "pattern_hue_swatches",
+    "pattern_hue_stripes",
+    "pattern_colour_wheel",
 ]
 __application_name__ = "Colour - Visuals"
 

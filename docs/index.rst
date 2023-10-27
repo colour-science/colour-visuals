@@ -186,6 +186,27 @@ Rösch-MacAdam Visuals
 
 ..  image:: _static/Plotting_VisualRoschMacAdam.png
 
+Patterns
+~~~~~~~~
+
+.. code-block:: python
+
+    >>> colour_visuals.pattern_hue_swatches()
+
+..  image:: _static/Plotting_PatternHueSwatches.png
+
+.. code-block:: python
+
+    >>> colour_visuals.pattern_hue_stripes()
+
+..  image:: _static/Plotting_PatternHueStripes.png
+
+.. code-block:: python
+
+    >>> colour_visuals.pattern_colour_wheel()
+
+..  image:: _static/Plotting_PatternColourWheel.png
+
 User Guide
 ----------
 

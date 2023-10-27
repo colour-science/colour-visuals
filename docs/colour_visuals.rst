@@ -87,6 +87,21 @@ Helper Visuals
     VisualAxes
     VisualGrid
 
+Patterns Visuals
+----------------
+
+``colour_visuals``
+
+.. currentmodule:: colour_visuals
+
+.. autosummary::
+    :toctree: generated/
+    :template: class.rst
+
+    pattern_hue_swatches
+    pattern_hue_stripes
+    pattern_colour_wheel
+
 Common Utilities
 ----------------
 
