@@ -51,7 +51,7 @@ def pattern_hue_swatches(count: int = 12, samples: int = 256) -> NDArray:
     >>> from colour.utilities import suppress_stdout
     >>> from colour_visuals import VisualRGBScatter3D, VisualRGBColourspace3D
     >>> from wgpu.gui.auto import WgpuCanvas
-    >>> plot_image(pattern_hue_swatches())
+    >>> plot_image(pattern_hue_swatches())  # doctest: +SKIP
     ... # doctest: +ELLIPSIS
     (<Figure size ... with 1 Axes>, <...Axes...>)
 
@@ -115,7 +115,7 @@ def pattern_hue_stripes(count: int = 6, samples=256):
     >>> from colour.utilities import suppress_stdout
     >>> from colour_visuals import VisualRGBScatter3D, VisualRGBColourspace3D
     >>> from wgpu.gui.auto import WgpuCanvas
-    >>> plot_image(pattern_hue_stripes())
+    >>> plot_image(pattern_hue_stripes())  # doctest: +SKIP
     ... # doctest: +ELLIPSIS
     (<Figure size ... with 1 Axes>, <...Axes...>)
 
@@ -180,7 +180,7 @@ def pattern_colour_wheel(
     >>> from colour.utilities import suppress_stdout
     >>> from colour_visuals import VisualRGBScatter3D, VisualRGBColourspace3D
     >>> from wgpu.gui.auto import WgpuCanvas
-    >>> plot_image(pattern_colour_wheel())
+    >>> plot_image(pattern_colour_wheel())  # doctest: +SKIP
     ... # doctest: +ELLIPSIS
     (<Figure size ... with 1 Axes>, <...Axes...>)
 
