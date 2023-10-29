@@ -27,7 +27,7 @@ A `Python <https://www.python.org>`__ package implementing various
 It is open source and freely available under the
 `BSD-3-Clause <https://opensource.org/licenses/BSD-3-Clause>`__ terms.
 
-..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/master/docs/_static/Visuals_001.png
+..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/develop/docs/_static/Visuals_001.png
 
 .. contents:: **Table of Contents**
     :backlinks: none
@@ -96,7 +96,7 @@ Examples
     >>> canvas.request_draw(lambda: renderer.render(scene, camera))
     >>> run()
 
-..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/master/docs/_static/Visuals_002.png
+..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/develop/docs/_static/Visuals_002.png
 
 .. code-block:: python
 
@@ -148,7 +148,7 @@ Examples
     >>> canvas.request_draw(lambda: renderer.render(scene, camera))
     >>> run()
 
-..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/master/docs/_static/Visuals_003.png
+..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/develop/docs/_static/Visuals_003.png
 
 Chromaticity Diagram Visuals
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -157,7 +157,7 @@ Chromaticity Diagram Visuals
 
     >>> colour_visuals.Plotting_VisualSpectralLocus2D()
 
-..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/master/docs/_static/Plotting_VisualSpectralLocus2D.png
+..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/develop/docs/_static/Plotting_VisualSpectralLocus2D.png
 
 .. code-block:: python
 
@@ -165,7 +165,7 @@ Chromaticity Diagram Visuals
     ...     kwargs_visual_chromaticity_diagram={"opacity": 0.25}
     ... )
 
-..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/master/docs/_static/Plotting_VisualChromaticityDiagramCIE1931.png
+..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/develop/docs/_static/Plotting_VisualChromaticityDiagramCIE1931.png
 
 Pointer's Gamut Visuals
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -174,13 +174,13 @@ Pointer's Gamut Visuals
 
     >>> colour_visuals.VisualPointerGamut2D()
 
-..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/master/docs/_static/Plotting_VisualPointerGamut2D.png
+..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/develop/docs/_static/Plotting_VisualPointerGamut2D.png
 
 .. code-block:: python
 
     >>> colour_visuals.VisualPointerGamut3D()
 
-..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/master/docs/_static/Plotting_VisualPointerGamut3D.png
+..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/develop/docs/_static/Plotting_VisualPointerGamut3D.png
 
 RGB Colourspace Visuals
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -189,13 +189,13 @@ RGB Colourspace Visuals
 
     >>> colour_visuals.VisualRGBColourspace2D()
 
-..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/master/docs/_static/Plotting_VisualRGBColourspace2D.png
+..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/develop/docs/_static/Plotting_VisualRGBColourspace2D.png
 
 .. code-block:: python
 
     >>> colour_visuals.VisualRGBColourspace3D()
 
-..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/master/docs/_static/Plotting_VisualRGBColourspace3D.png
+..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/develop/docs/_static/Plotting_VisualRGBColourspace3D.png
 
 RGB Scatter Visuals
 ~~~~~~~~~~~~~~~~~~~
@@ -204,7 +204,7 @@ RGB Scatter Visuals
 
     >>> colour_visuals.VisualRGBScatter3D(np.random.random([24, 32, 3]))
 
-..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/master/docs/_static/Plotting_VisualRGBScatter3D.png
+..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/develop/docs/_static/Plotting_VisualRGBScatter3D.png
 
 Rösch-MacAdam Visuals
 ~~~~~~~~~~~~~~~~~~~~~
@@ -213,7 +213,7 @@ Rösch-MacAdam Visuals
 
     >>> colour_visuals.VisualRoschMacAdam()
 
-..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/master/docs/_static/Plotting_VisualRoschMacAdam.png
+..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/develop/docs/_static/Plotting_VisualRoschMacAdam.png
 
 Patterns
 ~~~~~~~~
@@ -222,19 +222,19 @@ Patterns
 
     >>> colour_visuals.pattern_hue_swatches()
 
-..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/master/docs/_static/Plotting_PatternHueSwatches.png
+..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/develop/docs/_static/Plotting_PatternHueSwatches.png
 
 .. code-block:: python
 
     >>> colour_visuals.pattern_hue_stripes()
 
-..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/master/docs/_static/Plotting_PatternHueStripes.png
+..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/develop/docs/_static/Plotting_PatternHueStripes.png
 
 .. code-block:: python
 
     >>> colour_visuals.pattern_colour_wheel()
 
-..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/master/docs/_static/Plotting_PatternColourWheel.png
+..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/develop/docs/_static/Plotting_PatternColourWheel.png
 
 User Guide
 ----------
