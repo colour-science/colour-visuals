@@ -42,7 +42,6 @@ classifiers = [
 python = ">= 3.9, < 3.12"
 colour-science = {git = "https://github.com/colour-science/colour.git"}
 imageio = ">= 2, < 3"
-matplotlib = ">= 3.5, != 3.5.0, != 3.5.1"
 networkx = ">= 2.7, < 3"
 numpy = ">= 1.22, < 2"
 pygfx = ">= 0.1, < 0.2"
