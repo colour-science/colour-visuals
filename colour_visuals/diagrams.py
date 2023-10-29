@@ -489,13 +489,13 @@ class VisualSpectralLocus3D(
                 [-1, 3]
             )
         else:
-            colours = np.tile(self._colour, (positions.shape[0], 1))
+            colour = np.tile(self._colour, (positions.shape[0], 1))
 
         self._spectral_locus = gfx.Line(
             gfx.Geometry(
                 positions=as_contiguous_array(positions),
                 colors=as_contiguous_array(
-                    append_channel(colours, self._opacity)
+                    append_channel(colour, self._opacity)
                 ),
             ),
             gfx.LineSegmentMaterial(

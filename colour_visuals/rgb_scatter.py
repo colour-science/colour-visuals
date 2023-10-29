@@ -190,6 +190,11 @@ class VisualRGBScatter3D(
     def update(self):
         """Update the visual."""
 
+        if self._is_update_blocked:
+            return
+
+        self.clear()
+
         XYZ = RGB_to_XYZ(self._RGB, self._colourspace)
 
         positions = colourspace_model_axis_reorder(

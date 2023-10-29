@@ -173,6 +173,11 @@ class VisualRoschMacAdam(
     def update(self):
         """Update the visual."""
 
+        if self._is_update_blocked:
+            return
+
+        self.clear()
+
         colourspace = CONSTANTS_COLOUR_STYLE.colour.colourspace
 
         XYZ = XYZ_outer_surface(
