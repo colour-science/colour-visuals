@@ -18,20 +18,29 @@ from colour.hints import (
     ArrayLike,
     LiteralColourspaceModel,
     LiteralRGBColourspace,
+    NDArray,
     Sequence,
-    cast,
 )
 from colour.models import RGB_Colourspace
 from colour.plotting import (
     colourspace_model_axis_reorder,
-    filter_RGB_colourspaces,
 )
-from colour.utilities import as_float_array, first_item
+from colour.utilities import as_float_array
 
 from colour_visuals.common import (
     XYZ_to_colourspace_model,
     append_channel,
     as_contiguous_array,
+)
+from colour_visuals.visual import (
+    MixinPropertyColour,
+    MixinPropertyColourspace,
+    MixinPropertyKwargs,
+    MixinPropertyModel,
+    MixinPropertyOpacity,
+    MixinPropertySize,
+    Visual,
+    visual_property,
 )
 
 __author__ = "Colour Developers"
@@ -44,7 +53,15 @@ __status__ = "Production"
 __all__ = ["VisualRGBScatter3D"]
 
 
-class VisualRGBScatter3D(gfx.Points):
+class VisualRGBScatter3D(
+    MixinPropertyColour,
+    MixinPropertyColourspace,
+    MixinPropertyKwargs,
+    MixinPropertyModel,
+    MixinPropertyOpacity,
+    MixinPropertySize,
+    Visual,
+):
     """
     Create a 3D *RGB* scatter visual.
 
@@ -59,9 +76,9 @@ class VisualRGBScatter3D(gfx.Points):
     model
         Colourspace model, see :attr:`colour.COLOURSPACE_MODELS` attribute for
         the list of supported colourspace models.
-    colours
-        Colours of the visual, if *None*, the colours are computed from the
-        visual geometry.
+    colour
+        Colour of the visual, if *None*, the colour is computed from the visual
+        geometry.
     opacity
         Opacity of the visual.
     size
@@ -71,6 +88,21 @@ class VisualRGBScatter3D(gfx.Points):
     ----------------
     kwargs
         See the documentation of the supported conversion definitions.
+
+    Attributes
+    ----------
+    -   :attr:`~colour_visuals.VisualRGBScatter3D.RGB`
+    -   :attr:`~colour_visuals.VisualRGBScatter3D.colourspace`
+    -   :attr:`~colour_visuals.VisualRGBScatter3D.model`
+    -   :attr:`~colour_visuals.VisualRGBScatter3D.colour`
+    -   :attr:`~colour_visuals.VisualRGBScatter3D.opacity`
+    -   :attr:`~colour_visuals.VisualRGBScatter3D.size`
+    -   :attr:`~colour_visuals.VisualRGBScatter3D.kwargs`
+
+    Methods
+    -------
+    -   :meth:`~colour_visuals.VisualRGBScatter3D.__init__`
+    -   :meth:`~colour_visuals.VisualRGBScatter3D.update`
 
     Examples
     --------
@@ -109,45 +141,85 @@ class VisualRGBScatter3D(gfx.Points):
         | str
         | Sequence[RGB_Colourspace | LiteralRGBColourspace | str] = "sRGB",
         model: LiteralColourspaceModel | str = "CIE xyY",
-        colours: ArrayLike | None = None,
+        colour: ArrayLike | None = None,
         opacity: float = 1,
         size: float = 2,
         **kwargs,
     ):
-        colourspace = cast(
-            RGB_Colourspace,
-            first_item(filter_RGB_colourspaces(colourspace).values()),
-        )
+        super().__init__()
 
-        RGB = as_float_array(RGB).reshape(-1, 3)
+        self._RGB = np.array([])
+        self._scatter = None
 
-        RGB[RGB == 0] = EPSILON
+        with self.block_update():
+            self.RGB = RGB
+            self.colourspace = colourspace
+            self.model = model
+            self.colour = colour
+            self.opacity = opacity
+            self.size = size
+            self.kwargs = kwargs
 
-        XYZ = RGB_to_XYZ(RGB, colourspace)
+        self.update()
+
+    @visual_property
+    def RGB(self) -> NDArray:
+        """
+        Getter and setter property for the *RGB* colourspace array.
+
+        Parameters
+        ----------
+        value
+            Value to set the *RGB* colourspace array with.
+
+        Returns
+        -------
+        :class:`numpy.ndarray`
+            *RGB* colourspace array.
+        """
+
+        return self._RGB
+
+    @RGB.setter
+    def RGB(self, value: ArrayLike):
+        """Setter for the **self.RGB** property."""
+
+        self._RGB = as_float_array(value).reshape(-1, 3)
+        self._RGB[self._RGB == 0] = EPSILON
+
+    def update(self):
+        """Update the visual."""
+
+        XYZ = RGB_to_XYZ(self._RGB, self._colourspace)
 
         positions = colourspace_model_axis_reorder(
             XYZ_to_colourspace_model(
                 XYZ,
-                colourspace.whitepoint,
-                model,
-                **kwargs,
+                self._colourspace.whitepoint,
+                self._model,
+                **self._kwargs,
             ),
-            model,
+            self._model,
         )
 
-        if colours is None:  # noqa: SIM108
-            colours = RGB
+        if self._colour is None:
+            colour = self._RGB
         else:
-            colours = np.tile(colours, (RGB.shape[0], 1))
+            colour = np.tile(self._colour, (self._RGB.shape[0], 1))
 
-        super().__init__(
+        self._scatter = gfx.Points(
             gfx.Geometry(
                 positions=as_contiguous_array(positions),
-                sizes=as_contiguous_array(np.full(positions.shape[0], size)),
-                colors=as_contiguous_array(append_channel(colours, opacity)),
+                sizes=as_contiguous_array(
+                    np.full(positions.shape[0], self._size)
+                ),
+                colors=as_contiguous_array(
+                    append_channel(colour, self._opacity)
+                ),
             ),
             gfx.PointsMaterial(color_mode="vertex", vertex_sizes=True),
         )
+        self.add(self._scatter)
 
 
 if __name__ == "__main__":
@@ -168,7 +240,7 @@ if __name__ == "__main__":
     scene.add(visual_2)
 
     visual_3 = VisualRGBScatter3D(
-        np.random.random((64, 64, 3)), colours=np.array([0.5, 0.5, 0.5])
+        np.random.random((64, 64, 3)), colour=np.array([0.5, 0.5, 0.5])
     )
     visual_3.local.position = np.array([0.5, 0, 0])
     scene.add(visual_3)

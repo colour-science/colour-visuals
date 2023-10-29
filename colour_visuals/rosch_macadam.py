@@ -18,16 +18,11 @@ from colour.colorimetry import (
     SpectralShape,
 )
 from colour.constants import EPSILON
-from colour.hints import ArrayLike, LiteralColourspaceModel, Sequence, cast
+from colour.hints import ArrayLike, LiteralColourspaceModel, Sequence
 from colour.models import XYZ_to_RGB
 from colour.plotting import (
     CONSTANTS_COLOUR_STYLE,
     colourspace_model_axis_reorder,
-    filter_cmfs,
-    filter_illuminants,
-)
-from colour.utilities import (
-    first_item,
 )
 from colour.volume import XYZ_outer_surface
 
@@ -35,6 +30,16 @@ from colour_visuals.common import (
     XYZ_to_colourspace_model,
     append_channel,
     as_contiguous_array,
+)
+from colour_visuals.visual import (
+    MixinPropertyCMFS,
+    MixinPropertyColour,
+    MixinPropertyIlluminant,
+    MixinPropertyKwargs,
+    MixinPropertyModel,
+    MixinPropertyOpacity,
+    MixinPropertyThickness,
+    Visual,
 )
 
 __author__ = "Colour Developers"
@@ -49,7 +54,16 @@ __all__ = [
 ]
 
 
-class VisualRoschMacAdam(gfx.Line):
+class VisualRoschMacAdam(
+    MixinPropertyCMFS,
+    MixinPropertyIlluminant,
+    MixinPropertyKwargs,
+    MixinPropertyModel,
+    MixinPropertyColour,
+    MixinPropertyOpacity,
+    MixinPropertyThickness,
+    Visual,
+):
     """
     Create a *Rösch-MacAdam* visual.
 
@@ -67,9 +81,9 @@ class VisualRoschMacAdam(gfx.Line):
     model
         Colourspace model, see :attr:`colour.COLOURSPACE_MODELS` attribute for
         the list of supported colourspace models.
-    colours
-        Colours of the visual, if *None*, the colours are computed from the
-        visual geometry.
+    colour
+        Colour of the visual, if *None*, the colour is computed from the visual
+        geometry.
     opacity
         Opacity of the visual.
     thickness
@@ -79,6 +93,21 @@ class VisualRoschMacAdam(gfx.Line):
     ----------------
     kwargs
         See the documentation of the supported conversion definitions.
+
+    Attributes
+    ----------
+    -   :attr:`~colour_visuals.VisualRoschMacAdam.cmfs`
+    -   :attr:`~colour_visuals.VisualRoschMacAdam.illuminant`
+    -   :attr:`~colour_visuals.VisualRoschMacAdam.model`
+    -   :attr:`~colour_visuals.VisualRoschMacAdam.colour`
+    -   :attr:`~colour_visuals.VisualRoschMacAdam.opacity`
+    -   :attr:`~colour_visuals.VisualRoschMacAdam.thickness`
+    -   :attr:`~colour_visuals.VisualRoschMacAdam.kwargs`
+
+    Methods
+    -------
+    -   :meth:`~colour_visuals.VisualRoschMacAdam.__init__`
+    -   :meth:`~colour_visuals.VisualRoschMacAdam.update`
 
     Examples
     --------
@@ -121,28 +150,36 @@ class VisualRoschMacAdam(gfx.Line):
         | str
         | Sequence[SpectralDistribution | str] = "E",
         model: LiteralColourspaceModel | str = "CIE xyY",
-        colours: ArrayLike | None = None,
+        colour: ArrayLike | None = None,
         opacity: float = 1,
         thickness: float = 1,
         **kwargs,
     ):
         super().__init__()
 
-        cmfs = cast(
-            MultiSpectralDistributions, first_item(filter_cmfs(cmfs).values())
-        )
-        illuminant = cast(
-            SpectralDistribution,
-            first_item(filter_illuminants(illuminant).values()),
-        )
+        self._solid = None
+
+        with self.block_update():
+            self.cmfs = cmfs
+            self.illuminant = illuminant
+            self.model = model
+            self.colour = colour
+            self.opacity = opacity
+            self.thickness = thickness
+            self.kwargs = kwargs
+
+        self.update()
+
+    def update(self):
+        """Update the visual."""
 
         colourspace = CONSTANTS_COLOUR_STYLE.colour.colourspace
 
         XYZ = XYZ_outer_surface(
-            cmfs.copy().align(
-                SpectralShape(cmfs.shape.start, cmfs.shape.end, 5)
+            self._cmfs.copy().align(
+                SpectralShape(self._cmfs.shape.start, self._cmfs.shape.end, 5)
             ),
-            illuminant,
+            self._illuminant,
         )
 
         XYZ[XYZ == 0] = EPSILON
@@ -151,30 +188,35 @@ class VisualRoschMacAdam(gfx.Line):
             XYZ_to_colourspace_model(
                 XYZ,
                 colourspace.whitepoint,
-                model,
-                **kwargs,
+                self._model,
+                **self._kwargs,
             ),
-            model,
+            self._model,
         )
         positions = np.concatenate(
             [positions[:-1], positions[1:]], axis=1
         ).reshape([-1, 3])
 
-        if colours is None:
-            colours = XYZ_to_RGB(XYZ, colourspace)
-            colours = np.concatenate(
-                [colours[:-1], colours[1:]], axis=1
-            ).reshape([-1, 3])
+        if self._colour is None:
+            colour = XYZ_to_RGB(XYZ, colourspace)
+            colour = np.concatenate([colour[:-1], colour[1:]], axis=1).reshape(
+                [-1, 3]
+            )
         else:
-            colours = np.tile(colours, (positions.shape[0], 1))
+            colour = np.tile(self._colour, (positions.shape[0], 1))
 
-        super().__init__(
+        self._solid = gfx.Line(
             gfx.Geometry(
                 positions=as_contiguous_array(positions),
-                colors=as_contiguous_array(append_channel(colours, opacity)),
+                colors=as_contiguous_array(
+                    append_channel(colour, self._opacity)
+                ),
             ),
-            gfx.LineSegmentMaterial(thickness=thickness, color_mode="vertex"),
+            gfx.LineSegmentMaterial(
+                thickness=self._thickness, color_mode="vertex"
+            ),
         )
+        self.add(self._solid)
 
 
 if __name__ == "__main__":
@@ -190,19 +232,19 @@ if __name__ == "__main__":
     scene.add(visual_1)
 
     visual_2 = VisualRoschMacAdam(
-        model="CIE XYZ", colours=np.array([0.5, 0.5, 0.5])
+        model="CIE XYZ", colour=np.array([0.5, 0.5, 0.5])
     )
     visual_2.local.position = np.array([1, 0, 0])
     scene.add(visual_2)
 
     visual_3 = VisualRoschMacAdam(
-        model="JzAzBz", colours=np.array([0.5, 0.5, 0.5])
+        model="JzAzBz", colour=np.array([0.5, 0.5, 0.5])
     )
     visual_3.local.position = np.array([3.5, 0, 0])
     scene.add(visual_3)
 
     visual_4 = VisualRoschMacAdam(
-        model="ICtCp", colours=np.array([0.5, 0.5, 0.5])
+        model="ICtCp", colour=np.array([0.5, 0.5, 0.5])
     )
     visual_4.local.position = np.array([6, 0, 0])
     scene.add(visual_4)

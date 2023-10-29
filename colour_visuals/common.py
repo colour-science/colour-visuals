@@ -42,6 +42,7 @@ __all__ = [
     "unlatexify",
 ]
 
+
 DEFAULT_FLOAT_DTYPE_WGPU = np.float32
 """Default int number dtype."""
 

@@ -168,9 +168,7 @@ def generate_documentation_plots(output_directory: str):
             kwargs_visual_chromaticity_diagram={"opacity": 0.25}
         ),
         VisualRGBColourspace2D("ACEScg"),
-        VisualRGBColourspace2D(
-            "Display P3", colours=np.array([0.5, 0.5, 0.5])
-        ),
+        VisualRGBColourspace2D("Display P3", colour=np.array([0.5, 0.5, 0.5])),
         VisualRGBColourspace3D("Display P3", opacity=0.5, wireframe=True),
         VisualRGBScatter3D(np.random.random([24, 32, 3]), "ACEScg"),
     ]
@@ -195,9 +193,7 @@ def generate_documentation_plots(output_directory: str):
         VisualSpectralLocus2D(),
         VisualSpectralLocus3D(),
         VisualRGBColourspace2D("ACEScg"),
-        VisualRGBColourspace2D(
-            "Display P3", colours=np.array([0.5, 0.5, 0.5])
-        ),
+        VisualRGBColourspace2D("Display P3", colour=np.array([0.5, 0.5, 0.5])),
         VisualPointerGamut3D(),
         VisualRGBScatter3D(np.random.random([24, 32, 3]), "ACEScg"),
     ]

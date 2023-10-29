@@ -102,6 +102,34 @@ Patterns Visuals
     pattern_hue_stripes
     pattern_colour_wheel
 
+Visual Utilities
+----------------
+
+``colour_visuals.visual``
+
+.. currentmodule:: colour_visuals.visual
+
+.. autosummary::
+    :toctree: generated/
+    :template: class.rst
+
+    visual_property
+    Visual
+    MixinPropertyCMFS
+    MixinPropertyColour
+    MixinPropertyColourspace
+    MixinPropertyIlluminant
+    MixinPropertyKwargs
+    MixinPropertyTypeMaterial
+    MixinPropertyMethod
+    MixinPropertyModel
+    MixinPropertyOpacity
+    MixinPropertySamples
+    MixinPropertySegments
+    MixinPropertySize
+    MixinPropertyThickness
+    MixinPropertyWireframe
+
 Common Utilities
 ----------------
 

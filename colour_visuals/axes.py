@@ -13,16 +13,21 @@ from __future__ import annotations
 import numpy as np
 import pygfx as gfx
 from colour.hints import LiteralColourspaceModel
-from colour.models import COLOURSPACE_MODELS, COLOURSPACE_MODELS_AXIS_LABELS
+from colour.models import COLOURSPACE_MODELS_AXIS_LABELS
 from colour.plotting import (
     CONSTANTS_COLOUR_STYLE,
     colourspace_model_axis_reorder,
 )
-from colour.utilities import as_int_array, validate_method
+from colour.utilities import as_int_array
 
 from colour_visuals.common import (
     DEFAULT_FLOAT_DTYPE_WGPU,
     unlatexify,
+)
+from colour_visuals.visual import (
+    MixinPropertyModel,
+    MixinPropertySize,
+    Visual,
 )
 
 __author__ = "Colour Developers"
@@ -35,7 +40,7 @@ __status__ = "Production"
 __all__ = ["VisualAxes"]
 
 
-class VisualAxes(gfx.Group):
+class VisualAxes(MixinPropertyModel, MixinPropertySize, Visual):
     """
     Create an axes visual.
 
@@ -46,6 +51,16 @@ class VisualAxes(gfx.Group):
         the list of supported colourspace models.
     size
         Size of the axes.
+
+    Attributes
+    ----------
+    -   :attr:`~colour_visuals.VisualAxes.model`
+    -   :attr:`~colour_visuals.VisualAxes.size`
+
+    Methods
+    -------
+    -   :meth:`~colour_visuals.VisualAxes.__init__`
+    -   :meth:`~colour_visuals.VisualAxes.update`
 
     Examples
     --------
@@ -80,8 +95,24 @@ class VisualAxes(gfx.Group):
     ):
         super().__init__()
 
-        size = int(size)
-        model = validate_method(model, tuple(COLOURSPACE_MODELS))
+        self._axes_helper = None
+        self._x_text = None
+        self._y_text = None
+        self._z_text = None
+
+        with self.block_update():
+            self.model = model
+            self.size = size
+
+        self.update()
+
+    def update(self):
+        """Update the visual."""
+
+        if self._is_update_blocked:
+            return
+
+        self.clear()
 
         axes_positions = np.array(
             [
@@ -94,7 +125,7 @@ class VisualAxes(gfx.Group):
             ],
             dtype=DEFAULT_FLOAT_DTYPE_WGPU,
         )
-        axes_positions *= size
+        axes_positions *= int(self._size)
 
         axes_colours = np.array(
             [
@@ -114,8 +145,10 @@ class VisualAxes(gfx.Group):
         )
         self.add(self._axes_helper)
 
-        labels = np.array(COLOURSPACE_MODELS_AXIS_LABELS[model])[
-            as_int_array(colourspace_model_axis_reorder([0, 1, 2], model))
+        labels = np.array(COLOURSPACE_MODELS_AXIS_LABELS[self._model])[
+            as_int_array(
+                colourspace_model_axis_reorder([0, 1, 2], self._model)
+            )
         ]
 
         self._x_text = gfx.Text(
@@ -125,9 +158,9 @@ class VisualAxes(gfx.Group):
                 screen_space=True,
                 anchor="Middle-Center",
             ),
-            gfx.TextMaterial(color=np.array([1, 0, 0])),  # pyright: ignore
+            gfx.TextMaterial(color=np.array([1, 0, 0])),
         )
-        self._x_text.local.position = np.array([1.1, 0, 0])
+        self._x_text.local.position = np.array([1 * self._size * 1.05, 0, 0])
         self.add(self._x_text)
 
         self._y_text = gfx.Text(
@@ -137,9 +170,9 @@ class VisualAxes(gfx.Group):
                 screen_space=True,
                 anchor="Middle-Center",
             ),
-            gfx.TextMaterial(color=np.array([0, 1, 0])),  # pyright: ignore
+            gfx.TextMaterial(color=np.array([0, 1, 0])),
         )
-        self._y_text.local.position = np.array([0, 1.1, 0])
+        self._y_text.local.position = np.array([0, 1 * self._size * 1.05, 0])
         self.add(self._y_text)
 
         self._z_text = gfx.Text(
@@ -149,9 +182,9 @@ class VisualAxes(gfx.Group):
                 screen_space=True,
                 anchor="Middle-Center",
             ),
-            gfx.TextMaterial(color=np.array([0, 0, 1])),  # pyright: ignore
+            gfx.TextMaterial(color=np.array([0, 0, 1])),
         )
-        self._z_text.local.position = np.array([0, 0, 1.1])
+        self._z_text.local.position = np.array([0, 0, 1 * self._size * 1.05])
         self.add(self._z_text)
 
 
