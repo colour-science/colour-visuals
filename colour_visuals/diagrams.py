@@ -173,8 +173,10 @@ class VisualSpectralLocus2D(
 
         self._spectral_locus = None
         self._wavelengths = None
-        self._wavelength_labels = None
+        self._texts = None
         self._points = None
+
+        self._labels = None
 
         with self.block_update():
             self.cmfs = cmfs
@@ -290,7 +292,7 @@ class VisualSpectralLocus2D(
         self.add(self._wavelengths)
 
         # Labels
-        self._wavelength_labels = []
+        self._texts = []
         for i, label in enumerate(
             [
                 label
@@ -314,12 +316,12 @@ class VisualSpectralLocus2D(
             )
             text.local.position = np.array(
                 [
-                    positions[i, 0] + normals[i, 0] * 1.5,
-                    positions[i, 1] + normals[i, 1] * 1.5,
+                    positions[i, 0] + normals[i, 0] / 50 * 1.25,
+                    positions[i, 1] + normals[i, 1] / 50 * 1.25,
                     0,
                 ]
             )
-            self._wavelength_labels.append(text)
+            self._texts.append(text)
             self.add(text)
 
         positions = np.hstack(

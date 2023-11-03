@@ -17,6 +17,9 @@ import numpy as np
 from .axes import (
     VisualAxes,
 )
+from .daylight_locus import (
+    VisualDaylightLocus,
+)
 from .diagrams import (
     VisualChromaticityDiagram,
     VisualChromaticityDiagramCIE1931,
@@ -32,6 +35,9 @@ from .patterns import (
     pattern_colour_wheel,
     pattern_hue_stripes,
     pattern_hue_swatches,
+)
+from .planckian_locus import (
+    VisualPlanckianLocus,
 )
 from .pointer_gamut import (
     VisualPointerGamut2D,
@@ -58,6 +64,9 @@ __status__ = "Production"
 __all__ = [
     "VisualAxes",
 ]
+__all__ = [
+    "VisualDaylightLocus",
+]
 __all__ += [
     "VisualSpectralLocus2D",
     "VisualSpectralLocus3D",
@@ -68,6 +77,9 @@ __all__ += [
 ]
 __all__ += [
     "VisualGrid",
+]
+__all__ += [
+    "VisualPlanckianLocus",
 ]
 __all__ += [
     "VisualPointerGamut2D",

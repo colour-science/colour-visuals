@@ -22,6 +22,7 @@ from colour.utilities import filter_warnings  # noqa: E402
 from wgpu.gui.offscreen import WgpuCanvas  # noqa: E402
 
 from colour_visuals.axes import VisualAxes  # noqa: E402
+from colour_visuals.daylight_locus import VisualDaylightLocus  # noqa: E402
 from colour_visuals.diagrams import (  # noqa: E402
     VisualChromaticityDiagram,
     VisualChromaticityDiagramCIE1931,
@@ -36,6 +37,7 @@ from colour_visuals.patterns import (  # noqa: E402
     pattern_hue_stripes,
     pattern_hue_swatches,
 )
+from colour_visuals.planckian_locus import VisualPlanckianLocus  # noqa: E402
 from colour_visuals.pointer_gamut import (  # noqa: E402
     VisualPointerGamut2D,
     VisualPointerGamut3D,
@@ -92,6 +94,7 @@ def generate_documentation_plots(output_directory: str):
 
     for visual_class, arguments, affix in [
         (VisualAxes, {"model": "CIE Lab"}, None),
+        (VisualDaylightLocus, {}, None),
         (VisualSpectralLocus2D, {}, None),
         (VisualSpectralLocus3D, {}, None),
         (VisualChromaticityDiagram, {}, None),
@@ -111,6 +114,7 @@ def generate_documentation_plots(output_directory: str):
             None,
         ),
         (VisualGrid, {}, None),
+        (VisualPlanckianLocus, {}, None),
         (VisualPointerGamut2D, {}, None),
         (VisualPointerGamut3D, {}, None),
         (VisualRGBColourspace2D, {}, None),

@@ -150,6 +150,15 @@ Examples
 
 ..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/develop/docs/_static/Visuals_003.png
 
+Daylight Locus Visuals
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    >>> colour_visuals.Plotting_VisualDaylightLocus()
+
+..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/develop/docs/_static/Plotting_VisualDaylightLocus.png
+
 Chromaticity Diagram Visuals
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -166,6 +175,15 @@ Chromaticity Diagram Visuals
     ... )
 
 ..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/develop/docs/_static/Plotting_VisualChromaticityDiagramCIE1931.png
+
+Planckian Locus Visuals
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    >>> colour_visuals.VisualPlanckianLocus()
+
+..  image:: https://raw.githubusercontent.com/colour-science/colour-visuals/develop/docs/_static/Plotting_VisualPlanckianLocus.png
 
 Pointer's Gamut Visuals
 ~~~~~~~~~~~~~~~~~~~~~~~

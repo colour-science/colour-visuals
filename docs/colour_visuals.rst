@@ -1,6 +1,19 @@
 Colour - Visuals
 ================
 
+Daylight Locus Visuals
+----------------------
+
+``colour_visuals``
+
+.. currentmodule:: colour_visuals
+
+.. autosummary::
+    :toctree: generated/
+    :template: class.rst
+
+    VisualDaylightLocus
+
 Chromaticity Diagram Visuals
 ----------------------------
 
@@ -18,6 +31,19 @@ Chromaticity Diagram Visuals
     VisualChromaticityDiagramCIE1931
     VisualChromaticityDiagramCIE1960UCS
     VisualChromaticityDiagramCIE1976UCS
+
+Planckian Locus Visuals
+-----------------------
+
+``colour_visuals``
+
+.. currentmodule:: colour_visuals
+
+.. autosummary::
+    :toctree: generated/
+    :template: class.rst
+
+    VisualPlanckianLocus
 
 Pointer's Gamut Visuals
 -----------------------
