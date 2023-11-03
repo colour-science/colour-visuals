@@ -266,7 +266,6 @@ Primary Dependencies
 - `python >= 3.9, < 4 <https://www.python.org/download/releases>`__
 - `colour-science (git) <https://github.com/colour-science/colour.git>`__
 - `imageio >= 2, < 3 <https://imageio.github.io>`__
-- `matplotlib ">= 3.5, != 3.5.0, != 3.5.1" <https://pypi.org/project/matplotlib>`__
 - `networkx >= 2.7, < 3 <https://pypi.org/project/networkx>`__
 - `numpy >= 1.22, < 2 <https://pypi.org/project/numpy>`__
 - `pygfx <https://pypi.org/project/pygfx>`__
