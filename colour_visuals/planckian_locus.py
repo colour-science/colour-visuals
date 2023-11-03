@@ -311,8 +311,8 @@ class VisualPlanckianLocus(
 
             text.local.position = np.array(
                 [
-                    lines_itl[i][-1, 0],  # + normals_itl[i][-1, 0] / 100,
-                    lines_itl[i][-1, 1],  # + normals_itl[i][-1, 1] / 100,
+                    lines_itl[i][-1, 0],
+                    lines_itl[i][-1, 1],
                     0,
                 ]
             )
