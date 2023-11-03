@@ -154,7 +154,8 @@ class VisualAxes(MixinPropertyModel, MixinPropertySize, Visual):
         self._x_text = gfx.Text(
             gfx.TextGeometry(
                 unlatexify(labels[0]),
-                font_size=CONSTANTS_COLOUR_STYLE.font_size.medium * 2,
+                font_size=CONSTANTS_COLOUR_STYLE.font.size
+                * CONSTANTS_COLOUR_STYLE.font.scaling.xx_large,
                 screen_space=True,
                 anchor="Middle-Center",
             ),
@@ -166,7 +167,8 @@ class VisualAxes(MixinPropertyModel, MixinPropertySize, Visual):
         self._y_text = gfx.Text(
             gfx.TextGeometry(
                 unlatexify(labels[1]),
-                font_size=CONSTANTS_COLOUR_STYLE.font_size.medium * 2,
+                font_size=CONSTANTS_COLOUR_STYLE.font.size
+                * CONSTANTS_COLOUR_STYLE.font.scaling.xx_large,
                 screen_space=True,
                 anchor="Middle-Center",
             ),
@@ -178,7 +180,8 @@ class VisualAxes(MixinPropertyModel, MixinPropertySize, Visual):
         self._z_text = gfx.Text(
             gfx.TextGeometry(
                 unlatexify(labels[2]),
-                font_size=CONSTANTS_COLOUR_STYLE.font_size.medium * 2,
+                font_size=CONSTANTS_COLOUR_STYLE.font.size
+                * CONSTANTS_COLOUR_STYLE.font.scaling.xx_large,
                 screen_space=True,
                 anchor="Middle-Center",
             ),

@@ -306,7 +306,7 @@ class VisualSpectralLocus2D(
             text = gfx.Text(
                 gfx.TextGeometry(
                     str(label),
-                    font_size=CONSTANTS_COLOUR_STYLE.font_size.medium,
+                    font_size=CONSTANTS_COLOUR_STYLE.font.size,
                     screen_space=True,
                     anchor="Center-Left"
                     if lines_w["normal"][::2][i, 0] >= 0

@@ -302,7 +302,7 @@ class VisualPlanckianLocus(
             text = gfx.Text(
                 gfx.TextGeometry(
                     f'{as_int_scalar(label)}{"M" if self._mireds else "K"}',
-                    font_size=CONSTANTS_COLOUR_STYLE.font_size.medium,
+                    font_size=CONSTANTS_COLOUR_STYLE.font.size,
                     screen_space=True,
                     anchor="Bottom-Left",
                 ),

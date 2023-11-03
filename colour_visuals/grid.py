@@ -368,7 +368,7 @@ class VisualGrid(MixinPropertySize, Visual):
                 x_text = gfx.Text(
                     gfx.TextGeometry(
                         f"{i} " if i == 0 else str(i),
-                        font_size=CONSTANTS_COLOUR_STYLE.font_size.medium,
+                        font_size=CONSTANTS_COLOUR_STYLE.font.size,
                         screen_space=True,
                         anchor="Top-Right" if i == 0 else "Top-Center",
                     ),
@@ -384,7 +384,7 @@ class VisualGrid(MixinPropertySize, Visual):
                 y_text = gfx.Text(
                     gfx.TextGeometry(
                         f"{i} ",
-                        font_size=CONSTANTS_COLOUR_STYLE.font_size.medium,
+                        font_size=CONSTANTS_COLOUR_STYLE.font.size,
                         screen_space=True,
                         anchor="Center-Right",
                     ),
@@ -405,7 +405,8 @@ class VisualGrid(MixinPropertySize, Visual):
                 x_text = gfx.Text(
                     gfx.TextGeometry(
                         f"{i} " if i == 0 else str(i),
-                        font_size=CONSTANTS_COLOUR_STYLE.font_size.small,
+                        font_size=CONSTANTS_COLOUR_STYLE.font.size
+                        * CONSTANTS_COLOUR_STYLE.font.scaling.small,
                         screen_space=True,
                         anchor="Top-Right" if i == 0 else "Top-Center",
                     ),
@@ -421,7 +422,8 @@ class VisualGrid(MixinPropertySize, Visual):
                 y_text = gfx.Text(
                     gfx.TextGeometry(
                         f"{i} ",
-                        font_size=CONSTANTS_COLOUR_STYLE.font_size.small,
+                        font_size=CONSTANTS_COLOUR_STYLE.font.size
+                        * CONSTANTS_COLOUR_STYLE.font.scaling.small,
                         screen_space=True,
                         anchor="Center-Right",
                     ),
