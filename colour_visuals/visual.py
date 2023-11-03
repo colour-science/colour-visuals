@@ -97,6 +97,16 @@ class Visual(gfx.Group, metaclass=ABCMeta):
 
         self._is_update_blocked = False
 
+    @abstractmethod
+    def update(self):
+        """
+        Update the visual.
+
+        Notes
+        -----
+        -   Must be reimplemented by sub-classes.
+        """
+
 
 class MixinPropertyCMFS:
     """
@@ -462,16 +472,6 @@ class MixinPropertyModel:
         """Setter for the **self.model** property."""
 
         self._model = validate_method(value, tuple(COLOURSPACE_MODELS))
-
-    @abstractmethod
-    def update(self):
-        """
-        Update the visual.
-
-        Notes
-        -----
-        -   Must be reimplemented by sub-classes.
-        """
 
 
 class MixinPropertyOpacity:
