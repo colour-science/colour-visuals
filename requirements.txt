@@ -21,7 +21,7 @@ cfgv==3.4.0 ; python_version >= "3.9" and python_version < "3.12"
 charset-normalizer==3.3.0 ; python_version >= "3.9" and python_version < "3.12"
 click==8.1.7 ; python_version >= "3.9" and python_version < "3.12"
 colorama==0.4.6 ; python_version >= "3.9" and python_version < "3.12" and (sys_platform == "win32" or platform_system == "Windows")
-colour-science @ git+https://github.com/colour-science/colour.git@HEAD ; python_version >= "3.9" and python_version < "3.12"
+colour-science @ git+https://github.com/colour-science/colour.git ; python_version >= "3.9" and python_version < "3.12"
 comm==0.1.4 ; python_version >= "3.9" and python_version < "3.12"
 contourpy==1.1.1 ; python_version >= "3.9" and python_version < "3.12"
 coverage==7.3.2 ; python_version >= "3.9" and python_version < "3.12"
