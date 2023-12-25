@@ -42,12 +42,12 @@ classifiers = [
 python = ">= 3.9, < 3.12"
 colour-science = {git = "https://github.com/colour-science/colour.git"}
 imageio = ">= 2, < 3"
-matplotlib = ">= 3.5, != 3.5.0, != 3.5.1"
 networkx = ">= 2.7, < 3"
 numpy = ">= 1.22, < 2"
 pygfx = ">= 0.1, < 0.2"
 pyside6 = ">= 6, < 7"
 scipy = ">= 1.8, < 2"
+matplotlib = "^3.8.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "*"
@@ -57,7 +57,7 @@ coveralls = "*"
 flynt = "*"
 invoke = "*"
 jupyter = "*"
-pre-commit = "*"
+pre-commit = ">= 3.5"
 pyright = "*"
 pytest = "*"
 pytest-cov = "*"
@@ -67,6 +67,7 @@ toml = "*"
 twine = "*"
 
 [tool.poetry.group.docs.dependencies]
+matplotlib = ">= 3.5, != 3.5.0, != 3.5.1"
 pydata-sphinx-theme = "*"
 restructuredtext-lint = "*"
 sphinx = "*"

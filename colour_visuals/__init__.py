@@ -14,6 +14,12 @@ import subprocess
 import colour
 import numpy as np
 
+from .axes import (
+    VisualAxes,
+)
+from .daylight_locus import (
+    VisualDaylightLocus,
+)
 from .diagrams import (
     VisualChromaticityDiagram,
     VisualChromaticityDiagramCIE1931,
@@ -24,6 +30,14 @@ from .diagrams import (
 )
 from .grid import (
     VisualGrid,
+)
+from .patterns import (
+    pattern_colour_wheel,
+    pattern_hue_stripes,
+    pattern_hue_swatches,
+)
+from .planckian_locus import (
+    VisualPlanckianLocus,
 )
 from .pointer_gamut import (
     VisualPointerGamut2D,
@@ -48,6 +62,12 @@ __email__ = "colour-developers@colour-science.org"
 __status__ = "Production"
 
 __all__ = [
+    "VisualAxes",
+]
+__all__ = [
+    "VisualDaylightLocus",
+]
+__all__ += [
     "VisualSpectralLocus2D",
     "VisualSpectralLocus3D",
     "VisualChromaticityDiagram",
@@ -57,6 +77,9 @@ __all__ = [
 ]
 __all__ += [
     "VisualGrid",
+]
+__all__ += [
+    "VisualPlanckianLocus",
 ]
 __all__ += [
     "VisualPointerGamut2D",
@@ -71,6 +94,11 @@ __all__ += [
 ]
 __all__ += [
     "VisualRoschMacAdam",
+]
+__all__ += [
+    "pattern_hue_swatches",
+    "pattern_hue_stripes",
+    "pattern_colour_wheel",
 ]
 __application_name__ = "Colour - Visuals"
 

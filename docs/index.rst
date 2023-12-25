@@ -121,6 +121,15 @@ Examples
 
 ..  image:: _static/Visuals_003.png
 
+Daylight Locus Visuals
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    >>> colour_visuals.Plotting_VisualDaylightLocus()
+
+..  image:: _static/Plotting_VisualDaylightLocus.png
+
 Chromaticity Diagram Visuals
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -137,6 +146,15 @@ Chromaticity Diagram Visuals
     ... )
 
 ..  image:: _static/Plotting_VisualChromaticityDiagramCIE1931.png
+
+Planckian Locus Visuals
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    >>> colour_visuals.VisualPlanckianLocus()
+
+..  image:: _static/Plotting_VisualPlanckianLocus.png
 
 Pointer's Gamut Visuals
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -185,6 +203,27 @@ Rösch-MacAdam Visuals
     >>> colour_visuals.VisualRoschMacAdam()
 
 ..  image:: _static/Plotting_VisualRoschMacAdam.png
+
+Patterns
+~~~~~~~~
+
+.. code-block:: python
+
+    >>> colour_visuals.pattern_hue_swatches()
+
+..  image:: _static/Plotting_PatternHueSwatches.png
+
+.. code-block:: python
+
+    >>> colour_visuals.pattern_hue_stripes()
+
+..  image:: _static/Plotting_PatternHueStripes.png
+
+.. code-block:: python
+
+    >>> colour_visuals.pattern_colour_wheel()
+
+..  image:: _static/Plotting_PatternColourWheel.png
 
 User Guide
 ----------
