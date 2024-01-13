@@ -39,8 +39,8 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = ">= 3.9, < 3.12"
-colour-science = {git = "https://github.com/colour-science/colour.git"}
+python = ">= 3.9, < 3.13"
+colour-science = ">= 0.4.4, < 0.5"
 imageio = ">= 2, < 3"
 networkx = ">= 2.7, < 3"
 numpy = ">= 1.22, < 2"
