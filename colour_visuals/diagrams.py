@@ -538,7 +538,7 @@ class VisualChromaticityDiagram(
     wireframe
         Whether to render the visual as a wireframe, i.e., only render edges.
     samples
-        Samples count used for generating the *Chromaticity Diagram* Delaunay
+        Sample count used for generating the *Chromaticity Diagram* Delaunay
         tesselation.
 
     Attributes

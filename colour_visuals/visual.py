@@ -540,7 +540,7 @@ class MixinPropertySamples:
         Returns
         -------
         :class:`int`
-            Samples count.
+            Sample count.
         """
 
         return self._samples
@@ -579,7 +579,7 @@ class MixinPropertySegments:
         Returns
         -------
         :class:`int`
-            Samples count.
+            Sample count.
         """
 
         return self._segments
