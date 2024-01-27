@@ -12,7 +12,7 @@ Colour - Visuals
     :target: https://coveralls.io/r/colour-science/colour-visuals
     :alt: Coverage Status
 .. |codacy| image:: https://img.shields.io/codacy/grade/2862b4f2217742ae83c972d7e3af44d7/develop.svg?style=flat-square
-    :target: https://www.codacy.com/app/colour-science/colour-visuals
+    :target: https://app.codacy.com/gh/colour-science/colour-visuals
     :alt: Code Grade
 .. |version| image:: https://img.shields.io/pypi/v/colour-visuals.svg?style=flat-square
     :target: https://pypi.org/project/colour-visuals
