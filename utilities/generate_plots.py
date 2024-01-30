@@ -10,20 +10,20 @@ import matplotlib as mpl
 
 mpl.use("AGG")
 
-import os  # noqa: E402
+import os
 
-import matplotlib.pyplot as plt  # noqa: E402
-import numpy as np  # noqa: E402
-import pygfx as gfx  # noqa: E402
-import pylinalg as la  # noqa: E402
-from colour.io import write_image  # noqa: E402
-from colour.plotting import colour_style, plot_image  # noqa: E402
-from colour.utilities import filter_warnings  # noqa: E402
-from wgpu.gui.offscreen import WgpuCanvas  # noqa: E402
+import matplotlib.pyplot as plt
+import numpy as np
+import pygfx as gfx
+import pylinalg as la
+from colour.io import write_image
+from colour.plotting import colour_style, plot_image
+from colour.utilities import filter_warnings
+from wgpu.gui.offscreen import WgpuCanvas
 
-from colour_visuals.axes import VisualAxes  # noqa: E402
-from colour_visuals.daylight_locus import VisualDaylightLocus  # noqa: E402
-from colour_visuals.diagrams import (  # noqa: E402
+from colour_visuals.axes import VisualAxes
+from colour_visuals.daylight_locus import VisualDaylightLocus
+from colour_visuals.diagrams import (
     VisualChromaticityDiagram,
     VisualChromaticityDiagramCIE1931,
     VisualChromaticityDiagramCIE1960UCS,
@@ -31,23 +31,23 @@ from colour_visuals.diagrams import (  # noqa: E402
     VisualSpectralLocus2D,
     VisualSpectralLocus3D,
 )
-from colour_visuals.grid import VisualGrid  # noqa: E402
-from colour_visuals.patterns import (  # noqa: E402
+from colour_visuals.grid import VisualGrid
+from colour_visuals.patterns import (
     pattern_colour_wheel,
     pattern_hue_stripes,
     pattern_hue_swatches,
 )
-from colour_visuals.planckian_locus import VisualPlanckianLocus  # noqa: E402
-from colour_visuals.pointer_gamut import (  # noqa: E402
+from colour_visuals.planckian_locus import VisualPlanckianLocus
+from colour_visuals.pointer_gamut import (
     VisualPointerGamut2D,
     VisualPointerGamut3D,
 )
-from colour_visuals.rgb_colourspace import (  # noqa: E402
+from colour_visuals.rgb_colourspace import (
     VisualRGBColourspace2D,
     VisualRGBColourspace3D,
 )
-from colour_visuals.rgb_scatter import VisualRGBScatter3D  # noqa: E402
-from colour_visuals.rosch_macadam import VisualRoschMacAdam  # noqa: E402
+from colour_visuals.rgb_scatter import VisualRGBScatter3D
+from colour_visuals.rosch_macadam import VisualRoschMacAdam
 
 __copyright__ = "Copyright 2023 Colour Developers"
 __license__ = "BSD-3-Clause - https://opensource.org/licenses/BSD-3-Clause"
@@ -85,9 +85,7 @@ def generate_documentation_plots(output_directory: str):
 
     scene = gfx.Scene()
     scene.add(
-        gfx.Background(
-            None, gfx.BackgroundMaterial(np.array([0.18, 0.18, 0.18]))
-        )
+        gfx.Background(None, gfx.BackgroundMaterial(np.array([0.18, 0.18, 0.18])))
     )
 
     canvas.request_draw(lambda: renderer.render(scene, camera))
@@ -143,13 +141,13 @@ def generate_documentation_plots(output_directory: str):
             visual,
             (VisualRGBColourspace3D, VisualRGBScatter3D, VisualRoschMacAdam),
         ):
-            visual.local.rotation = la.quat_from_euler(
-                (-np.pi / 4, 0), order="XY"
-            )
+            visual.local.rotation = la.quat_from_euler((-np.pi / 4, 0), order="XY")
 
         scene.add(visual)
         camera.show_object(
-            visual, up=np.array([0, 0, 1]), scale=1.25  # pyright: ignore
+            visual,
+            up=np.array([0, 0, 1]),
+            scale=1.25,  # pyright: ignore
         )
 
         affix = (  # noqa: PLW2901
@@ -254,9 +252,7 @@ def generate_documentation_plots(output_directory: str):
     arguments = {
         "tight_layout": True,
         "transparent_background": True,
-        "filename": os.path.join(
-            output_directory, "Plotting_PatternHueSwatches.png"
-        ),
+        "filename": os.path.join(output_directory, "Plotting_PatternHueSwatches.png"),
     }
     plt.close(plot_image(pattern_hue_swatches(), **arguments)[0])
 

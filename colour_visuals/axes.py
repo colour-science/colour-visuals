@@ -81,7 +81,6 @@ class VisualAxes(MixinPropertyModel, MixinPropertySize, Visual):
     ...     scene.add(visual)
     ...     if os.environ.get("CI") is None:
     ...         gfx.show(scene, camera=camera, canvas=canvas)
-    ...
 
     .. image:: ../_static/Plotting_VisualAxes.png
         :align: center
@@ -146,9 +145,7 @@ class VisualAxes(MixinPropertyModel, MixinPropertySize, Visual):
         self.add(self._axes_helper)
 
         labels = np.array(COLOURSPACE_MODELS_AXIS_LABELS[self._model])[
-            as_int_array(
-                colourspace_model_axis_reorder([0, 1, 2], self._model)
-            )
+            as_int_array(colourspace_model_axis_reorder([0, 1, 2], self._model))
         ]
 
         self._x_text = gfx.Text(
@@ -195,9 +192,7 @@ if __name__ == "__main__":
     scene = gfx.Scene()
 
     scene.add(
-        gfx.Background(
-            None, gfx.BackgroundMaterial(np.array([0.18, 0.18, 0.18]))
-        )
+        gfx.Background(None, gfx.BackgroundMaterial(np.array([0.18, 0.18, 0.18])))
     )
 
     visual_1 = VisualAxes(model="CIE Lab")

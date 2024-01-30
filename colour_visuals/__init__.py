@@ -105,9 +105,7 @@ __application_name__ = "Colour - Visuals"
 __major_version__ = "0"
 __minor_version__ = "1"
 __change_version__ = "0"
-__version__ = ".".join(
-    (__major_version__, __minor_version__, __change_version__)
-)
+__version__ = ".".join((__major_version__, __minor_version__, __change_version__))
 
 try:
     _version: str = (
@@ -122,9 +120,7 @@ try:
 except Exception:
     _version: str = __version__
 
-colour.utilities.ANCILLARY_COLOUR_SCIENCE_PACKAGES[  # pyright: ignore
-    "colour-visuals"
-] = _version
+colour.utilities.ANCILLARY_COLOUR_SCIENCE_PACKAGES["colour-visuals"] = _version  # pyright: ignore
 
 del _version
 

@@ -148,7 +148,6 @@ class VisualSpectralLocus2D(
     ...     scene.add(visual)
     ...     if os.environ.get("CI") is None:
     ...         gfx.show(scene, camera=camera, canvas=canvas)
-    ...
 
     .. image:: ../_static/Plotting_VisualSpectralLocus2D.png
         :align: center
@@ -157,13 +156,14 @@ class VisualSpectralLocus2D(
 
     def __init__(
         self,
-        cmfs: MultiSpectralDistributions
-        | str
-        | Sequence[
-            MultiSpectralDistributions | str
-        ] = "CIE 1931 2 Degree Standard Observer",
-        method: Literal["CIE 1931", "CIE 1960 UCS", "CIE 1976 UCS"]
-        | str = "CIE 1931",
+        cmfs: (
+            MultiSpectralDistributions
+            | str
+            | Sequence[MultiSpectralDistributions | str]
+        ) = "CIE 1931 2 Degree Standard Observer",
+        method: (
+            Literal["CIE 1931", "CIE 1960 UCS", "CIE 1976 UCS"] | str
+        ) = "CIE 1931",
         labels: Sequence | None = None,
         colour: ArrayLike | None = None,
         opacity: float = 1,
@@ -225,9 +225,7 @@ class VisualSpectralLocus2D(
 
         self.clear()
 
-        lines_sl, lines_w = lines_spectral_locus(
-            self._cmfs, self._labels, self._method
-        )
+        lines_sl, lines_w = lines_spectral_locus(self._cmfs, self._labels, self._method)
 
         # Spectral Locus
         positions = np.concatenate(
@@ -251,13 +249,9 @@ class VisualSpectralLocus2D(
         self._spectral_locus = gfx.Line(
             gfx.Geometry(
                 positions=as_contiguous_array(positions),
-                colors=as_contiguous_array(
-                    append_channel(colour_sl, self._opacity)
-                ),
+                colors=as_contiguous_array(append_channel(colour_sl, self._opacity)),
             ),
-            gfx.LineSegmentMaterial(
-                thickness=self._thickness, color_mode="vertex"
-            ),
+            gfx.LineSegmentMaterial(thickness=self._thickness, color_mode="vertex"),
         )
         self.add(self._spectral_locus)
 
@@ -281,24 +275,16 @@ class VisualSpectralLocus2D(
         self._wavelengths = gfx.Line(
             gfx.Geometry(
                 positions=as_contiguous_array(positions),
-                colors=as_contiguous_array(
-                    append_channel(colour_w, self._opacity)
-                ),
+                colors=as_contiguous_array(append_channel(colour_w, self._opacity)),
             ),
-            gfx.LineSegmentMaterial(
-                thickness=self._thickness, color_mode="vertex"
-            ),
+            gfx.LineSegmentMaterial(thickness=self._thickness, color_mode="vertex"),
         )
         self.add(self._wavelengths)
 
         # Labels
         self._texts = []
         for i, label in enumerate(
-            [
-                label
-                for label in self._labels
-                if label in self._cmfs.wavelengths
-            ]
+            [label for label in self._labels if label in self._cmfs.wavelengths]
         ):
             positions = lines_w["position"][::2]
             normals = lines_w["normal"][::2]
@@ -308,9 +294,11 @@ class VisualSpectralLocus2D(
                     str(label),
                     font_size=CONSTANTS_COLOUR_STYLE.font.size,
                     screen_space=True,
-                    anchor="Center-Left"
-                    if lines_w["normal"][::2][i, 0] >= 0
-                    else "Center-Right",
+                    anchor=(
+                        "Center-Left"
+                        if lines_w["normal"][::2][i, 0] >= 0
+                        else "Center-Right"
+                    ),
                 ),
                 gfx.TextMaterial(color=CONSTANTS_COLOUR_STYLE.colour.light),
             )
@@ -344,13 +332,9 @@ class VisualSpectralLocus2D(
             gfx.Geometry(
                 positions=as_contiguous_array(positions),
                 sizes=as_contiguous_array(
-                    full(
-                        lines_w["position"][::2].shape[0], self._thickness * 3
-                    )
+                    full(lines_w["position"][::2].shape[0], self._thickness * 3)
                 ),
-                colors=as_contiguous_array(
-                    append_channel(colour_lp, self._opacity)
-                ),
+                colors=as_contiguous_array(append_channel(colour_lp, self._opacity)),
             ),
             gfx.PointsMaterial(color_mode="vertex", vertex_sizes=True),
         )
@@ -428,7 +412,6 @@ class VisualSpectralLocus3D(
     ...     scene.add(visual)
     ...     if os.environ.get("CI") is None:
     ...         gfx.show(scene, camera=camera, canvas=canvas)
-    ...
 
     .. image:: ../_static/Plotting_VisualSpectralLocus3D.png
         :align: center
@@ -437,11 +420,11 @@ class VisualSpectralLocus3D(
 
     def __init__(
         self,
-        cmfs: MultiSpectralDistributions
-        | str
-        | Sequence[
-            MultiSpectralDistributions | str
-        ] = "CIE 1931 2 Degree Standard Observer",
+        cmfs: (
+            MultiSpectralDistributions
+            | str
+            | Sequence[MultiSpectralDistributions | str]
+        ) = "CIE 1931 2 Degree Standard Observer",
         model: LiteralColourspaceModel | str = "CIE xyY",
         colour: ArrayLike | None = None,
         opacity: float = 1,
@@ -481,28 +464,22 @@ class VisualSpectralLocus3D(
             ),
             self._model,
         )
-        positions = np.concatenate(
-            [positions[:-1], positions[1:]], axis=1
-        ).reshape([-1, 3])
+        positions = np.concatenate([positions[:-1], positions[1:]], axis=1).reshape(
+            [-1, 3]
+        )
 
         if self._colour is None:
             colour = XYZ_to_RGB(self._cmfs.values, colourspace)
-            colour = np.concatenate([colour[:-1], colour[1:]], axis=1).reshape(
-                [-1, 3]
-            )
+            colour = np.concatenate([colour[:-1], colour[1:]], axis=1).reshape([-1, 3])
         else:
             colour = np.tile(self._colour, (positions.shape[0], 1))
 
         self._spectral_locus = gfx.Line(
             gfx.Geometry(
                 positions=as_contiguous_array(positions),
-                colors=as_contiguous_array(
-                    append_channel(colour, self._opacity)
-                ),
+                colors=as_contiguous_array(append_channel(colour, self._opacity)),
             ),
-            gfx.LineSegmentMaterial(
-                thickness=self._thickness, color_mode="vertex"
-            ),
+            gfx.LineSegmentMaterial(thickness=self._thickness, color_mode="vertex"),
         )
         self.add(self._spectral_locus)
 
@@ -575,7 +552,6 @@ class VisualChromaticityDiagram(
     ...     scene.add(visual)
     ...     if os.environ.get("CI") is None:
     ...         gfx.show(scene, camera=camera, canvas=canvas)
-    ...
 
     .. image:: ../_static/Plotting_VisualChromaticityDiagram.png
         :align: center
@@ -584,13 +560,14 @@ class VisualChromaticityDiagram(
 
     def __init__(
         self,
-        cmfs: MultiSpectralDistributions
-        | str
-        | Sequence[
-            MultiSpectralDistributions | str
-        ] = "CIE 1931 2 Degree Standard Observer",
-        method: Literal["CIE 1931", "CIE 1960 UCS", "CIE 1976 UCS"]
-        | str = "CIE 1931",
+        cmfs: (
+            MultiSpectralDistributions
+            | str
+            | Sequence[MultiSpectralDistributions | str]
+        ) = "CIE 1931 2 Degree Standard Observer",
+        method: (
+            Literal["CIE 1931", "CIE 1960 UCS", "CIE 1976 UCS"] | str
+        ) = "CIE 1931",
         colours: ArrayLike | None = None,
         opacity: float = 1,
         material: Type[gfx.MeshAbstractMaterial] = gfx.MeshBasicMaterial,
@@ -670,9 +647,11 @@ class VisualChromaticityDiagram(
 
         self._chromaticity_diagram = gfx.Mesh(
             geometry,
-            self._type_material(color_mode="vertex", wireframe=self._wireframe)
-            if self._wireframe
-            else self._type_material(color_mode="vertex"),
+            (
+                self._type_material(color_mode="vertex", wireframe=self._wireframe)
+                if self._wireframe
+                else self._type_material(color_mode="vertex")
+            ),
         )
         self.add(self._chromaticity_diagram)
 
@@ -846,15 +825,11 @@ kwargs_visual_chromaticity_diagram`
         self._spectral_locus = VisualSpectralLocus2D(method="CIE 1931")
         self.add(self._spectral_locus)
 
-        self._chromaticity_diagram = VisualChromaticityDiagram(
-            method="CIE 1931"
-        )
+        self._chromaticity_diagram = VisualChromaticityDiagram(method="CIE 1931")
         self.add(self._chromaticity_diagram)
 
         self.kwargs_visual_spectral_locus = kwargs_visual_spectral_locus
-        self.kwargs_visual_chromaticity_diagram = (
-            kwargs_visual_chromaticity_diagram
-        )
+        self.kwargs_visual_chromaticity_diagram = kwargs_visual_chromaticity_diagram
 
     def update(self):
         """Update the visual."""
@@ -943,9 +918,7 @@ kwargs_visual_chromaticity_diagram`
         self.add(self._chromaticity_diagram)
 
         self.kwargs_visual_spectral_locus = kwargs_visual_spectral_locus
-        self.kwargs_visual_chromaticity_diagram = (
-            kwargs_visual_chromaticity_diagram
-        )
+        self.kwargs_visual_chromaticity_diagram = kwargs_visual_chromaticity_diagram
 
     def update(self):
         """Update the visual."""
@@ -1034,9 +1007,7 @@ kwargs_visual_chromaticity_diagram`
         self.add(self._chromaticity_diagram)
 
         self.kwargs_visual_spectral_locus = kwargs_visual_spectral_locus
-        self.kwargs_visual_chromaticity_diagram = (
-            kwargs_visual_chromaticity_diagram
-        )
+        self.kwargs_visual_chromaticity_diagram = kwargs_visual_chromaticity_diagram
 
     def update(self):
         """Update the visual."""
@@ -1046,9 +1017,7 @@ if __name__ == "__main__":
     scene = gfx.Scene()
 
     scene.add(
-        gfx.Background(
-            None, gfx.BackgroundMaterial(np.array([0.18, 0.18, 0.18]))
-        )
+        gfx.Background(None, gfx.BackgroundMaterial(np.array([0.18, 0.18, 0.18])))
     )
 
     visual_1 = VisualChromaticityDiagramCIE1931()

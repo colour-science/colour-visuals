@@ -73,7 +73,6 @@ def pattern_hue_swatches(count: int = 12, samples: int = 256) -> NDArray:
     ...     scene.add(visual)
     ...     if os.environ.get("CI") is None:
     ...         gfx.show(scene, camera=camera, canvas=canvas)
-    ...
 
     .. image:: ../_static/Plotting_HueSwatches.png
         :align: center
@@ -82,9 +81,7 @@ def pattern_hue_swatches(count: int = 12, samples: int = 256) -> NDArray:
 
     H = np.linspace(0, 1, count + 1)
 
-    xv, yv = np.meshgrid(
-        np.linspace(0, 1, samples), np.linspace(0, 1, samples)
-    )
+    xv, yv = np.meshgrid(np.linspace(0, 1, samples), np.linspace(0, 1, samples))
 
     slices = []
     for i in range(count + 1):
@@ -137,7 +134,6 @@ def pattern_hue_stripes(count: int = 6, samples=256):
     ...     scene.add(visual)
     ...     if os.environ.get("CI") is None:
     ...         gfx.show(scene, camera=camera, canvas=canvas)
-    ...
 
     .. image:: ../_static/Plotting_HueStripes.png
         :align: center
@@ -202,16 +198,13 @@ def pattern_colour_wheel(
     ...     scene.add(visual)
     ...     if os.environ.get("CI") is None:
     ...         gfx.show(scene, camera=camera, canvas=canvas)
-    ...
 
     .. image:: ../_static/Plotting_ColourWheel.png
         :align: center
         :alt: colour_wheel
     """
 
-    xx, yy = np.meshgrid(
-        np.linspace(-1, 1, samples), np.linspace(-1, 1, samples)
-    )
+    xx, yy = np.meshgrid(np.linspace(-1, 1, samples), np.linspace(-1, 1, samples))
 
     S = np.sqrt(xx**2 + yy**2)
     H = (np.arctan2(xx, yy) + np.pi) / (np.pi * 2)

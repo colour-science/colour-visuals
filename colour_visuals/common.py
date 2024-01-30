@@ -129,7 +129,7 @@ def as_contiguous_array(
 
 
 def conform_primitive_dtype(
-    primitive: Tuple[NDArray, NDArray, NDArray]
+    primitive: Tuple[NDArray, NDArray, NDArray],
 ) -> Tuple[NDArray, NDArray, NDArray]:
     """
     Conform the given primitive to the required *WebGPU* dtype.

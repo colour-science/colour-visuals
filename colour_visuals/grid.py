@@ -91,7 +91,6 @@ class VisualGrid(MixinPropertySize, Visual):
     ...     scene.add(visual)
     ...     if os.environ.get("CI") is None:
     ...         gfx.show(scene, camera=camera, canvas=canvas)
-    ...
 
     .. image:: ../_static/Plotting_VisualGrid.png
         :align: center
@@ -296,9 +295,7 @@ class VisualGrid(MixinPropertySize, Visual):
                 indices=outline[..., 1].reshape([-1, 4]),
                 colors=as_contiguous_array(
                     append_channel(
-                        np.tile(
-                            self._major_grid_colours, (positions.shape[0], 1)
-                        ),
+                        np.tile(self._major_grid_colours, (positions.shape[0], 1)),
                         1,
                     )
                 ),
@@ -322,9 +319,7 @@ class VisualGrid(MixinPropertySize, Visual):
                 indices=outline[..., 1].reshape([-1, 4]),
                 colors=as_contiguous_array(
                     append_channel(
-                        np.tile(
-                            self._minor_grid_colours, (positions.shape[0], 1)
-                        ),
+                        np.tile(self._minor_grid_colours, (positions.shape[0], 1)),
                         1,
                     )
                 ),
@@ -438,9 +433,7 @@ if __name__ == "__main__":
     scene = gfx.Scene()
 
     scene.add(
-        gfx.Background(
-            None, gfx.BackgroundMaterial(np.array([0.18, 0.18, 0.18]))
-        )
+        gfx.Background(None, gfx.BackgroundMaterial(np.array([0.18, 0.18, 0.18])))
     )
 
     visual_1 = VisualGrid()

@@ -124,15 +124,12 @@ class VisualRoschMacAdam(
     ...         )
     ...     )
     ...     visual = VisualRoschMacAdam()
-    ...     visual.local.rotation = la.quat_from_euler(
-    ...         (-np.pi / 4, 0), order="XY"
-    ...     )
+    ...     visual.local.rotation = la.quat_from_euler((-np.pi / 4, 0), order="XY")
     ...     camera = gfx.PerspectiveCamera(50, 16 / 9)
     ...     camera.show_object(visual, up=np.array([0, 0, 1]), scale=1.25)
     ...     scene.add(visual)
     ...     if os.environ.get("CI") is None:
     ...         gfx.show(scene, camera=camera, canvas=canvas)
-    ...
 
     .. image:: ../_static/Plotting_VisualRoschMacAdam.png
         :align: center
@@ -141,14 +138,14 @@ class VisualRoschMacAdam(
 
     def __init__(
         self,
-        cmfs: MultiSpectralDistributions
-        | str
-        | Sequence[
-            MultiSpectralDistributions | str
-        ] = "CIE 1931 2 Degree Standard Observer",
-        illuminant: SpectralDistribution
-        | str
-        | Sequence[SpectralDistribution | str] = "E",
+        cmfs: (
+            MultiSpectralDistributions
+            | str
+            | Sequence[MultiSpectralDistributions | str]
+        ) = "CIE 1931 2 Degree Standard Observer",
+        illuminant: (
+            SpectralDistribution | str | Sequence[SpectralDistribution | str]
+        ) = "E",
         model: LiteralColourspaceModel | str = "CIE xyY",
         colour: ArrayLike | None = None,
         opacity: float = 1,
@@ -198,28 +195,22 @@ class VisualRoschMacAdam(
             ),
             self._model,
         )
-        positions = np.concatenate(
-            [positions[:-1], positions[1:]], axis=1
-        ).reshape([-1, 3])
+        positions = np.concatenate([positions[:-1], positions[1:]], axis=1).reshape(
+            [-1, 3]
+        )
 
         if self._colour is None:
             colour = XYZ_to_RGB(XYZ, colourspace)
-            colour = np.concatenate([colour[:-1], colour[1:]], axis=1).reshape(
-                [-1, 3]
-            )
+            colour = np.concatenate([colour[:-1], colour[1:]], axis=1).reshape([-1, 3])
         else:
             colour = np.tile(self._colour, (positions.shape[0], 1))
 
         self._solid = gfx.Line(
             gfx.Geometry(
                 positions=as_contiguous_array(positions),
-                colors=as_contiguous_array(
-                    append_channel(colour, self._opacity)
-                ),
+                colors=as_contiguous_array(append_channel(colour, self._opacity)),
             ),
-            gfx.LineSegmentMaterial(
-                thickness=self._thickness, color_mode="vertex"
-            ),
+            gfx.LineSegmentMaterial(thickness=self._thickness, color_mode="vertex"),
         )
         self.add(self._solid)
 
@@ -228,29 +219,21 @@ if __name__ == "__main__":
     scene = gfx.Scene()
 
     scene.add(
-        gfx.Background(
-            None, gfx.BackgroundMaterial(np.array([0.18, 0.18, 0.18]))
-        )
+        gfx.Background(None, gfx.BackgroundMaterial(np.array([0.18, 0.18, 0.18])))
     )
 
     visual_1 = VisualRoschMacAdam()
     scene.add(visual_1)
 
-    visual_2 = VisualRoschMacAdam(
-        model="CIE XYZ", colour=np.array([0.5, 0.5, 0.5])
-    )
+    visual_2 = VisualRoschMacAdam(model="CIE XYZ", colour=np.array([0.5, 0.5, 0.5]))
     visual_2.local.position = np.array([1, 0, 0])
     scene.add(visual_2)
 
-    visual_3 = VisualRoschMacAdam(
-        model="JzAzBz", colour=np.array([0.5, 0.5, 0.5])
-    )
+    visual_3 = VisualRoschMacAdam(model="JzAzBz", colour=np.array([0.5, 0.5, 0.5]))
     visual_3.local.position = np.array([3.5, 0, 0])
     scene.add(visual_3)
 
-    visual_4 = VisualRoschMacAdam(
-        model="ICtCp", colour=np.array([0.5, 0.5, 0.5])
-    )
+    visual_4 = VisualRoschMacAdam(model="ICtCp", colour=np.array([0.5, 0.5, 0.5]))
     visual_4.local.position = np.array([6, 0, 0])
     scene.add(visual_4)
 

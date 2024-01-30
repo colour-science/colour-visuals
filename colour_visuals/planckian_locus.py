@@ -115,7 +115,6 @@ class VisualPlanckianLocus(
     ...     scene.add(visual)
     ...     if os.environ.get("CI") is None:
     ...         gfx.show(scene, camera=camera, canvas=canvas)
-    ...
 
     .. image:: ../_static/Plotting_VisualPlanckianLocus.png
         :align: center
@@ -124,8 +123,9 @@ class VisualPlanckianLocus(
 
     def __init__(
         self,
-        method: Literal["CIE 1931", "CIE 1960 UCS", "CIE 1976 UCS"]
-        | str = "CIE 1931",
+        method: (
+            Literal["CIE 1931", "CIE 1960 UCS", "CIE 1976 UCS"] | str
+        ) = "CIE 1931",
         labels: Sequence | None = None,
         mireds: bool = False,
         colour: ArrayLike | None = None,
@@ -179,9 +179,7 @@ class VisualPlanckianLocus(
             Sequence,
             optional(
                 value,
-                LABELS_PLANCKIAN_LOCUS_DEFAULT[
-                    "Mireds" if self._mireds else "Default"
-                ],
+                LABELS_PLANCKIAN_LOCUS_DEFAULT["Mireds" if self._mireds else "Default"],
             ),
         )
 
@@ -247,13 +245,9 @@ class VisualPlanckianLocus(
         self._planckian_locus = gfx.Line(
             gfx.Geometry(
                 positions=as_contiguous_array(positions),
-                colors=as_contiguous_array(
-                    append_channel(colour_sl, self._opacity)
-                ),
+                colors=as_contiguous_array(append_channel(colour_sl, self._opacity)),
             ),
-            gfx.LineSegmentMaterial(
-                thickness=self._thickness, color_mode="vertex"
-            ),
+            gfx.LineSegmentMaterial(thickness=self._thickness, color_mode="vertex"),
         )
         self.add(self._planckian_locus)
 
@@ -272,9 +266,7 @@ class VisualPlanckianLocus(
             positions = np.hstack(
                 [
                     positions,
-                    np.full(
-                        (positions.shape[0], 1), 0, DEFAULT_FLOAT_DTYPE_WGPU
-                    ),
+                    np.full((positions.shape[0], 1), 0, DEFAULT_FLOAT_DTYPE_WGPU),
                 ]
             )
 
@@ -288,13 +280,9 @@ class VisualPlanckianLocus(
             iso_temperature_line = gfx.Line(
                 gfx.Geometry(
                     positions=as_contiguous_array(positions),
-                    colors=as_contiguous_array(
-                        append_channel(colour_w, self._opacity)
-                    ),
+                    colors=as_contiguous_array(append_channel(colour_w, self._opacity)),
                 ),
-                gfx.LineSegmentMaterial(
-                    thickness=self._thickness, color_mode="vertex"
-                ),
+                gfx.LineSegmentMaterial(thickness=self._thickness, color_mode="vertex"),
             )
             self._iso_temperature_lines.append(iso_temperature_line)
             self.add(iso_temperature_line)
@@ -324,9 +312,7 @@ if __name__ == "__main__":
     scene = gfx.Scene()
 
     scene.add(
-        gfx.Background(
-            None, gfx.BackgroundMaterial(np.array([0.18, 0.18, 0.18]))
-        )
+        gfx.Background(None, gfx.BackgroundMaterial(np.array([0.18, 0.18, 0.18])))
     )
 
     visual_1 = VisualPlanckianLocus()

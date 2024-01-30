@@ -126,11 +126,7 @@ class MixinPropertyCMFS:
     @visual_property
     def cmfs(
         self,
-    ) -> (
-        MultiSpectralDistributions
-        | str
-        | Sequence[MultiSpectralDistributions | str]
-    ):
+    ) -> MultiSpectralDistributions | str | Sequence[MultiSpectralDistributions | str]:
         """
         Getter and setter property for the standard observer colour matching
         functions.
@@ -152,9 +148,11 @@ class MixinPropertyCMFS:
     @cmfs.setter
     def cmfs(
         self,
-        value: MultiSpectralDistributions
-        | str
-        | Sequence[MultiSpectralDistributions | str],
+        value: (
+            MultiSpectralDistributions
+            | str
+            | Sequence[MultiSpectralDistributions | str]
+        ),
     ):
         """Setter for the **self.cmfs** property."""
 
@@ -425,14 +423,10 @@ class MixinPropertyMethod:
         return self._method
 
     @method.setter
-    def method(
-        self, value: Literal["CIE 1931", "CIE 1960 UCS", "CIE 1976 UCS"] | str
-    ):
+    def method(self, value: Literal["CIE 1931", "CIE 1960 UCS", "CIE 1976 UCS"] | str):
         """Setter for the **self.method** property."""
 
-        self._method = validate_method(
-            value, tuple(METHODS_CHROMATICITY_DIAGRAM)
-        )
+        self._method = validate_method(value, tuple(METHODS_CHROMATICITY_DIAGRAM))
 
 
 class MixinPropertyModel:

@@ -105,7 +105,6 @@ class VisualPointerGamut2D(
     ...     scene.add(visual)
     ...     if os.environ.get("CI") is None:
     ...         gfx.show(scene, camera=camera, canvas=canvas)
-    ...
 
     .. image:: ../_static/Plotting_VisualPointerGamut2D.png
         :align: center
@@ -114,8 +113,9 @@ class VisualPointerGamut2D(
 
     def __init__(
         self,
-        method: Literal["CIE 1931", "CIE 1960 UCS", "CIE 1976 UCS"]
-        | str = "CIE 1931",
+        method: (
+            Literal["CIE 1931", "CIE 1960 UCS", "CIE 1976 UCS"] | str
+        ) = "CIE 1931",
         colour: ArrayLike | None = None,
         opacity: float = 1,
         thickness: float = 1,
@@ -164,13 +164,9 @@ class VisualPointerGamut2D(
         self._pointer_gamut_boundary = gfx.Line(
             gfx.Geometry(
                 positions=as_contiguous_array(positions),
-                colors=as_contiguous_array(
-                    append_channel(colour_b, self._opacity)
-                ),
+                colors=as_contiguous_array(append_channel(colour_b, self._opacity)),
             ),
-            gfx.LineSegmentMaterial(
-                thickness=self._thickness, color_mode="vertex"
-            ),
+            gfx.LineSegmentMaterial(thickness=self._thickness, color_mode="vertex"),
         )
         self.add(self._pointer_gamut_boundary)
 
@@ -197,9 +193,7 @@ class VisualPointerGamut2D(
                 sizes=as_contiguous_array(
                     np.full(positions.shape[0], self._thickness * 3)
                 ),
-                colors=as_contiguous_array(
-                    append_channel(colour_v, self._opacity)
-                ),
+                colors=as_contiguous_array(append_channel(colour_v, self._opacity)),
             ),
             gfx.PointsMaterial(color_mode="vertex", vertex_sizes=True),
         )
@@ -266,7 +260,6 @@ class VisualPointerGamut3D(
     ...     scene.add(visual)
     ...     if os.environ.get("CI") is None:
     ...         gfx.show(scene, camera=camera, canvas=canvas)
-    ...
 
     .. image:: ../_static/Plotting_VisualPointerGamut3D.png
         :align: center
@@ -315,13 +308,9 @@ class VisualPointerGamut3D(
 
         sections = []
         for i in range(16):
-            section = np.vstack(
-                [data_pointer_gamut[i], data_pointer_gamut[i][0, ...]]
-            )
+            section = np.vstack([data_pointer_gamut[i], data_pointer_gamut[i][0, ...]])
             sections.append(
-                np.concatenate([section[:-1], section[1:]], axis=1).reshape(
-                    [-1, 3]
-                )
+                np.concatenate([section[:-1], section[1:]], axis=1).reshape([-1, 3])
             )
 
         positions = colourspace_model_axis_reorder(
@@ -335,22 +324,16 @@ class VisualPointerGamut3D(
         ).reshape([-1, 3])
 
         if self._colour is None:
-            colour = XYZ_to_plotting_colourspace(sections, illuminant).reshape(
-                [-1, 3]
-            )
+            colour = XYZ_to_plotting_colourspace(sections, illuminant).reshape([-1, 3])
         else:
             colour = np.tile(self._colour, (positions.shape[0], 1))
 
         self._pointer_gamut = gfx.Line(
             gfx.Geometry(
                 positions=as_contiguous_array(positions),
-                colors=as_contiguous_array(
-                    append_channel(colour, self._opacity)
-                ),
+                colors=as_contiguous_array(append_channel(colour, self._opacity)),
             ),
-            gfx.LineSegmentMaterial(
-                thickness=self._thickness, color_mode="vertex"
-            ),
+            gfx.LineSegmentMaterial(thickness=self._thickness, color_mode="vertex"),
         )
         self.add(self._pointer_gamut)
 
@@ -361,9 +344,7 @@ if __name__ == "__main__":
     scene = gfx.Scene()
 
     scene.add(
-        gfx.Background(
-            None, gfx.BackgroundMaterial(np.array([0.18, 0.18, 0.18]))
-        )
+        gfx.Background(None, gfx.BackgroundMaterial(np.array([0.18, 0.18, 0.18])))
     )
 
     visual_1 = VisualSpectralLocus2D()

@@ -123,7 +123,6 @@ class VisualRGBColourspace2D(
     ...     scene.add(visual)
     ...     if os.environ.get("CI") is None:
     ...         gfx.show(scene, camera=camera, canvas=canvas)
-    ...
 
     .. image:: ../_static/Plotting_VisualRGBColourspace2D.png
         :align: center
@@ -132,11 +131,14 @@ class VisualRGBColourspace2D(
 
     def __init__(
         self,
-        colourspace: RGB_Colourspace
-        | str
-        | Sequence[RGB_Colourspace | LiteralRGBColourspace | str] = "sRGB",
-        method: Literal["CIE 1931", "CIE 1960 UCS", "CIE 1976 UCS"]
-        | str = "CIE 1931",
+        colourspace: (
+            RGB_Colourspace
+            | str
+            | Sequence[RGB_Colourspace | LiteralRGBColourspace | str]
+        ) = "sRGB",
+        method: (
+            Literal["CIE 1931", "CIE 1960 UCS", "CIE 1976 UCS"] | str
+        ) = "CIE 1931",
         colour: ArrayLike | None = None,
         opacity: float = 1,
         thickness: float = 1,
@@ -181,22 +183,16 @@ class VisualRGBColourspace2D(
             RGB = XYZ_to_RGB(
                 xy_to_XYZ(self._colourspace.primaries), plotting_colourspace
             )
-            colour_g = np.array(
-                [RGB[0], RGB[1], RGB[1], RGB[2], RGB[2], RGB[0]]
-            )
+            colour_g = np.array([RGB[0], RGB[1], RGB[1], RGB[2], RGB[2], RGB[0]])
         else:
             colour_g = np.tile(self._colour, (positions.shape[0], 1))
 
         self._gamut = gfx.Line(
             gfx.Geometry(
                 positions=as_contiguous_array(positions),
-                colors=as_contiguous_array(
-                    append_channel(colour_g, self._opacity)
-                ),
+                colors=as_contiguous_array(append_channel(colour_g, self._opacity)),
             ),
-            gfx.LineSegmentMaterial(
-                thickness=self._thickness, color_mode="vertex"
-            ),
+            gfx.LineSegmentMaterial(thickness=self._thickness, color_mode="vertex"),
         )
         self.add(self._gamut)
 
@@ -220,9 +216,7 @@ class VisualRGBColourspace2D(
                 sizes=as_contiguous_array(
                     full(positions.shape[0], self._thickness * 3)
                 ),
-                colors=as_contiguous_array(
-                    append_channel(colour_w, self._opacity)
-                ),
+                colors=as_contiguous_array(append_channel(colour_w, self._opacity)),
             ),
             gfx.PointsMaterial(color_mode="vertex", vertex_sizes=True),
         )
@@ -303,15 +297,12 @@ class VisualRGBColourspace3D(
     ...         )
     ...     )
     ...     visual = VisualRGBColourspace3D(wireframe=True)
-    ...     visual.local.rotation = la.quat_from_euler(
-    ...         (-np.pi / 4, 0), order="XY"
-    ...     )
+    ...     visual.local.rotation = la.quat_from_euler((-np.pi / 4, 0), order="XY")
     ...     camera = gfx.PerspectiveCamera(50, 16 / 9)
     ...     camera.show_object(visual, up=np.array([0, 0, 1]), scale=1.25)
     ...     scene.add(visual)
     ...     if os.environ.get("CI") is None:
     ...         gfx.show(scene, camera=camera, canvas=canvas)
-    ...
 
     .. image:: ../_static/Plotting_VisualRGBColourspace3D.png
         :align: center
@@ -320,9 +311,11 @@ class VisualRGBColourspace3D(
 
     def __init__(
         self,
-        colourspace: RGB_Colourspace
-        | str
-        | Sequence[RGB_Colourspace | LiteralRGBColourspace | str] = "sRGB",
+        colourspace: (
+            RGB_Colourspace
+            | str
+            | Sequence[RGB_Colourspace | LiteralRGBColourspace | str]
+        ) = "sRGB",
         model: LiteralColourspaceModel | str = "CIE xyY",
         colour: ArrayLike | None = None,
         opacity: float = 1,
@@ -388,13 +381,13 @@ class VisualRGBColourspace3D(
                 positions=as_contiguous_array(positions),
                 normals=vertices["normal"],
                 indices=outline[..., 1].reshape([-1, 4]),
-                colors=as_contiguous_array(
-                    append_channel(colour, self._opacity)
-                ),
+                colors=as_contiguous_array(append_channel(colour, self._opacity)),
             ),
-            self._type_material(color_mode="vertex", wireframe=self._wireframe)
-            if self._wireframe
-            else self._type_material(color_mode="vertex"),
+            (
+                self._type_material(color_mode="vertex", wireframe=self._wireframe)
+                if self._wireframe
+                else self._type_material(color_mode="vertex")
+            ),
         )
         self.add(self._gamut)
 
@@ -403,9 +396,7 @@ if __name__ == "__main__":
     scene = gfx.Scene()
 
     scene.add(
-        gfx.Background(
-            None, gfx.BackgroundMaterial(np.array([0.18, 0.18, 0.18]))
-        )
+        gfx.Background(None, gfx.BackgroundMaterial(np.array([0.18, 0.18, 0.18])))
     )
 
     light_1 = gfx.AmbientLight()

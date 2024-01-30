@@ -119,15 +119,12 @@ class VisualRGBScatter3D(
     ...         )
     ...     )
     ...     visual = VisualRGBScatter3D(np.random.random([24, 32, 3]))
-    ...     visual.local.rotation = la.quat_from_euler(
-    ...         (-np.pi / 4, 0), order="XY"
-    ...     )
+    ...     visual.local.rotation = la.quat_from_euler((-np.pi / 4, 0), order="XY")
     ...     camera = gfx.PerspectiveCamera(50, 16 / 9)
     ...     camera.show_object(visual, up=np.array([0, 0, 1]), scale=1.25)
     ...     scene.add(visual)
     ...     if os.environ.get("CI") is None:
     ...         gfx.show(scene, camera=camera, canvas=canvas)
-    ...
 
     .. image:: ../_static/Plotting_VisualRGBScatter3D.png
         :align: center
@@ -137,9 +134,11 @@ class VisualRGBScatter3D(
     def __init__(
         self,
         RGB: ArrayLike,
-        colourspace: RGB_Colourspace
-        | str
-        | Sequence[RGB_Colourspace | LiteralRGBColourspace | str] = "sRGB",
+        colourspace: (
+            RGB_Colourspace
+            | str
+            | Sequence[RGB_Colourspace | LiteralRGBColourspace | str]
+        ) = "sRGB",
         model: LiteralColourspaceModel | str = "CIE xyY",
         colour: ArrayLike | None = None,
         opacity: float = 1,
@@ -215,12 +214,8 @@ class VisualRGBScatter3D(
         self._scatter = gfx.Points(
             gfx.Geometry(
                 positions=as_contiguous_array(positions),
-                sizes=as_contiguous_array(
-                    np.full(positions.shape[0], self._size)
-                ),
-                colors=as_contiguous_array(
-                    append_channel(colour, self._opacity)
-                ),
+                sizes=as_contiguous_array(np.full(positions.shape[0], self._size)),
+                colors=as_contiguous_array(append_channel(colour, self._opacity)),
             ),
             gfx.PointsMaterial(color_mode="vertex", vertex_sizes=True),
         )
@@ -233,9 +228,7 @@ if __name__ == "__main__":
     scene = gfx.Scene()
 
     scene.add(
-        gfx.Background(
-            None, gfx.BackgroundMaterial(np.array([0.18, 0.18, 0.18]))
-        )
+        gfx.Background(None, gfx.BackgroundMaterial(np.array([0.18, 0.18, 0.18])))
     )
 
     visual_1 = VisualRGBScatter3D(np.random.random((64, 64, 3)))

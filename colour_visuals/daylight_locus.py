@@ -102,7 +102,6 @@ class VisualDaylightLocus(
     ...     scene.add(visual)
     ...     if os.environ.get("CI") is None:
     ...         gfx.show(scene, camera=camera, canvas=canvas)
-    ...
 
     .. image:: ../_static/Plotting_VisualDaylightLocus.png
         :align: center
@@ -111,8 +110,9 @@ class VisualDaylightLocus(
 
     def __init__(
         self,
-        method: Literal["CIE 1931", "CIE 1960 UCS", "CIE 1976 UCS"]
-        | str = "CIE 1931",
+        method: (
+            Literal["CIE 1931", "CIE 1960 UCS", "CIE 1976 UCS"] | str
+        ) = "CIE 1931",
         mireds: bool = False,
         colour: ArrayLike | None = None,
         opacity: float = 1,
@@ -193,13 +193,9 @@ class VisualDaylightLocus(
         self._daylight_locus = gfx.Line(
             gfx.Geometry(
                 positions=as_contiguous_array(positions),
-                colors=as_contiguous_array(
-                    append_channel(colour_sl, self._opacity)
-                ),
+                colors=as_contiguous_array(append_channel(colour_sl, self._opacity)),
             ),
-            gfx.LineSegmentMaterial(
-                thickness=self._thickness, color_mode="vertex"
-            ),
+            gfx.LineSegmentMaterial(thickness=self._thickness, color_mode="vertex"),
         )
         self.add(self._daylight_locus)
 
@@ -208,9 +204,7 @@ if __name__ == "__main__":
     scene = gfx.Scene()
 
     scene.add(
-        gfx.Background(
-            None, gfx.BackgroundMaterial(np.array([0.18, 0.18, 0.18]))
-        )
+        gfx.Background(None, gfx.BackgroundMaterial(np.array([0.18, 0.18, 0.18])))
     )
 
     visual_1 = VisualDaylightLocus()
