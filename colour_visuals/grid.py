@@ -292,7 +292,7 @@ class VisualGrid(MixinPropertySize, Visual):
         self._grid_major = gfx.Mesh(
             gfx.Geometry(
                 positions=as_contiguous_array(positions),
-                indices=outline[..., 1].reshape([-1, 4]),
+                indices=np.reshape(outline[..., 1], (-1, 4)),
                 colors=as_contiguous_array(
                     append_channel(
                         np.tile(self._major_grid_colours, (positions.shape[0], 1)),
@@ -316,7 +316,7 @@ class VisualGrid(MixinPropertySize, Visual):
         self._grid_minor = gfx.Mesh(
             gfx.Geometry(
                 positions=as_contiguous_array(positions),
-                indices=outline[..., 1].reshape([-1, 4]),
+                indices=np.reshape(outline[..., 1], (-1, 4)),
                 colors=as_contiguous_array(
                     append_channel(
                         np.tile(self._minor_grid_colours, (positions.shape[0], 1)),

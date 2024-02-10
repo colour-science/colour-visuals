@@ -201,12 +201,15 @@ class VisualRGBColourspace2D(
             plotting_colourspace.whitepoint,
         )
 
-        positions = append_channel(ij, 0).reshape([-1, 3])
+        positions = np.reshape(append_channel(ij, 0), (-1, 3))
 
         if self._colour is None:
-            colour_w = XYZ_to_RGB(
-                xy_to_XYZ(self._colourspace.whitepoint), plotting_colourspace
-            ).reshape([-1, 3])
+            colour_w = np.reshape(
+                XYZ_to_RGB(
+                    xy_to_XYZ(self._colourspace.whitepoint), plotting_colourspace
+                ),
+                (-1, 3),
+            )
         else:
             colour_w = np.tile(self._colour, (positions.shape[0], 1))
 
@@ -380,7 +383,7 @@ class VisualRGBColourspace3D(
             gfx.Geometry(
                 positions=as_contiguous_array(positions),
                 normals=vertices["normal"],
-                indices=outline[..., 1].reshape([-1, 4]),
+                indices=np.reshape(outline[..., 1], (-1, 4)),
                 colors=as_contiguous_array(append_channel(colour, self._opacity)),
             ),
             (

@@ -195,13 +195,15 @@ class VisualRoschMacAdam(
             ),
             self._model,
         )
-        positions = np.concatenate([positions[:-1], positions[1:]], axis=1).reshape(
-            [-1, 3]
+        positions = np.reshape(
+            np.concatenate([positions[:-1], positions[1:]], axis=1), (-1, 3)
         )
 
         if self._colour is None:
             colour = XYZ_to_RGB(XYZ, colourspace)
-            colour = np.concatenate([colour[:-1], colour[1:]], axis=1).reshape([-1, 3])
+            colour = np.reshape(
+                np.concatenate([colour[:-1], colour[1:]], axis=1), (-1, 3)
+            )
         else:
             colour = np.tile(self._colour, (positions.shape[0], 1))
 

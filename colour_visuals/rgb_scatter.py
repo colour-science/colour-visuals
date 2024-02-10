@@ -183,7 +183,7 @@ class VisualRGBScatter3D(
     def RGB(self, value: ArrayLike):
         """Setter for the **self.RGB** property."""
 
-        self._RGB = as_float_array(value).reshape(-1, 3)
+        self._RGB = np.reshape(as_float_array(value), (-1, 3))
         self._RGB[self._RGB == 0] = EPSILON
 
     def update(self):

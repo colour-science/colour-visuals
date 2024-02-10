@@ -228,9 +228,12 @@ class VisualSpectralLocus2D(
         lines_sl, lines_w = lines_spectral_locus(self._cmfs, self._labels, self._method)
 
         # Spectral Locus
-        positions = np.concatenate(
-            [lines_sl["position"][:-1], lines_sl["position"][1:]], axis=1
-        ).reshape([-1, 2])
+        positions = np.reshape(
+            np.concatenate(
+                [lines_sl["position"][:-1], lines_sl["position"][1:]], axis=1
+            ),
+            (-1, 2),
+        )
 
         positions = np.hstack(
             [
@@ -240,9 +243,12 @@ class VisualSpectralLocus2D(
         )
 
         if self._colour is None:
-            colour_sl = np.concatenate(
-                [lines_sl["colour"][:-1], lines_sl["colour"][1:]], axis=1
-            ).reshape([-1, 3])
+            colour_sl = np.reshape(
+                np.concatenate(
+                    [lines_sl["colour"][:-1], lines_sl["colour"][1:]], axis=1
+                ),
+                (-1, 3),
+            )
         else:
             colour_sl = np.tile(self._colour, (positions.shape[0], 1))
 
@@ -464,13 +470,15 @@ class VisualSpectralLocus3D(
             ),
             self._model,
         )
-        positions = np.concatenate([positions[:-1], positions[1:]], axis=1).reshape(
-            [-1, 3]
+        positions = np.reshape(
+            np.concatenate([positions[:-1], positions[1:]], axis=1), (-1, 3)
         )
 
         if self._colour is None:
             colour = XYZ_to_RGB(self._cmfs.values, colourspace)
-            colour = np.concatenate([colour[:-1], colour[1:]], axis=1).reshape([-1, 3])
+            colour = np.reshape(
+                np.concatenate([colour[:-1], colour[1:]], axis=1), (-1, 3)
+            )
         else:
             colour = np.tile(self._colour, (positions.shape[0], 1))
 

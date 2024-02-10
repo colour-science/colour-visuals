@@ -144,9 +144,10 @@ class VisualPointerGamut2D(
         lines_b, lines_v = lines_pointer_gamut(self._method)
 
         # Boundary
-        positions = np.concatenate(
-            [lines_b["position"][:-1], lines_b["position"][1:]], axis=1
-        ).reshape([-1, 2])
+        positions = np.reshape(
+            np.concatenate([lines_b["position"][:-1], lines_b["position"][1:]], axis=1),
+            (-1, 2),
+        )
         positions = np.hstack(
             [
                 positions,
@@ -155,9 +156,10 @@ class VisualPointerGamut2D(
         )
 
         if self._colour is None:
-            colour_b = np.concatenate(
-                [lines_b["colour"][:-1], lines_b["colour"][1:]], axis=1
-            ).reshape([-1, 3])
+            colour_b = np.reshape(
+                np.concatenate([lines_b["colour"][:-1], lines_b["colour"][1:]], axis=1),
+                (-1, 3),
+            )
         else:
             colour_b = np.tile(self._colour, (positions.shape[0], 1))
 
@@ -310,21 +312,26 @@ class VisualPointerGamut3D(
         for i in range(16):
             section = np.vstack([data_pointer_gamut[i], data_pointer_gamut[i][0, ...]])
             sections.append(
-                np.concatenate([section[:-1], section[1:]], axis=1).reshape([-1, 3])
+                np.reshape(np.concatenate([section[:-1], section[1:]], axis=1), (-1, 3))
             )
 
-        positions = colourspace_model_axis_reorder(
-            XYZ_to_colourspace_model(
-                sections,
-                CCS_ILLUMINANT_POINTER_GAMUT,
+        positions = np.reshape(
+            colourspace_model_axis_reorder(
+                XYZ_to_colourspace_model(
+                    sections,
+                    CCS_ILLUMINANT_POINTER_GAMUT,
+                    self._model,
+                    **self._kwargs,
+                ),
                 self._model,
-                **self._kwargs,
             ),
-            self._model,
-        ).reshape([-1, 3])
+            (-1, 3),
+        )
 
         if self._colour is None:
-            colour = XYZ_to_plotting_colourspace(sections, illuminant).reshape([-1, 3])
+            colour = np.reshape(
+                XYZ_to_plotting_colourspace(sections, illuminant), (-1, 3)
+            )
         else:
             colour = np.tile(self._colour, (positions.shape[0], 1))
 

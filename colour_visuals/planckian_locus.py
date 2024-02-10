@@ -224,9 +224,12 @@ class VisualPlanckianLocus(
         )
 
         # Planckian Locus
-        positions = np.concatenate(
-            [lines_pl["position"][:-1], lines_pl["position"][1:]], axis=1
-        ).reshape([-1, 2])
+        positions = np.reshape(
+            np.concatenate(
+                [lines_pl["position"][:-1], lines_pl["position"][1:]], axis=1
+            ),
+            (-1, 2),
+        )
 
         positions = np.hstack(
             [
@@ -236,9 +239,12 @@ class VisualPlanckianLocus(
         )
 
         if self._colour is None:
-            colour_sl = np.concatenate(
-                [lines_pl["colour"][:-1], lines_pl["colour"][1:]], axis=1
-            ).reshape([-1, 3])
+            colour_sl = np.reshape(
+                np.concatenate(
+                    [lines_pl["colour"][:-1], lines_pl["colour"][1:]], axis=1
+                ),
+                (-1, 3),
+            )
         else:
             colour_sl = np.tile(self._colour, (positions.shape[0], 1))
 
@@ -255,14 +261,14 @@ class VisualPlanckianLocus(
             return
 
         # Labels
-        lines_itl = lines_l["position"].reshape([len(self._labels), 20, 2])
-        colours_itl = lines_l["colour"].reshape([len(self._labels), 20, 3])
+        lines_itl = np.reshape(lines_l["position"], (len(self._labels), 20, 2))
+        colours_itl = np.reshape(lines_l["colour"], (len(self._labels), 20, 3))
         self._iso_temperature_lines = []
         self._texts = []
         for i, label in enumerate(self._labels):
-            positions = np.concatenate(
-                [lines_itl[i][:-1], lines_itl[i][1:]], axis=1
-            ).reshape([-1, 2])
+            positions = np.reshape(
+                np.concatenate([lines_itl[i][:-1], lines_itl[i][1:]], axis=1), (-1, 2)
+            )
             positions = np.hstack(
                 [
                     positions,
@@ -271,9 +277,10 @@ class VisualPlanckianLocus(
             )
 
             if self._colour is None:
-                colour_w = np.concatenate(
-                    [colours_itl[i][:-1], colours_itl[i][1:]], axis=1
-                ).reshape([-1, 3])
+                colour_w = np.reshape(
+                    np.concatenate([colours_itl[i][:-1], colours_itl[i][1:]], axis=1),
+                    (-1, 3),
+                )
             else:
                 colour_w = np.tile(self._colour, (positions.shape[0], 1))
 

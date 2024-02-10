@@ -172,9 +172,12 @@ class VisualDaylightLocus(
         lines_dl, *_ = lines_daylight_locus(self._mireds, self._method)
 
         # Daylight Locus
-        positions = np.concatenate(
-            [lines_dl["position"][:-1], lines_dl["position"][1:]], axis=1
-        ).reshape([-1, 2])
+        positions = np.reshape(
+            np.concatenate(
+                [lines_dl["position"][:-1], lines_dl["position"][1:]], axis=1
+            ),
+            (-1, 2),
+        )
 
         positions = np.hstack(
             [
@@ -184,9 +187,12 @@ class VisualDaylightLocus(
         )
 
         if self._colour is None:
-            colour_sl = np.concatenate(
-                [lines_dl["colour"][:-1], lines_dl["colour"][1:]], axis=1
-            ).reshape([-1, 3])
+            colour_sl = np.reshape(
+                np.concatenate(
+                    [lines_dl["colour"][:-1], lines_dl["colour"][1:]], axis=1
+                ),
+                (-1, 3),
+            )
         else:
             colour_sl = np.tile(self._colour, (positions.shape[0], 1))
 
