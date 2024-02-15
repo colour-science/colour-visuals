@@ -116,6 +116,12 @@ class VisualGrid(MixinPropertySize, Visual):
         self._minor_tick_labels = True
         self._minor_tick_label_colours = np.array([0.5, 0.5, 0.5])
 
+        self._axes_helper = None
+        self._ticks_major_x = None
+        self._ticks_major_y = None
+        self._ticks_minor_x = None
+        self._ticks_minor_y = None
+
         with self.block_update():
             self.size = size
             self.major_grid_colours = major_grid_colours
