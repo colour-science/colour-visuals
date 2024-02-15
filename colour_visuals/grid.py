@@ -10,8 +10,6 @@ Defines the grid visuals:
 
 from __future__ import annotations
 
-import math
-
 import numpy as np
 import pygfx as gfx
 from colour.geometry import primitive_grid
@@ -44,6 +42,8 @@ class VisualGrid(MixinPropertySize, Visual):
     ----------
     size
         Size of the grid.
+    centred
+        Whether to create the grid centred at the origin.
     major_grid_colours
         Colour of the major grid lines.
     minor_grid_colours
@@ -60,6 +60,7 @@ class VisualGrid(MixinPropertySize, Visual):
     Attributes
     ----------
     -   :attr:`~colour_visuals.VisualGrid.size`
+    -   :attr:`~colour_visuals.VisualGrid.centred`
     -   :attr:`~colour_visuals.VisualGrid.major_grid_colours`
     -   :attr:`~colour_visuals.VisualGrid.minor_grid_colours`
     -   :attr:`~colour_visuals.VisualGrid.major_tick_labels`
@@ -100,6 +101,7 @@ class VisualGrid(MixinPropertySize, Visual):
     def __init__(
         self,
         size: float = 20,
+        centred: bool = True,
         major_grid_colours: ArrayLike = np.array([0.5, 0.5, 0.5]),
         minor_grid_colours: ArrayLike = np.array([0.25, 0.25, 0.25]),
         major_tick_labels=True,
@@ -109,6 +111,7 @@ class VisualGrid(MixinPropertySize, Visual):
     ):
         super().__init__()
 
+        self._centred = True
         self._major_grid_colours = np.array([0.5, 0.5, 0.5])
         self._minor_grid_colours = np.array([0.25, 0.25, 0.25])
         self._major_tick_labels = True
@@ -124,6 +127,7 @@ class VisualGrid(MixinPropertySize, Visual):
 
         with self.block_update():
             self.size = size
+            self.centred = centred
             self.major_grid_colours = major_grid_colours
             self.minor_grid_colours = minor_grid_colours
             self.major_tick_labels = major_tick_labels
@@ -132,6 +136,30 @@ class VisualGrid(MixinPropertySize, Visual):
             self.minor_tick_label_colours = minor_tick_label_colours
 
         self.update()
+
+    @visual_property
+    def centred(self) -> bool:
+        """
+        Getter and setter property to create the grid centred at the origin.
+
+        Parameters
+        ----------
+        value
+            Value to create the grid centred at the origin.
+
+        Returns
+        -------
+        :class:`bool`
+             Create the grid centred at the origin.
+        """
+
+        return self._centred
+
+    @centred.setter
+    def centred(self, value: bool):
+        """Setter for the **self.centred** property."""
+
+        self._centred = value
 
     @visual_property
     def major_grid_colours(self) -> ArrayLike:
@@ -242,7 +270,7 @@ class VisualGrid(MixinPropertySize, Visual):
         Returns
         -------
         :class:`bool`
-            Major tick labels state.
+            Minor tick labels state.
         """
 
         return self._minor_tick_labels
@@ -266,7 +294,7 @@ class VisualGrid(MixinPropertySize, Visual):
         Returns
         -------
         ArrayLike
-            Major tick label colour.
+            Minor tick label colour.
         """
 
         return self._minor_tick_label_colours
@@ -285,7 +313,7 @@ class VisualGrid(MixinPropertySize, Visual):
 
         self.clear()
 
-        size = math.ceil(self._size / 2) * 2
+        size = int(self._size)
 
         vertices, faces, outline = conform_primitive_dtype(
             primitive_grid(
@@ -309,6 +337,9 @@ class VisualGrid(MixinPropertySize, Visual):
             gfx.MeshBasicMaterial(color_mode="vertex", wireframe=True),
         )
         self._grid_major.local.scale = np.array([size, size, 1])
+        if not self._centred:
+            self._grid_major.local.position = np.array([size / 2, size / 2, 0])
+
         self.add(self._grid_major)
 
         vertices, faces, outline = conform_primitive_dtype(
@@ -332,8 +363,11 @@ class VisualGrid(MixinPropertySize, Visual):
             ),
             gfx.MeshBasicMaterial(color_mode="vertex", wireframe=True),
         )
-        self._grid_minor.local.position = np.array([0, 0, -1e-3])
         self._grid_minor.local.scale = np.array([size, size, 1])
+        self._grid_minor.local.position = np.array([0, 0, -1e-3])
+        if not self._centred:
+            self._grid_minor.local.position = np.array([size / 2, size / 2, -1e-3])
+
         self.add(self._grid_minor)
 
         axes_positions = np.array(
@@ -365,7 +399,13 @@ class VisualGrid(MixinPropertySize, Visual):
 
         if self._major_tick_labels:
             self._ticks_major_x, self._ticks_major_y = [], []
-            for i in np.arange(-size // 2, size // 2 + 1, 1):
+
+            start, end = -size / 2, size / 2 + 1
+            if not self._centred:
+                start = 0
+                end = size + 1
+
+            for i in np.arange(start, end, 1):
                 x_text = gfx.Text(
                     gfx.TextGeometry(
                         f"{i} " if i == 0 else str(i),
@@ -397,7 +437,13 @@ class VisualGrid(MixinPropertySize, Visual):
 
         if self._minor_tick_labels:
             self._ticks_minor_x, self._ticks_minor_y = [], []
-            for i in np.arange(-size // 2, size // 2 + 0.1, 0.1):
+
+            start, end = -size / 2, size / 2 + 0.1
+            if not self._centred:
+                start = 0
+                end = size + 0.1
+
+            for i in np.arange(start, end, 0.1):
                 if np.around(i, 0) == np.around(i, 1):
                     continue
 
