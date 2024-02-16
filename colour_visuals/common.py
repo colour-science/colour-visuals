@@ -19,11 +19,8 @@ from colour.hints import (
     Tuple,
     Type,
 )
-from colour.models import (
-    XYZ_to_ICtCp,
-    XYZ_to_Jzazbz,
-)
-from colour.utilities import full
+from colour.models import COLOURSPACE_MODELS_DOMAIN_RANGE_SCALE_1_TO_REFERENCE
+from colour.utilities import full, optional
 
 __author__ = "Colour Developers"
 __copyright__ = "Copyright 2023 Colour Developers"
@@ -35,6 +32,7 @@ __status__ = "Production"
 __all__ = [
     "DEFAULT_FLOAT_DTYPE_WGPU",
     "DEFAULT_INT_DTYPE_WGPU",
+    "NORMALISE_COLOURSPACE_MODEL",
     "XYZ_to_colourspace_model",
     "as_contiguous_array",
     "conform_primitive_dtype",
@@ -49,12 +47,15 @@ DEFAULT_FLOAT_DTYPE_WGPU = np.float32
 DEFAULT_INT_DTYPE_WGPU = np.uint32
 """Default floating point number dtype."""
 
+NORMALISE_COLOURSPACE_MODEL: bool = True
+"""Whether to normalize the colourspace models."""
+
 
 def XYZ_to_colourspace_model(
     XYZ: ArrayLike,
     illuminant: ArrayLike,
     model: LiteralColourspaceModel | str = "CIE xyY",
-    normalise_model: bool = True,
+    normalise_model: bool | None = None,
     **kwargs,
 ) -> NDArray:
     """
@@ -95,11 +96,9 @@ def XYZ_to_colourspace_model(
         **kwargs,
     )
 
-    if normalise_model:
-        if model == "ICtCp":
-            ijk /= XYZ_to_ICtCp([1, 1, 1])[0]
-        elif model == "JzAzBz":
-            ijk /= XYZ_to_Jzazbz([1, 1, 1])[0]
+    if not optional(normalise_model, NORMALISE_COLOURSPACE_MODEL):
+        ijk = np.nan_to_num(ijk)
+        ijk *= COLOURSPACE_MODELS_DOMAIN_RANGE_SCALE_1_TO_REFERENCE[model]
 
     return ijk
 
