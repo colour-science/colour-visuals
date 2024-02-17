@@ -82,7 +82,7 @@ class VisualRGBScatter3D(
     opacity
         Opacity of the visual.
     size
-        Size of the visual points
+        Size of the visual points.
 
     Other Parameters
     ----------------
