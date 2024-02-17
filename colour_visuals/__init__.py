@@ -64,7 +64,7 @@ __status__ = "Production"
 __all__ = [
     "VisualAxes",
 ]
-__all__ = [
+__all__ += [
     "VisualDaylightLocus",
 ]
 __all__ += [
