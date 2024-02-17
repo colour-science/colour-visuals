@@ -45,6 +45,7 @@ from colour_visuals.visual import (
     MixinPropertyModel,
     MixinPropertyOpacity,
     MixinPropertySegments,
+    MixinPropertySize,
     MixinPropertyThickness,
     MixinPropertyTypeMaterial,
     MixinPropertyWireframe,
@@ -235,6 +236,7 @@ class VisualRGBColourspace3D(
     MixinPropertyTypeMaterial,
     MixinPropertyWireframe,
     MixinPropertySegments,
+    MixinPropertySize,
     MixinPropertyKwargs,
     Visual,
 ):
@@ -263,6 +265,9 @@ class VisualRGBColourspace3D(
         Whether to render the visual as a wireframe, i.e., only render edges.
     segments
         Edge segments count for the *RGB* colourspace cube.
+    size
+        Size of the underlying *RGB* colourspace cube; used for plotting HDR
+        related volumes.
 
     Other Parameters
     ----------------
@@ -279,6 +284,7 @@ class VisualRGBColourspace3D(
     -   :attr:`~colour_visuals.VisualRGBColourspace3D.type_material`
     -   :attr:`~colour_visuals.VisualRGBColourspace3D.wireframe`
     -   :attr:`~colour_visuals.VisualRGBColourspace3D.segments`
+    -   :attr:`~colour_visuals.VisualRGBColourspace3D.size`
 
     Methods
     -------
@@ -325,6 +331,7 @@ class VisualRGBColourspace3D(
         material: Type[gfx.MeshAbstractMaterial] = gfx.MeshBasicMaterial,
         wireframe: bool = False,
         segments: int = 16,
+        size: float = 1,
         **kwargs,
     ):
         super().__init__()
@@ -340,6 +347,7 @@ class VisualRGBColourspace3D(
             self.type_material = material
             self.wireframe = wireframe
             self.segments = segments
+            self.size = size
             self.kwargs = kwargs
 
         self.update()
@@ -360,12 +368,16 @@ class VisualRGBColourspace3D(
             )
         )
 
-        positions = vertices["position"] + 0.5
+        positions = (vertices["position"] + 0.5) * self._size
 
         positions[positions == 0] = EPSILON
 
         if self._colour is None:
-            colour = positions
+            # NOTE: The colours are normalised by the reciprocal of *self._size*
+            # to avoid unpleasant clipping when displaying HDR volumes, e.g.
+            # the full ITU-R BT.2020 volume within ICtCp which is using a size
+            # of 10000.
+            colour = positions * (1.0 / self._size)
         else:
             colour = np.tile(self._colour, (positions.shape[0], 1))
 
