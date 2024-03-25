@@ -7,6 +7,8 @@ Defines the common utilities objects that don't fall in any specific category.
 
 from __future__ import annotations
 
+import re
+
 import numpy as np
 from colour.graph import convert
 from colour.hints import (
@@ -17,12 +19,8 @@ from colour.hints import (
     Tuple,
     Type,
 )
-from colour.models import (
-    XYZ_to_ICtCp,
-    XYZ_to_Jzazbz,
-    XYZ_to_OSA_UCS,
-)
-from colour.utilities import full
+from colour.models import COLOURSPACE_MODELS_DOMAIN_RANGE_SCALE_1_TO_REFERENCE
+from colour.utilities import full, optional
 
 __author__ = "Colour Developers"
 __copyright__ = "Copyright 2023 Colour Developers"
@@ -34,11 +32,14 @@ __status__ = "Production"
 __all__ = [
     "DEFAULT_FLOAT_DTYPE_WGPU",
     "DEFAULT_INT_DTYPE_WGPU",
+    "NORMALISE_COLOURSPACE_MODEL",
     "XYZ_to_colourspace_model",
     "as_contiguous_array",
     "conform_primitive_dtype",
     "append_channel",
+    "unlatexify",
 ]
+
 
 DEFAULT_FLOAT_DTYPE_WGPU = np.float32
 """Default int number dtype."""
@@ -46,11 +47,15 @@ DEFAULT_FLOAT_DTYPE_WGPU = np.float32
 DEFAULT_INT_DTYPE_WGPU = np.uint32
 """Default floating point number dtype."""
 
+NORMALISE_COLOURSPACE_MODEL: bool = True
+"""Whether to normalize the colourspace models."""
+
 
 def XYZ_to_colourspace_model(
     XYZ: ArrayLike,
     illuminant: ArrayLike,
     model: LiteralColourspaceModel | str = "CIE xyY",
+    normalise_model: bool | None = None,
     **kwargs,
 ) -> NDArray:
     """
@@ -67,6 +72,19 @@ def XYZ_to_colourspace_model(
     model
         Colourspace model, see :attr:`colour.COLOURSPACE_MODELS` attribute for
         the list of supported colourspace models.
+    normalise_model
+        Whether to normalise colourspace models such as :math:`IC_TC_P` and
+        :math:`J_za_zb_z`.
+
+    Other Parameters
+    ----------------
+    kwargs
+        See the documentation of the supported conversion definitions.
+
+    Returns
+    -------
+    Any
+        Converted *CIE XYZ* tristimulus values.
     """
 
     ijk = convert(
@@ -78,12 +96,9 @@ def XYZ_to_colourspace_model(
         **kwargs,
     )
 
-    if model == "ICtCp":
-        ijk /= XYZ_to_ICtCp([1, 1, 1])[0]
-    elif model == "JzAzBz":
-        ijk /= XYZ_to_Jzazbz([1, 1, 1])[0]
-    elif model == "OSA UCS":
-        ijk /= XYZ_to_OSA_UCS([1, 1, 1])[0]
+    if not optional(normalise_model, NORMALISE_COLOURSPACE_MODEL):
+        ijk = np.nan_to_num(ijk)
+        ijk *= COLOURSPACE_MODELS_DOMAIN_RANGE_SCALE_1_TO_REFERENCE[model]
 
     return ijk
 
@@ -113,7 +128,7 @@ def as_contiguous_array(
 
 
 def conform_primitive_dtype(
-    primitive: Tuple[NDArray, NDArray, NDArray]
+    primitive: Tuple[NDArray, NDArray, NDArray],
 ) -> Tuple[NDArray, NDArray, NDArray]:
     """
     Conform the given primitive to the required *WebGPU* dtype.
@@ -174,3 +189,22 @@ def append_channel(a: ArrayLike, value: float = 1) -> NDArray:
             ),
         ]
     )
+
+
+def unlatexify(text: str) -> str:
+    """
+    Unlatexify given string.
+
+
+    Parameters
+    ----------
+    text
+        String to remove the *LaTeX* character markup from.
+
+    Returns
+    -------
+    :class:`str`
+        Unlatexified  string.
+    """
+
+    return re.sub(r"[$^_{}]", "", text)

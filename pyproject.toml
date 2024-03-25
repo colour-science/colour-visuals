@@ -39,47 +39,37 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = ">= 3.9, < 3.12"
-colour-science = {git = "https://github.com/colour-science/colour.git"}
+python = ">= 3.9, < 3.13"
+colour-science = ">= 0.4.4, < 0.5"
 imageio = ">= 2, < 3"
-matplotlib = ">= 3.5, != 3.5.0, != 3.5.1"
 networkx = ">= 2.7, < 3"
 numpy = ">= 1.22, < 2"
 pygfx = ">= 0.1, < 0.2"
 pyside6 = ">= 6, < 7"
 scipy = ">= 1.8, < 2"
+matplotlib = "^3.8.1"
 
 [tool.poetry.group.dev.dependencies]
-black = "*"
-blackdoc = "*"
-coverage = "!= 6.3"
+coverage = ">= 6, < 7"
 coveralls = "*"
-flynt = "*"
 invoke = "*"
 jupyter = "*"
-pre-commit = "*"
+pre-commit = ">= 3.5"
 pyright = "*"
 pytest = "*"
 pytest-cov = "*"
 pytest-xdist = "*"
-ruff = "*"
 toml = "*"
 twine = "*"
 
 [tool.poetry.group.docs.dependencies]
+matplotlib = ">= 3.5, != 3.5.0, != 3.5.1"
 pydata-sphinx-theme = "*"
 restructuredtext-lint = "*"
 sphinx = "*"
 
-[tool.black]
-line-length = 79
-exclude = '''
-/(
-    \.git
-  | build
-  | dist
-)/
-'''
+[tool.codespell]
+skip = 'BIBLIOGRAPHY.bib,CONTRIBUTORS.rst'
 
 [tool.flynt]
 line_length=999
@@ -196,6 +186,9 @@ convention = "numpy"
 "tasks.py" = ["INP"]
 "utilities/*" = ["EXE001", "INP"]
 "utilities/unicode_to_ascii.py" = ["RUF001"]
+
+[tool.ruff.format]
+docstring-code-format = true
 
 [build-system]
 requires = [ "poetry_core>=1.0.0" ]

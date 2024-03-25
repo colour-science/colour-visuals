@@ -20,136 +20,138 @@ Examples
 
 .. code-block:: python
 
-    >>> import colour_visuals
-    >>> import numpy as np
-    >>> import pygfx as gfx
-    >>> from wgpu.gui.auto import WgpuCanvas, run
+    import colour_visuals
+    import numpy as np
+    import pygfx as gfx
+    from wgpu.gui.auto import WgpuCanvas, run
 
-    >>> canvas = WgpuCanvas(size=(960, 540))
-    >>> renderer = gfx.renderers.WgpuRenderer(canvas)
-    >>> camera = gfx.PerspectiveCamera(50, 16 / 9)  # pyright: ignore
-    >>> controller = gfx.OrbitController(camera)
-    >>> controller.register_events(renderer)
+    canvas = WgpuCanvas(size=(960, 540))
+    renderer = gfx.renderers.WgpuRenderer(canvas)
+    camera = gfx.PerspectiveCamera(50, 16 / 9)  # pyright: ignore
+    controller = gfx.OrbitController(camera)
+    controller.register_events(renderer)
 
-    >>> scene = gfx.Scene()
-    >>> scene.add(
-    ...     gfx.Background(
-    ...         None, gfx.BackgroundMaterial(np.array([0.18, 0.18, 0.18]))
-    ...     )
-    ... )
+    scene = gfx.Scene()
+    scene.add(gfx.Background(None, gfx.BackgroundMaterial(np.array([0.18, 0.18, 0.18]))))
 
-    >>> visuals = [
-    ...     colour_visuals.VisualGrid(size=2),
-    ...     colour_visuals.VisualChromaticityDiagramCIE1931(
-    ...         kwargs_visual_chromaticity_diagram={"opacity": 0.25}
-    ...     ),
-    ...     colour_visuals.VisualRGBColourspace2D("ACEScg"),
-    ...     colour_visuals.VisualRGBColourspace2D(
-    ...         "Display P3", colours=np.array([0.5, 0.5, 0.5])
-    ...     ),
-    ...     colour_visuals.VisualRGBColourspace3D(
-    ...         "Display P3", opacity=0.5, wireframe=True
-    ...     ),
-    ...     colour_visuals.VisualRGBScatter3D(
-    ...         np.random.random([24, 32, 3]), "ACEScg"
-    ...     ),
-    ... ]
+    visuals = [
+        colour_visuals.VisualGrid(size=2),
+        colour_visuals.VisualChromaticityDiagramCIE1931(
+            kwargs_visual_chromaticity_diagram={"opacity": 0.25}
+        ),
+        colour_visuals.VisualRGBColourspace2D("ACEScg"),
+        colour_visuals.VisualRGBColourspace2D(
+            "Display P3", colours=np.array([0.5, 0.5, 0.5])
+        ),
+        colour_visuals.VisualRGBColourspace3D("Display P3", opacity=0.5, wireframe=True),
+        colour_visuals.VisualRGBScatter3D(np.random.random([24, 32, 3]), "ACEScg"),
+    ]
 
-    >>> group = gfx.Group()
-    >>> for visual in visuals:
-    ...     group.add(visual)
-    ...
-    >>> scene.add(group)
+    group = gfx.Group()
+    for visual in visuals:
+        group.add(visual)
 
-    >>> camera.local.position = np.array([-0.25, -0.5, 2])
-    >>> camera.show_pos(np.array([1 / 3, 1 / 3, 0.4]))
+    scene.add(group)
 
-    >>> canvas.request_draw(lambda: renderer.render(scene, camera))
-    >>> run()
+    camera.local.position = np.array([-0.25, -0.5, 2])
+    camera.show_pos(np.array([1 / 3, 1 / 3, 0.4]))
+
+    canvas.request_draw(lambda: renderer.render(scene, camera))
+    run()
 
 ..  image:: _static/Visuals_002.png
 
 .. code-block:: python
 
-    >>> import colour_visuals
-    >>> import numpy as np
-    >>> import pygfx as gfx
-    >>> from wgpu.gui.auto import WgpuCanvas, run
+    import colour_visuals
+    import numpy as np
+    import pygfx as gfx
+    from wgpu.gui.auto import WgpuCanvas, run
 
-    >>> canvas = WgpuCanvas(size=(960, 540))
-    >>> renderer = gfx.renderers.WgpuRenderer(canvas)
-    >>> camera = gfx.PerspectiveCamera(50, 16 / 9)  # pyright: ignore
-    >>> controller = gfx.OrbitController(camera)
-    >>> controller.register_events(renderer)
+    canvas = WgpuCanvas(size=(960, 540))
+    renderer = gfx.renderers.WgpuRenderer(canvas)
+    camera = gfx.PerspectiveCamera(50, 16 / 9)  # pyright: ignore
+    controller = gfx.OrbitController(camera)
+    controller.register_events(renderer)
 
-    >>> scene = gfx.Scene()
-    >>> scene.add(
-    ...     gfx.Background(
-    ...         None, gfx.BackgroundMaterial(np.array([0.18, 0.18, 0.18]))
-    ...     )
-    ... )
+    scene = gfx.Scene()
+    scene.add(gfx.Background(None, gfx.BackgroundMaterial(np.array([0.18, 0.18, 0.18]))))
 
-    >>> visuals = [
-    ...     VisualGrid(size=4),
-    ...     VisualSpectralLocus3D(model="CIE Lab"),
-    ...     VisualPointerGamut3D(
-    ...         model="CIE Lab", colours=np.array([1, 0.5, 0])
-    ...     ),
-    ...     VisualRGBColourspace3D(
-    ...         "Display P3",
-    ...         model="CIE Lab",
-    ...         opacity=0.5,
-    ...         wireframe=True,
-    ...         segments=8,
-    ...     ),
-    ...     VisualRGBScatter3D(
-    ...         np.random.random([24, 32, 3]), "Display P3", model="CIE Lab"
-    ...     ),
-    ... ]
+    visuals = [
+        VisualGrid(size=4),
+        VisualSpectralLocus3D(model="CIE Lab"),
+        VisualPointerGamut3D(model="CIE Lab", colours=np.array([1, 0.5, 0])),
+        VisualRGBColourspace3D(
+            "Display P3",
+            model="CIE Lab",
+            opacity=0.5,
+            wireframe=True,
+            segments=8,
+        ),
+        VisualRGBScatter3D(np.random.random([24, 32, 3]), "Display P3", model="CIE Lab"),
+    ]
 
-    >>> group = gfx.Group()
-    >>> for visual in visuals:
-    ...     group.add(visual)
-    ...
-    >>> scene.add(group)
+    group = gfx.Group()
+    for visual in visuals:
+        group.add(visual)
 
-    >>> camera.local.position = np.array([1.5, -1.5, 5])
-    >>> camera.show_pos(np.array([0, 0, 0.5]))
+    scene.add(group)
 
-    >>> canvas.request_draw(lambda: renderer.render(scene, camera))
-    >>> run()
+    camera.local.position = np.array([1.5, -1.5, 5])
+    camera.show_pos(np.array([0, 0, 0.5]))
+
+    canvas.request_draw(lambda: renderer.render(scene, camera))
+    run()
 
 ..  image:: _static/Visuals_003.png
+
+Daylight Locus Visuals
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    colour_visuals.Plotting_VisualDaylightLocus()
+
+..  image:: _static/Plotting_VisualDaylightLocus.png
 
 Chromaticity Diagram Visuals
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
-    >>> colour_visuals.Plotting_VisualSpectralLocus2D()
+    colour_visuals.Plotting_VisualSpectralLocus2D()
 
 ..  image:: _static/Plotting_VisualSpectralLocus2D.png
 
 .. code-block:: python
 
-    >>> colour_visuals.VisualChromaticityDiagramCIE1931(
-    ...     kwargs_visual_chromaticity_diagram={"opacity": 0.25}
-    ... )
+    colour_visuals.VisualChromaticityDiagramCIE1931(
+        kwargs_visual_chromaticity_diagram={"opacity": 0.25}
+    )
 
 ..  image:: _static/Plotting_VisualChromaticityDiagramCIE1931.png
+
+Planckian Locus Visuals
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    colour_visuals.VisualPlanckianLocus()
+
+..  image:: _static/Plotting_VisualPlanckianLocus.png
 
 Pointer's Gamut Visuals
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
-    >>> colour_visuals.VisualPointerGamut2D()
+    colour_visuals.VisualPointerGamut2D()
 
 ..  image:: _static/Plotting_VisualPointerGamut2D.png
 
 .. code-block:: python
 
-    >>> colour_visuals.VisualPointerGamut3D()
+    colour_visuals.VisualPointerGamut3D()
 
 ..  image:: _static/Plotting_VisualPointerGamut3D.png
 
@@ -158,13 +160,13 @@ RGB Colourspace Visuals
 
 .. code-block:: python
 
-    >>> colour_visuals.VisualRGBColourspace2D()
+    colour_visuals.VisualRGBColourspace2D()
 
 ..  image:: _static/Plotting_VisualRGBColourspace2D.png
 
 .. code-block:: python
 
-    >>> colour_visuals.VisualRGBColourspace3D()
+    colour_visuals.VisualRGBColourspace3D()
 
 ..  image:: _static/Plotting_VisualRGBColourspace3D.png
 
@@ -173,7 +175,7 @@ RGB Scatter Visuals
 
 .. code-block:: python
 
-    >>> colour_visuals.VisualRGBScatter3D(np.random.random([24, 32, 3]))
+    colour_visuals.VisualRGBScatter3D(np.random.random([24, 32, 3]))
 
 ..  image:: _static/Plotting_VisualRGBScatter3D.png
 
@@ -182,9 +184,30 @@ Rösch-MacAdam Visuals
 
 .. code-block:: python
 
-    >>> colour_visuals.VisualRoschMacAdam()
+    colour_visuals.VisualRoschMacAdam()
 
 ..  image:: _static/Plotting_VisualRoschMacAdam.png
+
+Patterns
+~~~~~~~~
+
+.. code-block:: python
+
+    colour_visuals.pattern_hue_swatches()
+
+..  image:: _static/Plotting_PatternHueSwatches.png
+
+.. code-block:: python
+
+    colour_visuals.pattern_hue_stripes()
+
+..  image:: _static/Plotting_PatternHueStripes.png
+
+.. code-block:: python
+
+    colour_visuals.pattern_colour_wheel()
+
+..  image:: _static/Plotting_PatternColourWheel.png
 
 User Guide
 ----------

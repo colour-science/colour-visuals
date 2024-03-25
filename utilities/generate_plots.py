@@ -6,14 +6,23 @@ Generate Plots
 
 from __future__ import annotations
 
+import matplotlib as mpl
+
+mpl.use("AGG")
+
 import os
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pygfx as gfx
 import pylinalg as la
 from colour.io import write_image
+from colour.plotting import colour_style, plot_image
+from colour.utilities import filter_warnings
 from wgpu.gui.offscreen import WgpuCanvas
 
+from colour_visuals.axes import VisualAxes
+from colour_visuals.daylight_locus import VisualDaylightLocus
 from colour_visuals.diagrams import (
     VisualChromaticityDiagram,
     VisualChromaticityDiagramCIE1931,
@@ -23,6 +32,12 @@ from colour_visuals.diagrams import (
     VisualSpectralLocus3D,
 )
 from colour_visuals.grid import VisualGrid
+from colour_visuals.patterns import (
+    pattern_colour_wheel,
+    pattern_hue_stripes,
+    pattern_hue_swatches,
+)
+from colour_visuals.planckian_locus import VisualPlanckianLocus
 from colour_visuals.pointer_gamut import (
     VisualPointerGamut2D,
     VisualPointerGamut3D,
@@ -55,6 +70,10 @@ def generate_documentation_plots(output_directory: str):
         Output directory.
     """
 
+    filter_warnings()
+
+    colour_style()
+
     np.random.seed(16)
 
     # *************************************************************************
@@ -66,34 +85,55 @@ def generate_documentation_plots(output_directory: str):
 
     scene = gfx.Scene()
     scene.add(
-        gfx.Background(
-            None, gfx.BackgroundMaterial(np.array([0.18, 0.18, 0.18]))
-        )
+        gfx.Background(None, gfx.BackgroundMaterial(np.array([0.18, 0.18, 0.18])))
     )
 
-    for visual_class, arguments in [
-        (VisualSpectralLocus2D, {}),
-        (VisualSpectralLocus3D, {}),
-        (VisualChromaticityDiagram, {}),
+    canvas.request_draw(lambda: renderer.render(scene, camera))
+
+    for visual_class, arguments, affix in [
+        (VisualAxes, {"model": "CIE Lab"}, None),
+        (VisualDaylightLocus, {}, None),
+        (VisualSpectralLocus2D, {}, None),
+        (VisualSpectralLocus3D, {}, None),
+        (VisualChromaticityDiagram, {}, None),
         (
             VisualChromaticityDiagramCIE1931,
             {"kwargs_visual_chromaticity_diagram": {"opacity": 0.25}},
+            None,
         ),
         (
             VisualChromaticityDiagramCIE1960UCS,
             {"kwargs_visual_chromaticity_diagram": {"opacity": 0.25}},
+            None,
         ),
         (
             VisualChromaticityDiagramCIE1976UCS,
             {"kwargs_visual_chromaticity_diagram": {"opacity": 0.25}},
+            None,
         ),
-        (VisualGrid, {}),
-        (VisualPointerGamut2D, {}),
-        (VisualPointerGamut3D, {}),
-        (VisualRGBColourspace2D, {}),
-        (VisualRGBColourspace3D, {"wireframe": True}),
-        (VisualRGBScatter3D, {"RGB": np.random.random([24, 32, 3])}),
-        (VisualRoschMacAdam, {}),
+        (VisualGrid, {}, None),
+        (VisualPlanckianLocus, {}, None),
+        (VisualPointerGamut2D, {}, None),
+        (VisualPointerGamut3D, {}, None),
+        (VisualRGBColourspace2D, {}, None),
+        (VisualRGBColourspace3D, {"wireframe": True}, None),
+        (VisualRGBScatter3D, {"RGB": np.random.random([24, 32, 3])}, None),
+        (VisualRoschMacAdam, {}, None),
+        (
+            VisualRGBScatter3D,
+            {"RGB": pattern_hue_swatches(), "model": "RGB"},
+            "HueSwatches",
+        ),
+        (
+            VisualRGBScatter3D,
+            {"RGB": pattern_hue_stripes(), "model": "RGB"},
+            "HueStripes",
+        ),
+        (
+            VisualRGBScatter3D,
+            {"RGB": pattern_colour_wheel(), "model": "RGB"},
+            "ColourWheel",
+        ),
     ]:
         visual = visual_class(**arguments)
 
@@ -101,22 +141,22 @@ def generate_documentation_plots(output_directory: str):
             visual,
             (VisualRGBColourspace3D, VisualRGBScatter3D, VisualRoschMacAdam),
         ):
-            visual.local.rotation = la.quat_from_euler(
-                (-np.pi / 4, 0), order="XY"
-            )
+            visual.local.rotation = la.quat_from_euler((-np.pi / 4, 0), order="XY")
 
         scene.add(visual)
         camera.show_object(
-            visual, up=np.array([0, 0, 1]), scale=1.25  # pyright: ignore
+            visual,
+            up=np.array([0, 0, 1]),
+            scale=1.25,  # pyright: ignore
         )
 
-        canvas.request_draw(lambda: renderer.render(scene, camera))
+        affix = (  # noqa: PLW2901
+            visual.__class__.__name__ if affix is None else affix
+        )
 
         write_image(
             np.array(renderer.target.draw()),
-            os.path.join(
-                output_directory, f"Plotting_{visual.__class__.__name__}.png"
-            ),
+            os.path.join(output_directory, f"Plotting_{affix}.png"),
             bit_depth="uint8",
         )
         scene.remove(visual)
@@ -130,9 +170,7 @@ def generate_documentation_plots(output_directory: str):
             kwargs_visual_chromaticity_diagram={"opacity": 0.25}
         ),
         VisualRGBColourspace2D("ACEScg"),
-        VisualRGBColourspace2D(
-            "Display P3", colours=np.array([0.5, 0.5, 0.5])
-        ),
+        VisualRGBColourspace2D("Display P3", colour=np.array([0.5, 0.5, 0.5])),
         VisualRGBColourspace3D("Display P3", opacity=0.5, wireframe=True),
         VisualRGBScatter3D(np.random.random([24, 32, 3]), "ACEScg"),
     ]
@@ -144,8 +182,6 @@ def generate_documentation_plots(output_directory: str):
 
     camera.local.position = np.array([-0.25, -0.5, 2])
     camera.show_pos(np.array([1 / 3, 1 / 3, 0.4]))
-
-    canvas.request_draw(lambda: renderer.render(scene, camera))
 
     write_image(
         np.array(renderer.target.draw()),
@@ -159,9 +195,7 @@ def generate_documentation_plots(output_directory: str):
         VisualSpectralLocus2D(),
         VisualSpectralLocus3D(),
         VisualRGBColourspace2D("ACEScg"),
-        VisualRGBColourspace2D(
-            "Display P3", colours=np.array([0.5, 0.5, 0.5])
-        ),
+        VisualRGBColourspace2D("Display P3", colour=np.array([0.5, 0.5, 0.5])),
         VisualPointerGamut3D(),
         VisualRGBScatter3D(np.random.random([24, 32, 3]), "ACEScg"),
     ]
@@ -173,8 +207,6 @@ def generate_documentation_plots(output_directory: str):
 
     camera.local.position = np.array([0.25, -0.5, 2.25])
     camera.show_pos(np.array([1 / 3, 1 / 3, 0.6]))
-
-    canvas.request_draw(lambda: renderer.render(scene, camera))
 
     write_image(
         np.array(renderer.target.draw()),
@@ -207,14 +239,32 @@ def generate_documentation_plots(output_directory: str):
     camera.local.position = np.array([1.5, -1.5, 5])
     camera.show_pos(np.array([0, 0, 0.5]))
 
-    canvas.request_draw(lambda: renderer.render(scene, camera))
-
     write_image(
         np.array(renderer.target.draw()),
         os.path.join(output_directory, "Visuals_003.png"),
         bit_depth="uint8",
     )
     scene.remove(group)
+
+    # *************************************************************************
+    # Patterns
+    # *************************************************************************
+    arguments = {
+        "tight_layout": True,
+        "transparent_background": True,
+        "filename": os.path.join(output_directory, "Plotting_PatternHueSwatches.png"),
+    }
+    plt.close(plot_image(pattern_hue_swatches(), **arguments)[0])
+
+    arguments["filename"] = os.path.join(
+        output_directory, "Plotting_PatternHueStripes.png"
+    )
+    plt.close(plot_image(pattern_hue_stripes(), **arguments)[0])
+
+    arguments["filename"] = os.path.join(
+        output_directory, "Plotting_PatternColourWheel.png"
+    )
+    plt.close(plot_image(pattern_colour_wheel(), **arguments)[0])
 
 
 if __name__ == "__main__":

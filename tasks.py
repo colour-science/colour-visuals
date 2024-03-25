@@ -254,9 +254,7 @@ def docs(
             message_box("Generating plots...")
             ctx.run("./generate_plots.py")
 
-    with ctx.prefix("export COLOUR_SCIENCE__DOCUMENTATION_BUILD=True"), ctx.cd(
-        "docs"
-    ):
+    with ctx.prefix("export COLOUR_SCIENCE__DOCUMENTATION_BUILD=True"), ctx.cd("docs"):
         if html:
             message_box('Building "HTML" documentation...')
             ctx.run("make html")
@@ -355,10 +353,7 @@ def virtualise(ctx: Context, tests: bool = True):
         with ctx.cd(unique_name):
             ctx.run("poetry install")
             ctx.run("source $(poetry env info -p)/bin/activate")
-            ctx.run(
-                'python -c "import imageio;'
-                'imageio.plugins.freeimage.download()"'
-            )
+            ctx.run('python -c "import imageio;imageio.plugins.freeimage.download()"')
             if tests:
                 ctx.run(
                     "poetry run pytest "
@@ -409,9 +404,7 @@ def tag(ctx: Context):
         remote_tags = result.stdout.strip().split("\n")  # pyright: ignore
         tags = set()
         for remote_tag in remote_tags:
-            tags.add(
-                remote_tag.split("refs/tags/")[1].replace("refs/tags/", "^{}")
-            )
+            tags.add(remote_tag.split("refs/tags/")[1].replace("refs/tags/", "^{}"))
         version_tags = sorted(tags)
         if f"v{version}" in version_tags:
             raise RuntimeError(

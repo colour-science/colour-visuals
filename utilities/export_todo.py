@@ -40,9 +40,7 @@ About
 https://opensource.org/licenses/BSD-3-Clause
 | `https://github.com/colour-science/colour-visuals \
 <https://github.com/colour-science/colour-visuals>`__
-"""[
-    1:
-]
+"""[1:]
 
 
 def extract_todo_items(root_directory: str) -> dict:
