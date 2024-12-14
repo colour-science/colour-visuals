@@ -5,6 +5,8 @@ Colour - Visuals
 WebGPU-based visuals for colour science applications.
 """
 
+# isort: skip_file
+
 from __future__ import annotations
 
 import contextlib
