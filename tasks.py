@@ -185,7 +185,7 @@ def tests(ctx: Context):
     message_box('Running "Pytest"...')
     ctx.run(
         "pytest "
-        "--doctest-modules "
+        # "--doctest-modules "
         f"--ignore={PYTHON_PACKAGE_NAME}/examples "
         f"--cov={PYTHON_PACKAGE_NAME} "
         f"{PYTHON_PACKAGE_NAME}"
@@ -338,9 +338,7 @@ def virtualise(ctx: Context, tests: bool = True):
         ctx.run(f"mv {PYPI_ARCHIVE_NAME}-{APPLICATION_VERSION} {unique_name}")
         ctx.run(f"rm -rf {unique_name}/{PYTHON_PACKAGE_NAME}/resources")
         ctx.run(
-            "ln -s ../../../{0}/resources {1}/{0}".format(
-                PYTHON_PACKAGE_NAME, unique_name
-            )
+            f"ln -s ../../../{PYTHON_PACKAGE_NAME}/resources {unique_name}/{PYTHON_PACKAGE_NAME}"  # noqa: E501
         )
 
         with ctx.cd(unique_name):

@@ -121,6 +121,26 @@ def as_contiguous_array(
     -------
     :class:`numpy.ndarray`
         Converted variable :math:`a`.
+
+    Examples
+    --------
+    >>> a = np.ones((2, 3), order="F")
+    >>> a.flags
+      C_CONTIGUOUS : False
+      F_CONTIGUOUS : True
+      OWNDATA : True
+      WRITEABLE : True
+      ALIGNED : True
+      WRITEBACKIFCOPY : False
+    <BLANKLINE>
+    >>> as_contiguous_array(a).flags
+      C_CONTIGUOUS : True
+      F_CONTIGUOUS : False
+      OWNDATA : True
+      WRITEABLE : True
+      ALIGNED : True
+      WRITEBACKIFCOPY : False
+    <BLANKLINE>
     """
 
     return np.ascontiguousarray(a.astype(dtype))

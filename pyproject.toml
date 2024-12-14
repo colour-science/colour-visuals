@@ -92,10 +92,8 @@ build-backend = "hatchling.build"
 packages = [ "colour_visuals" ]
 
 [tool.codespell]
+ignore-words-list = "socio-economic"
 skip = "BIBLIOGRAPHY.bib,CONTRIBUTORS.rst"
-
-[tool.flynt]
-line_length=999
 
 [tool.isort]
 ensure_newline_before_comments = true

@@ -710,8 +710,8 @@ kwargs_visual_spectral_locus`
 
         self._kwargs_visual_spectral_locus = value
 
-        for key, value in self._kwargs_visual_spectral_locus.items():
-            setattr(self._spectral_locus, key, value)
+        for key, item in self._kwargs_visual_spectral_locus.items():
+            setattr(self._spectral_locus, key, item)
 
 
 class MixinPropertyKwargsVisualChromaticityDiagram:
@@ -758,8 +758,8 @@ MixinPropertyKwargsVisualChromaticityDiagram.kwargs_visual_chromaticity_diagram`
 
         self._kwargs_visual_chromaticity_diagram = value
 
-        for key, value in self._kwargs_visual_chromaticity_diagram.items():
-            setattr(self._chromaticity_diagram, key, value)
+        for key, item in self._kwargs_visual_chromaticity_diagram.items():
+            setattr(self._chromaticity_diagram, key, item)
 
 
 class VisualChromaticityDiagramCIE1931(
