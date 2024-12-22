@@ -10,12 +10,18 @@ Define the *Daylight Locus* visuals:
 
 from __future__ import annotations
 
+import typing
+
 import numpy as np
 import pygfx as gfx
-from colour.hints import (
-    ArrayLike,
-    Literal,
-)
+
+if typing.TYPE_CHECKING:
+    from colour.hints import (
+        ArrayLike,
+        Literal,
+    )
+
+
 from colour.plotting import (
     lines_daylight_locus,
 )
@@ -117,7 +123,7 @@ class VisualDaylightLocus(
         colour: ArrayLike | None = None,
         opacity: float = 1,
         thickness: float = 1,
-    ):
+    ) -> None:
         super().__init__()
 
         self._daylight_locus = None
@@ -156,12 +162,12 @@ class VisualDaylightLocus(
         return self._mireds
 
     @mireds.setter
-    def mireds(self, value: bool):
+    def mireds(self, value: bool) -> None:
         """Setter for the **self.mireds** property."""
 
         self._mireds = value
 
-    def update(self):
+    def update(self) -> None:
         """Update the visual."""
 
         if self._is_update_blocked:

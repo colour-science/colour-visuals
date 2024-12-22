@@ -10,6 +10,8 @@ Define the *Rösch-MacAdam* visuals:
 
 from __future__ import annotations
 
+import typing
+
 import numpy as np
 import pygfx as gfx
 from colour.colorimetry import (
@@ -18,7 +20,10 @@ from colour.colorimetry import (
     SpectralShape,
 )
 from colour.constants import EPSILON
-from colour.hints import ArrayLike, LiteralColourspaceModel, Sequence
+
+if typing.TYPE_CHECKING:
+    from colour.hints import Any, ArrayLike, LiteralColourspaceModel, Sequence
+
 from colour.models import XYZ_to_RGB
 from colour.plotting import (
     CONSTANTS_COLOUR_STYLE,
@@ -150,8 +155,8 @@ class VisualRoschMacAdam(
         colour: ArrayLike | None = None,
         opacity: float = 1,
         thickness: float = 1,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         super().__init__()
 
         self._solid = None
@@ -167,7 +172,7 @@ class VisualRoschMacAdam(
 
         self.update()
 
-    def update(self):
+    def update(self) -> None:
         """Update the visual."""
 
         if self._is_update_blocked:

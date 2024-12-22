@@ -15,11 +15,13 @@ Define the *Chromaticity Diagram* visuals:
 
 from __future__ import annotations
 
+import typing
+
 import numpy as np
 import pygfx as gfx
 from colour.algebra import euclidean_distance, normalise_maximum
-from colour.colorimetry import MultiSpectralDistributions
 from colour.hints import (
+    Any,
     ArrayLike,
     Literal,
     LiteralColourspaceModel,
@@ -64,6 +66,9 @@ from colour_visuals.visual import (
     Visual,
     visual_property,
 )
+
+if typing.TYPE_CHECKING:
+    from colour.colorimetry import MultiSpectralDistributions
 
 __author__ = "Colour Developers"
 __copyright__ = "Copyright 2023 Colour Developers"
@@ -168,7 +173,7 @@ class VisualSpectralLocus2D(
         colour: ArrayLike | None = None,
         opacity: float = 1,
         thickness: float = 1,
-    ):
+    ) -> None:
         super().__init__()
 
         self._spectral_locus = None
@@ -209,7 +214,7 @@ class VisualSpectralLocus2D(
         return self._labels
 
     @labels.setter
-    def labels(self, value: Sequence | None):
+    def labels(self, value: Sequence | None) -> None:
         """Setter for the **self.labels** property."""
 
         self._labels = cast(
@@ -217,7 +222,7 @@ class VisualSpectralLocus2D(
             optional(value, LABELS_CHROMATICITY_DIAGRAM_DEFAULT[self._method]),
         )
 
-    def update(self):
+    def update(self) -> None:
         """Update the visual."""
 
         if self._is_update_blocked:
@@ -437,8 +442,8 @@ class VisualSpectralLocus3D(
         colour: ArrayLike | None = None,
         opacity: float = 1,
         thickness: float = 1,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         super().__init__()
 
         self._spectral_locus = None
@@ -453,7 +458,7 @@ class VisualSpectralLocus3D(
 
         self.update()
 
-    def update(self):
+    def update(self) -> None:
         """Update the visual."""
 
         if self._is_update_blocked:
@@ -583,7 +588,7 @@ class VisualChromaticityDiagram(
         material: Type[gfx.MeshAbstractMaterial] = gfx.MeshBasicMaterial,
         wireframe: bool = False,
         samples: int = 64,
-    ):
+    ) -> None:
         super().__init__()
 
         self._chromaticity_diagram = None
@@ -599,7 +604,7 @@ class VisualChromaticityDiagram(
 
         self.update()
 
-    def update(self):
+    def update(self) -> None:
         """Update the visual."""
 
         if self._is_update_blocked:
@@ -677,7 +682,7 @@ class MixinPropertyKwargsVisualSpectralLocus:
 kwargs_visual_spectral_locus`
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._spectral_locus = None
         self._kwargs_visual_spectral_locus = {}
 
@@ -703,7 +708,7 @@ kwargs_visual_spectral_locus`
         return self._kwargs_visual_spectral_locus
 
     @kwargs_visual_spectral_locus.setter
-    def kwargs_visual_spectral_locus(self, value: dict):
+    def kwargs_visual_spectral_locus(self, value: dict) -> None:
         """
         Setter for the **self.kwargs_visual_spectral_locus** property.
         """
@@ -725,7 +730,7 @@ class MixinPropertyKwargsVisualChromaticityDiagram:
 MixinPropertyKwargsVisualChromaticityDiagram.kwargs_visual_chromaticity_diagram`
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._chromaticity_diagram = None
         self._kwargs_visual_chromaticity_diagram = {}
 
@@ -751,7 +756,7 @@ MixinPropertyKwargsVisualChromaticityDiagram.kwargs_visual_chromaticity_diagram`
         return self._kwargs_visual_chromaticity_diagram
 
     @kwargs_visual_chromaticity_diagram.setter
-    def kwargs_visual_chromaticity_diagram(self, value: dict):
+    def kwargs_visual_chromaticity_diagram(self, value: dict) -> None:
         """
         Setter for the **self.kwargs_visual_chromaticity_diagram** property.
         """
@@ -823,7 +828,7 @@ kwargs_visual_chromaticity_diagram`
         self,
         kwargs_visual_spectral_locus: dict | None = None,
         kwargs_visual_chromaticity_diagram: dict | None = None,
-    ):
+    ) -> None:
         super().__init__()
 
         if kwargs_visual_spectral_locus is None:
@@ -841,7 +846,7 @@ kwargs_visual_chromaticity_diagram`
         self.kwargs_visual_spectral_locus = kwargs_visual_spectral_locus
         self.kwargs_visual_chromaticity_diagram = kwargs_visual_chromaticity_diagram
 
-    def update(self):
+    def update(self) -> None:
         """Update the visual."""
 
 
@@ -906,7 +911,7 @@ kwargs_visual_chromaticity_diagram`
         self,
         kwargs_visual_spectral_locus: dict | None = None,
         kwargs_visual_chromaticity_diagram: dict | None = None,
-    ):
+    ) -> None:
         super().__init__()
 
         if kwargs_visual_spectral_locus is None:
@@ -930,7 +935,7 @@ kwargs_visual_chromaticity_diagram`
         self.kwargs_visual_spectral_locus = kwargs_visual_spectral_locus
         self.kwargs_visual_chromaticity_diagram = kwargs_visual_chromaticity_diagram
 
-    def update(self):
+    def update(self) -> None:
         """Update the visual."""
 
 
@@ -995,7 +1000,7 @@ kwargs_visual_chromaticity_diagram`
         self,
         kwargs_visual_spectral_locus: dict | None = None,
         kwargs_visual_chromaticity_diagram: dict | None = None,
-    ):
+    ) -> None:
         super().__init__()
 
         if kwargs_visual_spectral_locus is None:
@@ -1019,7 +1024,7 @@ kwargs_visual_chromaticity_diagram`
         self.kwargs_visual_spectral_locus = kwargs_visual_spectral_locus
         self.kwargs_visual_chromaticity_diagram = kwargs_visual_chromaticity_diagram
 
-    def update(self):
+    def update(self) -> None:
         """Update the visual."""
 
 

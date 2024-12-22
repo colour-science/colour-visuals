@@ -10,18 +10,24 @@ Define the *RGB* scatter visuals:
 
 from __future__ import annotations
 
+import typing
+
 import numpy as np
 import pygfx as gfx
 from colour import RGB_to_XYZ
 from colour.constants import EPSILON
-from colour.hints import (
-    ArrayLike,
-    LiteralColourspaceModel,
-    LiteralRGBColourspace,
-    NDArray,
-    Sequence,
-)
-from colour.models import RGB_Colourspace
+
+if typing.TYPE_CHECKING:
+    from colour.hints import (
+        Any,
+        ArrayLike,
+        LiteralColourspaceModel,
+        LiteralRGBColourspace,
+        NDArray,
+        Sequence,
+    )
+    from colour.models import RGB_Colourspace
+
 from colour.plotting import (
     colourspace_model_axis_reorder,
 )
@@ -143,8 +149,8 @@ class VisualRGBScatter3D(
         colour: ArrayLike | None = None,
         opacity: float = 1,
         size: float = 2,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         super().__init__()
 
         self._RGB = np.array([])
@@ -180,13 +186,13 @@ class VisualRGBScatter3D(
         return self._RGB
 
     @RGB.setter
-    def RGB(self, value: ArrayLike):
+    def RGB(self, value: ArrayLike) -> None:
         """Setter for the **self.RGB** property."""
 
         self._RGB = np.reshape(as_float_array(value), (-1, 3))
         self._RGB[self._RGB == 0] = EPSILON
 
-    def update(self):
+    def update(self) -> None:
         """Update the visual."""
 
         if self._is_update_blocked:

@@ -10,10 +10,11 @@ Define the grid visuals:
 
 from __future__ import annotations
 
+import typing
+
 import numpy as np
 import pygfx as gfx
 from colour.geometry import primitive_grid
-from colour.hints import ArrayLike
 from colour.plotting import CONSTANTS_COLOUR_STYLE
 
 from colour_visuals.common import (
@@ -23,6 +24,9 @@ from colour_visuals.common import (
     conform_primitive_dtype,
 )
 from colour_visuals.visual import MixinPropertySize, Visual, visual_property
+
+if typing.TYPE_CHECKING:
+    from colour.hints import ArrayLike
 
 __author__ = "Colour Developers"
 __copyright__ = "Copyright 2023 Colour Developers"
@@ -102,13 +106,13 @@ class VisualGrid(MixinPropertySize, Visual):
         self,
         size: float = 20,
         centred: bool = True,
-        major_grid_colours: ArrayLike = np.array([0.5, 0.5, 0.5]),
-        minor_grid_colours: ArrayLike = np.array([0.25, 0.25, 0.25]),
-        major_tick_labels=True,
-        major_tick_label_colours: ArrayLike = np.array([0.75, 0.75, 0.75]),
-        minor_tick_labels=True,
-        minor_tick_label_colours: ArrayLike = np.array([0.5, 0.5, 0.5]),
-    ):
+        major_grid_colours: ArrayLike = (0.5, 0.5, 0.5),
+        minor_grid_colours: ArrayLike = (0.25, 0.25, 0.25),
+        major_tick_labels: bool = True,
+        major_tick_label_colours: ArrayLike = (0.75, 0.75, 0.75),
+        minor_tick_labels: bool = True,
+        minor_tick_label_colours: ArrayLike = (0.5, 0.5, 0.5),
+    ) -> None:
         super().__init__()
 
         self._centred = True
@@ -156,7 +160,7 @@ class VisualGrid(MixinPropertySize, Visual):
         return self._centred
 
     @centred.setter
-    def centred(self, value: bool):
+    def centred(self, value: bool) -> None:
         """Setter for the **self.centred** property."""
 
         self._centred = value
@@ -180,7 +184,7 @@ class VisualGrid(MixinPropertySize, Visual):
         return self._major_grid_colours
 
     @major_grid_colours.setter
-    def major_grid_colours(self, value: ArrayLike):
+    def major_grid_colours(self, value: ArrayLike) -> None:
         """Setter for the **self.major_grid_colours** property."""
 
         self._major_grid_colours = value
@@ -204,7 +208,7 @@ class VisualGrid(MixinPropertySize, Visual):
         return self._minor_grid_colours
 
     @minor_grid_colours.setter
-    def minor_grid_colours(self, value: ArrayLike):
+    def minor_grid_colours(self, value: ArrayLike) -> None:
         """Setter for the **self.minor_grid_colours** property."""
 
         self._minor_grid_colours = value
@@ -228,7 +232,7 @@ class VisualGrid(MixinPropertySize, Visual):
         return self._major_tick_labels
 
     @major_tick_labels.setter
-    def major_tick_labels(self, value: bool):
+    def major_tick_labels(self, value: bool) -> None:
         """Setter for the **self.major_tick_labels** property."""
 
         self._major_tick_labels = value
@@ -252,7 +256,7 @@ class VisualGrid(MixinPropertySize, Visual):
         return self._major_tick_label_colours
 
     @major_tick_label_colours.setter
-    def major_tick_label_colours(self, value: ArrayLike):
+    def major_tick_label_colours(self, value: ArrayLike) -> None:
         """Setter for the **self.major_tick_label_colours** property."""
 
         self._major_tick_label_colours = value
@@ -276,7 +280,7 @@ class VisualGrid(MixinPropertySize, Visual):
         return self._minor_tick_labels
 
     @minor_tick_labels.setter
-    def minor_tick_labels(self, value: bool):
+    def minor_tick_labels(self, value: bool) -> None:
         """Setter for the **self.minor_tick_labels** property."""
 
         self._minor_tick_labels = value
@@ -300,12 +304,12 @@ class VisualGrid(MixinPropertySize, Visual):
         return self._minor_tick_label_colours
 
     @minor_tick_label_colours.setter
-    def minor_tick_label_colours(self, value: ArrayLike):
+    def minor_tick_label_colours(self, value: ArrayLike) -> None:
         """Setter for the **self.minor_tick_label_colours** property."""
 
         self._minor_tick_label_colours = value
 
-    def update(self):
+    def update(self) -> None:
         """Update the visual."""
 
         if self._is_update_blocked:
@@ -413,7 +417,7 @@ class VisualGrid(MixinPropertySize, Visual):
                         screen_space=True,
                         anchor="Top-Right" if i == 0 else "Top-Center",
                     ),
-                    gfx.TextMaterial(color=self._major_tick_label_colours),
+                    gfx.TextMaterial(color=self._major_tick_label_colours),  # pyright: ignore
                 )
                 x_text.local.position = np.array([i, 0, 1e-3])
                 self.add(x_text)
@@ -429,7 +433,7 @@ class VisualGrid(MixinPropertySize, Visual):
                         screen_space=True,
                         anchor="Center-Right",
                     ),
-                    gfx.TextMaterial(color=self._major_tick_label_colours),
+                    gfx.TextMaterial(color=self._major_tick_label_colours),  # pyright: ignore
                 )
                 y_text.local.position = np.array([0, i, 1e-3])
                 self.add(y_text)
@@ -457,7 +461,7 @@ class VisualGrid(MixinPropertySize, Visual):
                         screen_space=True,
                         anchor="Top-Right" if i == 0 else "Top-Center",
                     ),
-                    gfx.TextMaterial(color=self._minor_tick_label_colours),
+                    gfx.TextMaterial(color=self._minor_tick_label_colours),  # pyright: ignore
                 )
                 x_text.local.position = np.array([i, 0, 1e-3])
                 self.add(x_text)
@@ -474,7 +478,7 @@ class VisualGrid(MixinPropertySize, Visual):
                         screen_space=True,
                         anchor="Center-Right",
                     ),
-                    gfx.TextMaterial(color=self._minor_tick_label_colours),
+                    gfx.TextMaterial(color=self._minor_tick_label_colours),  # pyright: ignore
                 )
                 y_text.local.position = np.array([0, i, 1e-3])
                 self.add(y_text)

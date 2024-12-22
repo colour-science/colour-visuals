@@ -107,7 +107,7 @@ __application_name__ = "Colour - Visuals"
 __major_version__ = "0"
 __minor_version__ = "1"
 __change_version__ = "0"
-__version__ = ".".join((__major_version__, __minor_version__, __change_version__))
+__version__ = f"{__major_version__}.{__minor_version__}.{__change_version__}"
 
 try:
     _version: str = (
@@ -119,7 +119,7 @@ try:
         .strip()
         .decode("utf-8")
     )
-except Exception:
+except Exception:  # noqa: BLE001
     _version: str = __version__
 
 colour.utilities.ANCILLARY_COLOUR_SCIENCE_PACKAGES["colour-visuals"] = _version  # pyright: ignore

@@ -12,8 +12,13 @@ Define various pattern generators:
 
 from __future__ import annotations
 
+import typing
+
 import numpy as np
-from colour.hints import Literal, NDArray
+
+if typing.TYPE_CHECKING:
+    from colour.hints import Literal, NDArray, NDArrayFloat
+
 from colour.models import HSV_to_RGB
 from colour.utilities import full, orient, tstack
 
@@ -83,16 +88,12 @@ def pattern_hue_swatches(count: int = 12, samples: int = 256) -> NDArray:
 
     xv, yv = np.meshgrid(np.linspace(0, 1, samples), np.linspace(0, 1, samples))
 
-    slices = []
-    for i in range(count + 1):
-        slices.append(tstack([full(xv.shape, H[i]), xv, yv]))
+    slices = [tstack([full(xv.shape, H[i]), xv, yv]) for i in range(count + 1)]
 
-    RGB = HSV_to_RGB(np.hstack(slices))
-
-    return RGB
+    return HSV_to_RGB(np.hstack(slices))
 
 
-def pattern_hue_stripes(count: int = 6, samples=256):
+def pattern_hue_stripes(count: int = 6, samples: int = 256) -> NDArrayFloat:
     """
     Generate a given count of hue stripes.
 

@@ -10,11 +10,18 @@ Define the *Planckian Locus* visuals:
 
 from __future__ import annotations
 
+import typing
+
 import numpy as np
 import pygfx as gfx
+
+if typing.TYPE_CHECKING:
+    from colour.hints import (
+        ArrayLike,
+        Literal,
+    )
+
 from colour.hints import (
-    ArrayLike,
-    Literal,
     Sequence,
     cast,
 )
@@ -131,7 +138,7 @@ class VisualPlanckianLocus(
         colour: ArrayLike | None = None,
         opacity: float = 1,
         thickness: float = 1,
-    ):
+    ) -> None:
         super().__init__()
 
         self._planckian_locus = None
@@ -172,7 +179,7 @@ class VisualPlanckianLocus(
         return self._labels
 
     @labels.setter
-    def labels(self, value: Sequence | None):
+    def labels(self, value: Sequence | None) -> None:
         """Setter for the **self.labels** property."""
 
         self._labels = cast(
@@ -204,12 +211,12 @@ class VisualPlanckianLocus(
         return self._mireds
 
     @mireds.setter
-    def mireds(self, value: bool):
+    def mireds(self, value: bool) -> None:
         """Setter for the **self.mireds** property."""
 
         self._mireds = value
 
-    def update(self):
+    def update(self) -> None:
         """Update the visual."""
 
         if self._is_update_blocked:

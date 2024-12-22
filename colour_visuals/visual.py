@@ -18,6 +18,7 @@ from colour.colorimetry import (
     SpectralDistribution,
 )
 from colour.hints import (
+    Any,
     ArrayLike,
     Generator,
     Literal,
@@ -73,7 +74,7 @@ class visual_property(property):
     :class:`colour_visuals.Visual.update` method.
     """
 
-    def __set__(self, obj, value):
+    def __set__(self, obj: Any, value: Any) -> None:
         """Reimplement the :class:`property.__set__` method."""
         super().__set__(obj, value)
 
@@ -83,7 +84,7 @@ class visual_property(property):
 class Visual(gfx.Group, metaclass=ABCMeta):
     """Define the base class for the visuals."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._is_update_blocked = False
 
         super().__init__()
@@ -98,7 +99,7 @@ class Visual(gfx.Group, metaclass=ABCMeta):
         self._is_update_blocked = False
 
     @abstractmethod
-    def update(self):
+    def update(self) -> None:
         """
         Update the visual.
 
@@ -118,7 +119,7 @@ class MixinPropertyCMFS:
     -   :attr:`~colour_visuals.visual.MixinPropertyCMFS.cmfs`
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._cmfs = MSDS_CMFS["CIE 1931 2 Degree Standard Observer"]
 
         super().__init__()
@@ -153,7 +154,7 @@ class MixinPropertyCMFS:
             | str
             | Sequence[MultiSpectralDistributions | str]
         ),
-    ):
+    ) -> None:
         """Setter for the **self.cmfs** property."""
 
         self._cmfs = cast(
@@ -171,7 +172,7 @@ class MixinPropertyColour:
     -   :attr:`~colour_visuals.visual.MixinPropertyColour.colour`
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._colour = None
 
         super().__init__()
@@ -195,7 +196,7 @@ class MixinPropertyColour:
         return self._colour
 
     @colour.setter
-    def colour(self, value: ArrayLike | None):
+    def colour(self, value: ArrayLike | None) -> None:
         """Setter for the **self.colour** property."""
 
         self._colour = value
@@ -210,7 +211,7 @@ class MixinPropertyColourspace:
     -   :attr:`~colour_visuals.visual.MixinPropertyColour.colour`
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._colourspace = RGB_COLOURSPACE_sRGB
 
         super().__init__()
@@ -249,7 +250,7 @@ class MixinPropertyColourspace:
             | str
             | Sequence[RGB_Colourspace | LiteralRGBColourspace | str]
         ),
-    ):
+    ) -> None:
         """Setter for the **self.colourspace** property."""
 
         self._colourspace = cast(
@@ -267,7 +268,7 @@ class MixinPropertyIlluminant:
     -   :attr:`~colour_visuals.visual.MixinPropertyIlluminant.illuminant`
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._illuminant = SDS_ILLUMINANTS["E"]
 
         super().__init__()
@@ -299,7 +300,7 @@ class MixinPropertyIlluminant:
         value: (
             SpectralDistribution | str | Sequence[SpectralDistribution | str]
         ) = "E",
-    ):
+    ) -> None:
         """Setter for the **self.illuminant** property."""
 
         self._illuminant = cast(
@@ -317,7 +318,7 @@ class MixinPropertyKwargs:
     -   :attr:`~colour_visuals.visual.MixinPropertyKwargs.kwargs`
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._kwargs = {}
 
         super().__init__()
@@ -341,7 +342,7 @@ class MixinPropertyKwargs:
         return self._kwargs
 
     @kwargs.setter
-    def kwargs(self, value: dict):
+    def kwargs(self, value: dict) -> None:
         """Setter for the **self.kwargs** property."""
 
         self._kwargs = value
@@ -356,7 +357,7 @@ class MixinPropertyTypeMaterial:
     -   :attr:`~colour_visuals.visual.MixinPropertyTypeMaterial.type_material`
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._type_material = gfx.MeshBasicMaterial
 
         super().__init__()
@@ -382,7 +383,7 @@ class MixinPropertyTypeMaterial:
         return self._type_material
 
     @type_material.setter
-    def type_material(self, value: Type[gfx.MeshAbstractMaterial]):
+    def type_material(self, value: Type[gfx.MeshAbstractMaterial]) -> None:
         """Setter for the **self.material** property."""
 
         self._type_material = value
@@ -397,7 +398,7 @@ class MixinPropertyMethod:
     -   :attr:`~colour_visuals.visual.MixinPropertyMethod.method`
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._method = "CIE 1931"
 
         super().__init__()
@@ -423,7 +424,9 @@ class MixinPropertyMethod:
         return self._method
 
     @method.setter
-    def method(self, value: Literal["CIE 1931", "CIE 1960 UCS", "CIE 1976 UCS"] | str):
+    def method(
+        self, value: Literal["CIE 1931", "CIE 1960 UCS", "CIE 1976 UCS"] | str
+    ) -> None:
         """Setter for the **self.method** property."""
 
         self._method = validate_method(value, tuple(METHODS_CHROMATICITY_DIAGRAM))
@@ -438,7 +441,7 @@ class MixinPropertyModel:
     -   :attr:`~colour_visuals.visual.MixinPropertyModel.model`
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._model = "CIE xyY"
 
         super().__init__()
@@ -462,7 +465,7 @@ class MixinPropertyModel:
         return self._model
 
     @model.setter
-    def model(self, value: LiteralColourspaceModel | str):
+    def model(self, value: LiteralColourspaceModel | str) -> None:
         """Setter for the **self.model** property."""
 
         self._model = validate_method(value, tuple(COLOURSPACE_MODELS))
@@ -477,7 +480,7 @@ class MixinPropertyOpacity:
     -   :attr:`~colour_visuals.visual.MixinPropertyOpacity.opacity`
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._opacity = 1
 
         super().__init__()
@@ -501,7 +504,7 @@ class MixinPropertyOpacity:
         return self._opacity
 
     @opacity.setter
-    def opacity(self, value: float):
+    def opacity(self, value: float) -> None:
         """Setter for the **self.opacity** property."""
 
         self._opacity = value
@@ -516,7 +519,7 @@ class MixinPropertySamples:
     -   :attr:`~colour_visuals.visual.MixinPropertySamples.samples`
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._samples = 1
 
         super().__init__()
@@ -540,7 +543,7 @@ class MixinPropertySamples:
         return self._samples
 
     @samples.setter
-    def samples(self, value: int):
+    def samples(self, value: int) -> None:
         """Setter for the **self.samples** property."""
 
         self._samples = value
@@ -555,7 +558,7 @@ class MixinPropertySegments:
     -   :attr:`~colour_visuals.visual.MixinPropertySegments.segments`
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._segments = 16
 
         super().__init__()
@@ -579,7 +582,7 @@ class MixinPropertySegments:
         return self._segments
 
     @segments.setter
-    def segments(self, value: int):
+    def segments(self, value: int) -> None:
         """Setter for the **self.segments** property."""
 
         self._segments = value
@@ -594,7 +597,7 @@ class MixinPropertySize:
     -   :attr:`~colour_visuals.visual.MixinPropertySize.size`
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._size = 1
 
         super().__init__()
@@ -618,7 +621,7 @@ class MixinPropertySize:
         return self._size
 
     @size.setter
-    def size(self, value: float):
+    def size(self, value: float) -> None:
         """Setter for the **self.size** property."""
 
         self._size = value
@@ -633,7 +636,7 @@ class MixinPropertyThickness:
     -   :attr:`~colour_visuals.visual.MixinPropertyThickness.thickness`
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._thickness = 1
 
         super().__init__()
@@ -657,7 +660,7 @@ class MixinPropertyThickness:
         return self._thickness
 
     @thickness.setter
-    def thickness(self, value: float):
+    def thickness(self, value: float) -> None:
         """Setter for the **self.thickness** property."""
 
         self._thickness = value
@@ -672,7 +675,7 @@ class MixinPropertyWireframe:
     -   :attr:`~colour_visuals.visual.MixinPropertyWireframe.wireframe`
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._wireframe = False
 
         super().__init__()
@@ -696,7 +699,7 @@ class MixinPropertyWireframe:
         return self._wireframe
 
     @wireframe.setter
-    def wireframe(self, value: bool):
+    def wireframe(self, value: bool) -> None:
         """Setter for the **self.wireframe** property."""
 
         self._wireframe = value

@@ -10,9 +10,14 @@ Define the *Pointer's Gamut* visuals:
 
 from __future__ import annotations
 
+import typing
+
 import numpy as np
 import pygfx as gfx
-from colour.hints import ArrayLike, Literal, LiteralColourspaceModel
+
+if typing.TYPE_CHECKING:
+    from colour.hints import Any, ArrayLike, Literal, LiteralColourspaceModel
+
 from colour.models import LCHab_to_Lab  # pyright: ignore
 from colour.models import (
     CCS_ILLUMINANT_POINTER_GAMUT,
@@ -119,7 +124,7 @@ class VisualPointerGamut2D(
         colour: ArrayLike | None = None,
         opacity: float = 1,
         thickness: float = 1,
-    ):
+    ) -> None:
         super().__init__()
 
         self._pointer_gamut_boundary = None
@@ -133,7 +138,7 @@ class VisualPointerGamut2D(
 
         self.update()
 
-    def update(self):
+    def update(self) -> None:
         """Update the visual."""
 
         if self._is_update_blocked:
@@ -276,8 +281,8 @@ class VisualPointerGamut3D(
         colour: ArrayLike | None = None,
         opacity: float = 0.5,
         thickness: float = 1,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         super().__init__()
 
         self._pointer_gamut_boundary = None
@@ -292,7 +297,7 @@ class VisualPointerGamut3D(
 
         self.update()
 
-    def update(self):
+    def update(self) -> None:
         """Update the visual."""
 
         if self._is_update_blocked:

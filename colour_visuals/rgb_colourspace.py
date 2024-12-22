@@ -11,18 +11,24 @@ Define the *RGB colourspace* visuals:
 
 from __future__ import annotations
 
+import typing
+
 import numpy as np
 import pygfx as gfx
 from colour.constants import EPSILON
 from colour.geometry import primitive_cube
-from colour.hints import (
-    ArrayLike,
-    Literal,
-    LiteralColourspaceModel,
-    LiteralRGBColourspace,
-    Sequence,
-    Type,
-)
+
+if typing.TYPE_CHECKING:
+    from colour.hints import (
+        Any,
+        ArrayLike,
+        Literal,
+        LiteralColourspaceModel,
+        LiteralRGBColourspace,
+        Sequence,
+        Type,
+    )
+
 from colour.models import RGB_Colourspace, RGB_to_XYZ, XYZ_to_RGB, xy_to_XYZ
 from colour.plotting import (
     CONSTANTS_COLOUR_STYLE,
@@ -143,7 +149,7 @@ class VisualRGBColourspace2D(
         colour: ArrayLike | None = None,
         opacity: float = 1,
         thickness: float = 1,
-    ):
+    ) -> None:
         super().__init__()
 
         self._gamut = None
@@ -158,7 +164,7 @@ class VisualRGBColourspace2D(
 
         self.update()
 
-    def update(self):
+    def update(self) -> None:
         """Update the visual."""
 
         if self._is_update_blocked:
@@ -335,8 +341,8 @@ class VisualRGBColourspace3D(
         wireframe: bool = False,
         segments: int = 16,
         size: float = 1,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         super().__init__()
 
         self._gamut = None
@@ -355,7 +361,7 @@ class VisualRGBColourspace3D(
 
         self.update()
 
-    def update(self):
+    def update(self) -> None:
         """Update the visual."""
 
         if self._is_update_blocked:

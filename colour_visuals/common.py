@@ -8,17 +8,22 @@ Define the common utilities objects that don't fall in any specific category.
 from __future__ import annotations
 
 import re
+import typing
 
 import numpy as np
 from colour.graph import convert
-from colour.hints import (
-    ArrayLike,
-    DType,
-    LiteralColourspaceModel,
-    NDArray,
-    Tuple,
-    Type,
-)
+
+if typing.TYPE_CHECKING:
+    from colour.hints import (
+        Any,
+        ArrayLike,
+        DType,
+        LiteralColourspaceModel,
+        NDArray,
+        Tuple,
+        Type,
+    )
+
 from colour.models import COLOURSPACE_MODELS_DOMAIN_RANGE_SCALE_1_TO_REFERENCE
 from colour.utilities import full, optional
 
@@ -56,7 +61,7 @@ def XYZ_to_colourspace_model(
     illuminant: ArrayLike,
     model: LiteralColourspaceModel | str = "CIE xyY",
     normalise_model: bool | None = None,
-    **kwargs,
+    **kwargs: Any,
 ) -> NDArray:
     """
     Convert from *CIE XYZ* tristimulus values to given colourspace model while

@@ -60,7 +60,7 @@ __all__ = [
 ]
 
 
-def generate_documentation_plots(output_directory: str):
+def generate_documentation_plots(output_directory: str) -> None:
     """
     Generate documentation plots.
 

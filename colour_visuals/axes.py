@@ -10,9 +10,14 @@ Define the axes visuals:
 
 from __future__ import annotations
 
+import typing
+
 import numpy as np
 import pygfx as gfx
-from colour.hints import LiteralColourspaceModel
+
+if typing.TYPE_CHECKING:
+    from colour.hints import LiteralColourspaceModel
+
 from colour.models import COLOURSPACE_MODELS_AXIS_LABELS
 from colour.plotting import (
     CONSTANTS_COLOUR_STYLE,
@@ -91,7 +96,7 @@ class VisualAxes(MixinPropertyModel, MixinPropertySize, Visual):
         self,
         model: LiteralColourspaceModel | str = "CIE xyY",
         size: int = 1,
-    ):
+    ) -> None:
         super().__init__()
 
         self._axes_helper = None
@@ -105,7 +110,7 @@ class VisualAxes(MixinPropertyModel, MixinPropertySize, Visual):
 
         self.update()
 
-    def update(self):
+    def update(self) -> None:
         """Update the visual."""
 
         if self._is_update_blocked:
@@ -156,7 +161,7 @@ class VisualAxes(MixinPropertyModel, MixinPropertySize, Visual):
                 screen_space=True,
                 anchor="Middle-Center",
             ),
-            gfx.TextMaterial(color=np.array([1, 0, 0])),
+            gfx.TextMaterial(color=np.array([1, 0, 0])),  # pyright: ignore
         )
         self._x_text.local.position = np.array([1 * self._size * 1.05, 0, 0])
         self.add(self._x_text)
@@ -169,7 +174,7 @@ class VisualAxes(MixinPropertyModel, MixinPropertySize, Visual):
                 screen_space=True,
                 anchor="Middle-Center",
             ),
-            gfx.TextMaterial(color=np.array([0, 1, 0])),
+            gfx.TextMaterial(color=np.array([0, 1, 0])),  # pyright: ignore
         )
         self._y_text.local.position = np.array([0, 1 * self._size * 1.05, 0])
         self.add(self._y_text)
@@ -182,7 +187,7 @@ class VisualAxes(MixinPropertyModel, MixinPropertySize, Visual):
                 screen_space=True,
                 anchor="Middle-Center",
             ),
-            gfx.TextMaterial(color=np.array([0, 0, 1])),
+            gfx.TextMaterial(color=np.array([0, 0, 1])),  # pyright: ignore
         )
         self._z_text.local.position = np.array([0, 0, 1 * self._size * 1.05])
         self.add(self._z_text)
