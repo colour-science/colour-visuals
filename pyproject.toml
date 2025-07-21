@@ -44,11 +44,11 @@ dependencies = [
     "colour-science>=0.4.5",
     "glfw>=2,<3",
     "imageio>=2,<3",
-    "networkx>=3,<4",
-    "numpy>=1.24,<3",
+    "networkx>=3.3,<4",
+    "numpy>=2.0.0,<3",
     "pygfx>=0.1,<0.3",
-    "scipy>=1.10,<2",
-    "matplotlib>=3.7",
+    "scipy>=1.12.0,<2",
+    "matplotlib>=3.9",
 ]
 
 [project.optional-dependencies]
