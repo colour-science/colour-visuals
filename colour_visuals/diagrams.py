@@ -218,7 +218,7 @@ class VisualSpectralLocus2D(
         """Setter for the **self.labels** property."""
 
         self._labels = cast(
-            Sequence,
+            "Sequence",
             optional(value, LABELS_CHROMATICITY_DIAGRAM_DEFAULT[self._method]),
         )
 

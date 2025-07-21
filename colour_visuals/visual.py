@@ -158,7 +158,7 @@ class MixinPropertyCMFS:
         """Setter for the **self.cmfs** property."""
 
         self._cmfs = cast(
-            MultiSpectralDistributions,
+            "MultiSpectralDistributions",
             first_item(filter_cmfs(value).values()),
         )
 
@@ -254,7 +254,7 @@ class MixinPropertyColourspace:
         """Setter for the **self.colourspace** property."""
 
         self._colourspace = cast(
-            RGB_Colourspace,
+            "RGB_Colourspace",
             first_item(filter_RGB_colourspaces(value).values()),
         )
 
@@ -304,7 +304,7 @@ class MixinPropertyIlluminant:
         """Setter for the **self.illuminant** property."""
 
         self._illuminant = cast(
-            SpectralDistribution,
+            "SpectralDistribution",
             first_item(filter_illuminants(value).values()),
         )
 

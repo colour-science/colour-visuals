@@ -183,7 +183,7 @@ class VisualPlanckianLocus(
         """Setter for the **self.labels** property."""
 
         self._labels = cast(
-            Sequence,
+            "Sequence",
             optional(
                 value,
                 LABELS_PLANCKIAN_LOCUS_DEFAULT["Mireds" if self._mireds else "Default"],
@@ -303,7 +303,7 @@ class VisualPlanckianLocus(
 
             text = gfx.Text(
                 gfx.TextGeometry(
-                    f'{as_int_scalar(label)}{"M" if self._mireds else "K"}',
+                    f"{as_int_scalar(label)}{'M' if self._mireds else 'K'}",
                     font_size=CONSTANTS_COLOUR_STYLE.font.size,
                     screen_space=True,
                     anchor="Bottom-Left",
