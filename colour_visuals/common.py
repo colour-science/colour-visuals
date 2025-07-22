@@ -203,7 +203,7 @@ def append_channel(a: ArrayLike, value: float = 1) -> NDArray:
 
     a = np.copy(a)
 
-    return np.hstack(  # pyright: ignore
+    return np.hstack(
         [
             a,
             full(
