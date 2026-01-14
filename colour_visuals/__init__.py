@@ -9,12 +9,10 @@ WebGPU-based visuals for colour science applications.
 
 from __future__ import annotations
 
-import contextlib
 import os
 import subprocess
 
 import colour
-import numpy as np
 
 from .axes import (
     VisualAxes,
@@ -125,7 +123,3 @@ except Exception:  # noqa: BLE001
 colour.utilities.ANCILLARY_COLOUR_SCIENCE_PACKAGES["colour-visuals"] = _version  # pyright: ignore
 
 del _version
-
-# TODO: Remove legacy printing support when deemed appropriate.
-with contextlib.suppress(TypeError):
-    np.set_printoptions(legacy="1.13")
