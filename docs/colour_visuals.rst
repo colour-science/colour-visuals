@@ -1,6 +1,19 @@
 Colour - Visuals
 ================
 
+Daylight Locus Visuals
+----------------------
+
+``colour_visuals``
+
+.. currentmodule:: colour_visuals
+
+.. autosummary::
+    :toctree: generated/
+    :template: class.rst
+
+    VisualDaylightLocus
+
 Chromaticity Diagram Visuals
 ----------------------------
 
@@ -19,8 +32,8 @@ Chromaticity Diagram Visuals
     VisualChromaticityDiagramCIE1960UCS
     VisualChromaticityDiagramCIE1976UCS
 
-Grid Visuals
-------------
+Planckian Locus Visuals
+-----------------------
 
 ``colour_visuals``
 
@@ -30,7 +43,7 @@ Grid Visuals
     :toctree: generated/
     :template: class.rst
 
-    VisualGrid
+    VisualPlanckianLocus
 
 Pointer's Gamut Visuals
 -----------------------
@@ -86,6 +99,63 @@ Rösch-MacAdam Visuals
 
     VisualRoschMacAdam
 
+Helper Visuals
+--------------
+
+``colour_visuals``
+
+.. currentmodule:: colour_visuals
+
+.. autosummary::
+    :toctree: generated/
+    :template: class.rst
+
+    VisualAxes
+    VisualGrid
+
+Patterns Visuals
+----------------
+
+``colour_visuals``
+
+.. currentmodule:: colour_visuals
+
+.. autosummary::
+    :toctree: generated/
+    :template: class.rst
+
+    pattern_hue_swatches
+    pattern_hue_stripes
+    pattern_colour_wheel
+
+Visual Utilities
+----------------
+
+``colour_visuals.visual``
+
+.. currentmodule:: colour_visuals.visual
+
+.. autosummary::
+    :toctree: generated/
+    :template: class.rst
+
+    visual_property
+    Visual
+    MixinPropertyCMFS
+    MixinPropertyColour
+    MixinPropertyColourspace
+    MixinPropertyIlluminant
+    MixinPropertyKwargs
+    MixinPropertyTypeMaterial
+    MixinPropertyMethod
+    MixinPropertyModel
+    MixinPropertyOpacity
+    MixinPropertySamples
+    MixinPropertySegments
+    MixinPropertySize
+    MixinPropertyThickness
+    MixinPropertyWireframe
+
 Common Utilities
 ----------------
 
@@ -103,3 +173,4 @@ Common Utilities
     as_contiguous_array
     conform_primitive_dtype
     append_channel
+    unlatexify
