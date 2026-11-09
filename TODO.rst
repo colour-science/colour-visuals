@@ -1,8 +1,12 @@
 Colour - Visuals - TODO
-===========================
+=======================
 
 TODO
 ----
+
+-   colour_visuals/__init__.py
+
+    -   Line 127 : # TODO: Remove legacy printing support when deemed appropriate.
 
 About
 -----
