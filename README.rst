@@ -250,10 +250,10 @@ Primary Dependencies
 ~~~~~~~~~~~~~~~~~~~~
 
 - `python >= 3.13, < 3.16 <https://www.python.org/download/releases>`__
-- `colour-science >= 4.5 <https://pypi.org/project/colour-science>`__
+- `colour-science >= 0.4.7 <https://pypi.org/project/colour-science>`__
 - `glfw <https://pypi.org/project/glfw>`__
 - `imageio >= 2, < 3 <https://imageio.github.io>`__
-- `networkx >= 3, < 4 <https://pypi.org/project/networkx>`__
+- `networkx >= 3.5, < 4 <https://pypi.org/project/networkx>`__
 - `numpy >= 2.2, < 3 <https://pypi.org/project/numpy>`__
 - `pygfx <https://pypi.org/project/pygfx>`__
 - `scipy >= 1.15, < 2 <https://pypi.org/project/scipy>`__
