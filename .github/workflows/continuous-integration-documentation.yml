@@ -30,7 +30,8 @@ jobs:
           brew install --cask mactex
           echo "/Library/TeX/texbin" >> $GITHUB_PATH
           export PATH=/Library/TeX/texbin:$PATH
-          sudo tlmgr update --self
+          # Sphinx requires the current array/longtable rollback versions.
+          sudo tlmgr update --self --all
           sudo tlmgr install latexmk
       - name: Install uv
         run: |
