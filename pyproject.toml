@@ -3,7 +3,7 @@ name = "colour-visuals"
 version = "0.1.0"
 description = "WebGPU-based visuals for colour science applications"
 readme = "README.rst"
-requires-python = ">=3.11,<3.15"
+requires-python = ">=3.13,<3.16"
 authors = [
     { name = "Colour Developers", email = "colour-developers@colour-science.org" },
 ]
@@ -41,18 +41,19 @@ classifiers = [
     "Topic :: Software Development"
 ]
 dependencies = [
-    "colour-science>=0.4.5",
+    "colour-science>=0.4.7",
     "glfw>=2,<3",
     "imageio>=2,<3",
-    "networkx>=3.3,<4",
-    "numpy>=2.0.0,<3",
+    "networkx>=3.5,<4",
+    "numpy>=2.2,<3",
     "pygfx>=0.1,<0.3",
-    "scipy>=1.13.0,<2",
-    "matplotlib>=3.9",
+    "scipy>=1.15,<2",
+    "matplotlib>=3.10",
 ]
 
 [project.optional-dependencies]
 docs = [
+    "openimageio>=3.1.19,<4",
     "biblib-simple",
     "pydata-sphinx-theme",
     "restructuredtext-lint",
@@ -69,6 +70,9 @@ Changelog = "https://github.com/colour-science/colour-visuals/releases"
 
 [tool.uv]
 package = true
+
+[tool.uv.sources]
+colour-science = { git = "https://github.com/colour-science/colour.git", branch = "feature/array-api-review" }
 
 [dependency-groups]
 dev = [
@@ -120,7 +124,7 @@ reportUnusedExpression = false
 addopts = "-n auto --dist=loadscope --durations=5"
 
 [tool.ruff]
-target-version = "py311"
+target-version = "py313"
 line-length = 88
 select = ["ALL"]
 ignore = [

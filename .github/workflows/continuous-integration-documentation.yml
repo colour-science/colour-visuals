@@ -30,7 +30,8 @@ jobs:
           brew install --cask mactex
           echo "/Library/TeX/texbin" >> $GITHUB_PATH
           export PATH=/Library/TeX/texbin:$PATH
-          sudo tlmgr update --self
+          # Sphinx requires the current array/longtable rollback versions.
+          sudo tlmgr update --self --all
           sudo tlmgr install latexmk
       - name: Install uv
         run: |
@@ -38,7 +39,7 @@ jobs:
         shell: bash
       - name: Install Package Dependencies
         run: |
-          uv sync --all-extras --no-dev
+          uv sync --all-extras
           uv run python -c "import imageio;imageio.plugins.freeimage.download()"
         shell: bash
       - name: Build Documentation
