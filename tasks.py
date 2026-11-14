@@ -195,10 +195,11 @@ def tests(ctx: Context) -> None:
     message_box('Running "Pytest"...')
     ctx.run(
         "pytest "
-        # "--doctest-modules "
+        "--doctest-modules "
         f"--ignore={PYTHON_PACKAGE_NAME}/examples "
         f"--cov={PYTHON_PACKAGE_NAME} "
-        f"{PYTHON_PACKAGE_NAME}"
+        f"{PYTHON_PACKAGE_NAME}",
+        env={"CI": "true", "WGPU_FORCE_OFFSCREEN": "true"},
     )
 
 
@@ -395,9 +396,14 @@ def virtualise(ctx: Context, tests: bool = True) -> None:
         if tests:
             ctx.run(
                 f"{interpreter} -I -m pytest --import-mode=append "
-                f"--ignore={quote(str(installed / 'examples'))} "
+                f"--doctest-modules --ignore={quote(str(installed / 'examples'))} "
                 f"--pyargs {PYTHON_PACKAGE_NAME}",
-                env={"MPLBACKEND": "AGG", "OMP_NUM_THREADS": "1"},
+                env={
+                    "MPLBACKEND": "AGG",
+                    "OMP_NUM_THREADS": "1",
+                    "CI": "true",
+                    "WGPU_FORCE_OFFSCREEN": "true",
+                },
             )
 
 
