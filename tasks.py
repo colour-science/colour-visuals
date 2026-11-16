@@ -9,6 +9,7 @@ import fnmatch
 import inspect
 import os
 import re
+import typing
 import uuid
 
 from colour.utilities import message_box
@@ -18,7 +19,9 @@ import colour_visuals
 if not hasattr(inspect, "getargspec"):
     inspect.getargspec = inspect.getfullargspec  # pyright: ignore
 
-from invoke.context import Context
+if typing.TYPE_CHECKING:
+    from invoke.context import Context
+
 from invoke.tasks import task
 
 __author__ = "Colour Developers"
@@ -38,7 +41,7 @@ __all__ = [
     "clean",
     "formatting",
     "quality",
-    "precommit",
+    "prek",
     "tests",
     "examples",
     "preflight",
@@ -70,7 +73,7 @@ def clean(
     docs: bool = True,
     bytecode: bool = False,
     pytest: bool = True,
-):
+) -> None:
     """
     Clean the project.
 
@@ -81,7 +84,7 @@ def clean(
     docs
         Whether to clean the *docs* directory.
     bytecode
-        Whether to clean the bytecode files, e.g. *.pyc* files.
+        Whether to clean the bytecode files, e.g., *.pyc* files.
     pytest
         Whether to clean the *Pytest* cache directory.
     """
@@ -109,7 +112,7 @@ def clean(
 def formatting(
     ctx: Context,
     asciify: bool = True,
-):
+) -> None:
     """
     Convert unicode characters to ASCII and cleanup the *BibTeX* file.
 
@@ -132,7 +135,7 @@ def quality(
     ctx: Context,
     pyright: bool = True,
     rstlint: bool = True,
-):
+) -> None:
     """
     Check the codebase with *Pyright* and lints various *restructuredText*
     files with *rst-lint*.
@@ -149,7 +152,7 @@ def quality(
 
     if pyright:
         message_box('Checking codebase with "Pyright"...')
-        ctx.run("pyright --skipunannotated --level warning")
+        ctx.run("pyright --threads --skipunannotated --level warning")
 
     if rstlint:
         message_box('Linting "README.rst" file...')
@@ -157,9 +160,9 @@ def quality(
 
 
 @task
-def precommit(ctx: Context):
+def prek(ctx: Context) -> None:
     """
-    Run the "pre-commit" hooks on the codebase.
+    Run the "prek" hooks on the codebase.
 
     Parameters
     ----------
@@ -167,12 +170,12 @@ def precommit(ctx: Context):
         Context.
     """
 
-    message_box('Running "pre-commit" hooks on the codebase...')
-    ctx.run("pre-commit run --all-files")
+    message_box('Running "prek" hooks on the codebase...')
+    ctx.run("prek run --all-files")
 
 
 @task
-def tests(ctx: Context):
+def tests(ctx: Context) -> None:
     """
     Run the unit tests with *Pytest*.
 
@@ -185,7 +188,7 @@ def tests(ctx: Context):
     message_box('Running "Pytest"...')
     ctx.run(
         "pytest "
-        "--doctest-modules "
+        # "--doctest-modules "
         f"--ignore={PYTHON_PACKAGE_NAME}/examples "
         f"--cov={PYTHON_PACKAGE_NAME} "
         f"{PYTHON_PACKAGE_NAME}"
@@ -193,7 +196,7 @@ def tests(ctx: Context):
 
 
 @task
-def examples(ctx: Context):
+def examples(ctx: Context) -> None:
     """
     Run the examples.
 
@@ -212,11 +215,10 @@ def examples(ctx: Context):
             ctx.run(f"python {os.path.join(root, filename)}")
 
 
-@task(formatting, quality, precommit, tests, examples)
-def preflight(ctx: Context):  # noqa: ARG001
+@task(formatting, quality, prek, tests, examples)
+def preflight(ctx: Context) -> None:  # noqa: ARG001
     """
-    Perform the preflight tasks, i.e. *formatting*, *tests*, *quality*, and
-    *examples*.
+    Perform the preflight tasks.
 
     Parameters
     ----------
@@ -233,7 +235,7 @@ def docs(
     plots: bool = True,
     html: bool = True,
     pdf: bool = True,
-):
+) -> None:
     """
     Build the documentation.
 
@@ -254,9 +256,7 @@ def docs(
             message_box("Generating plots...")
             ctx.run("./generate_plots.py")
 
-    with ctx.prefix("export COLOUR_SCIENCE__DOCUMENTATION_BUILD=True"), ctx.cd(
-        "docs"
-    ):
+    with ctx.prefix("export COLOUR_SCIENCE__DOCUMENTATION_BUILD=True"), ctx.cd("docs"):
         if html:
             message_box('Building "HTML" documentation...')
             ctx.run("make html")
@@ -267,7 +267,7 @@ def docs(
 
 
 @task
-def todo(ctx: Context):
+def todo(ctx: Context) -> None:
     """
     Export the TODO items.
 
@@ -284,7 +284,7 @@ def todo(ctx: Context):
 
 
 @task
-def requirements(ctx: Context):
+def requirements(ctx: Context) -> None:
     """
     Export the *requirements.txt* file.
 
@@ -295,27 +295,19 @@ def requirements(ctx: Context):
     """
 
     message_box('Exporting "requirements.txt" file...')
-    ctx.run(
-        "poetry export -f requirements.txt "
-        "--without-hashes "
-        "--with dev,docs "
-        "--output requirements.txt"
-    )
+    ctx.run('uv export --no-hashes --all-extras | grep -v "-e \\." > requirements.txt')
 
     message_box('Exporting "docs/requirements.txt" file...')
     ctx.run(
-        "poetry export -f requirements.txt "
-        "--without-hashes "
-        "--with docs "
-        "--output docs/requirements.txt"
+        'uv export --no-hashes --all-extras --no-dev | grep -v "-e \\." > '
+        "docs/requirements.txt"
     )
 
 
 @task(clean, preflight, docs, todo, requirements)
-def build(ctx: Context):
+def build(ctx: Context) -> None:
     """
-    Build the project and runs dependency tasks, i.e. *docs*, *todo*, and
-    *preflight*.
+    Build the project and runs dependency tasks.
 
     Parameters
     ----------
@@ -324,12 +316,12 @@ def build(ctx: Context):
     """
 
     message_box("Building...")
-    ctx.run("poetry build")
+    ctx.run("uv build")
     ctx.run("twine check dist/*")
 
 
 @task
-def virtualise(ctx: Context, tests: bool = True):
+def virtualise(ctx: Context, tests: bool = True) -> None:
     """
     Create a virtual environment for the project build.
 
@@ -347,29 +339,27 @@ def virtualise(ctx: Context, tests: bool = True):
         ctx.run(f"mv {PYPI_ARCHIVE_NAME}-{APPLICATION_VERSION} {unique_name}")
         ctx.run(f"rm -rf {unique_name}/{PYTHON_PACKAGE_NAME}/resources")
         ctx.run(
-            "ln -s ../../../{0}/resources {1}/{0}".format(
-                PYTHON_PACKAGE_NAME, unique_name
-            )
+            f"ln -s ../../../{PYTHON_PACKAGE_NAME}/resources {unique_name}/{PYTHON_PACKAGE_NAME}"  # noqa: E501
         )
 
         with ctx.cd(unique_name):
-            ctx.run("poetry install")
-            ctx.run("source $(poetry env info -p)/bin/activate")
+            ctx.run("uv sync --all-extras --no-dev")
             ctx.run(
-                'python -c "import imageio;'
-                'imageio.plugins.freeimage.download()"'
+                'uv run python -c "import imageio;imageio.plugins.freeimage.download()"'
             )
             if tests:
                 ctx.run(
-                    "poetry run pytest "
+                    "source .venv/bin/activate && "
+                    "uv run pytest "
                     "--doctest-modules "
                     f"--ignore={PYTHON_PACKAGE_NAME}/examples "
                     f"{PYTHON_PACKAGE_NAME}",
+                    env={"MPLBACKEND": "AGG"},
                 )
 
 
 @task
-def tag(ctx: Context):
+def tag(ctx: Context) -> None:
     """
     Tag the repository according to defined version using *git-flow*.
 
@@ -382,8 +372,10 @@ def tag(ctx: Context):
     message_box("Tagging...")
     result = ctx.run("git rev-parse --abbrev-ref HEAD", hide="both")
 
-    if result.stdout.strip() != "develop":  # pyright: ignore
-        raise RuntimeError("Are you still on a feature or master branch?")
+    if result is None or result.stdout.strip() != "develop":
+        error = "Are you still on a feature or master branch?"
+
+        raise RuntimeError(error)
 
     with open(os.path.join(PYTHON_PACKAGE_NAME, "__init__.py")) as file_handle:
         file_content = file_handle.read()
@@ -403,28 +395,33 @@ def tag(ctx: Context):
             1
         )
 
-        version = ".".join((major_version, minor_version, change_version))
+        version = f"{major_version}.{minor_version}.{change_version}"
 
         result = ctx.run("git ls-remote --tags upstream", hide="both")
-        remote_tags = result.stdout.strip().split("\n")  # pyright: ignore
+        if result is None:
+            error = "Failed to list remote tags."
+
+            raise RuntimeError(error)
+
+        remote_tags = result.stdout.strip().split("\n")
         tags = set()
         for remote_tag in remote_tags:
-            tags.add(
-                remote_tag.split("refs/tags/")[1].replace("refs/tags/", "^{}")
-            )
+            tags.add(remote_tag.split("refs/tags/")[1].replace("refs/tags/", "^{}"))
         version_tags = sorted(tags)
         if f"v{version}" in version_tags:
-            raise RuntimeError(
+            error = (
                 f'A "{PYTHON_PACKAGE_NAME}" "v{version}" tag already exists in '
                 f"remote repository!"
             )
+
+            raise RuntimeError(error)
 
         ctx.run(f"git flow release start v{version}")
         ctx.run(f"git flow release finish v{version}")
 
 
 @task(build)
-def release(ctx: Context):
+def release(ctx: Context) -> None:
     """
     Release the project to *Pypi* with *Twine*.
 
@@ -441,7 +438,7 @@ def release(ctx: Context):
 
 
 @task
-def sha256(ctx: Context):
+def sha256(ctx: Context) -> None:
     """
     Compute the project *Pypi* package *sha256* with *OpenSSL*.
 

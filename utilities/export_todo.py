@@ -40,9 +40,7 @@ About
 https://opensource.org/licenses/BSD-3-Clause
 | `https://github.com/colour-science/colour-visuals \
 <https://github.com/colour-science/colour-visuals>`__
-"""[
-    1:
-]
+"""[1:]
 
 
 def extract_todo_items(root_directory: str) -> dict:
@@ -83,7 +81,7 @@ def extract_todo_items(root_directory: str) -> dict:
 
                 if in_todo and line.startswith("#"):
                     todo_item.append(line.replace("#", "").strip())
-                elif len(todo_item):
+                elif todo_item:
                     key = filename.replace("../", "")
                     if not todo_items.get(key):
                         todo_items[key] = []
@@ -95,7 +93,7 @@ def extract_todo_items(root_directory: str) -> dict:
     return todo_items
 
 
-def export_todo_items(todo_items: dict, file_path: str):
+def export_todo_items(todo_items: dict, file_path: str) -> None:
     """
     Export TODO items to given file.
 
