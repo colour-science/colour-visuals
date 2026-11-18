@@ -10,8 +10,6 @@ It is open source and freely available under the
 
 ..  image:: _static/Visuals_001.png
 
-.. sectnum::
-
 Features
 --------
 
