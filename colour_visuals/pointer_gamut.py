@@ -18,11 +18,11 @@ import pygfx as gfx
 if typing.TYPE_CHECKING:
     from colour.hints import Any, ArrayLike, Literal, LiteralColourspaceModel
 
-from colour.models import LCHab_to_Lab  # pyright: ignore
-from colour.models import (
+from colour.models import (  # pyright: ignore
     CCS_ILLUMINANT_POINTER_GAMUT,
     DATA_POINTER_GAMUT_VOLUME,
     Lab_to_XYZ,
+    LCHab_to_Lab,
 )
 from colour.plotting import (
     CONSTANTS_COLOUR_STYLE,
